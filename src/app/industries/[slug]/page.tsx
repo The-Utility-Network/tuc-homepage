@@ -3,6 +3,8 @@ import { INDUSTRIES } from '@/data/seo';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import IndustryProcessFlow from '@/components/IndustryProcessFlow';
+import { getMedallionUrl } from '@/utils/medallions';
 
 interface Props {
     params: Promise<{ slug: string }>;
@@ -56,11 +58,12 @@ export default async function IndustryPage({ params }: Props) {
 
                             <section>
                                 <h3 className="text-2xl font-bold mb-4">The TUC Solution</h3>
-                                <p className="text-gray-400 text-lg">
+                                <p className="text-gray-400 text-lg mb-8">
                                     By implementing {industry.subsidiaries.join(' ')} ledgers, we create a single, immutable source of truth.
                                     This allows for instant settlement, automated compliance, and the tokenization of
                                     productive assets, turning passive infrastructure into active economic participants.
                                 </p>
+                                <IndustryProcessFlow />
                             </section>
                         </div>
                     </div>
@@ -70,11 +73,15 @@ export default async function IndustryPage({ params }: Props) {
                             <h3 className="text-lg font-bold mb-6">Key Subsidiaries</h3>
                             <div className="space-y-4">
                                 {industry.subsidiaries.map((sub, i) => (
-                                    <div key={i} className="flex items-center gap-4 group cursor-pointer hover:bg-white/5 p-2 rounded-lg transition-colors">
-                                        <div className="w-10 h-10 bg-utility-red/20 rounded-full flex items-center justify-center text-utility-red font-bold">
-                                            {sub.charAt(0)}
+                                    <div key={i} className="flex items-center gap-4 group cursor-pointer hover:bg-white/5 p-3 rounded-lg transition-colors border border-transparent hover:border-white/5">
+                                        <div className="w-10 h-10 relative flex-shrink-0">
+                                            <img
+                                                src={getMedallionUrl(sub)}
+                                                alt={sub}
+                                                className="w-full h-full object-contain opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all"
+                                            />
                                         </div>
-                                        <span>{sub}</span>
+                                        <span className="text-sm font-medium text-gray-300 group-hover:text-white">{sub}</span>
                                     </div>
                                 ))}
                             </div>

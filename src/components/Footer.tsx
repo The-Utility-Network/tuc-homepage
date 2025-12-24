@@ -18,6 +18,7 @@ const externalLinks = [
 ];
 
 const socialLinks = [
+    { label: 'Contact Us', href: '/contact' },
     { label: 'Blog', href: 'https://medium.com/@theutilityco' },
     { label: 'Podcasts', href: 'https://youtu.be/R4RVVeGFy2U' },
     { label: 'Discord', href: 'https://discord.gg/theutilitycompany' },
@@ -93,7 +94,7 @@ export default function Footer() {
                                     >
                                         {link.label}
                                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 0 00-2 2v10a2 0 002 2h10a2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                                         </svg>
                                     </a>
                                 </li>
@@ -103,14 +104,23 @@ export default function Footer() {
                         <ul className="space-y-2">
                             {socialLinks.map((link) => (
                                 <li key={link.label}>
-                                    <a
-                                        href={link.href}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-gray-400 text-sm hover:text-[#F54029] transition-colors"
-                                    >
-                                        {link.label}
-                                    </a>
+                                    {link.href.startsWith('/') ? (
+                                        <Link
+                                            href={link.href}
+                                            className="text-gray-400 text-sm hover:text-[#F54029] transition-colors"
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    ) : (
+                                        <a
+                                            href={link.href}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-gray-400 text-sm hover:text-[#F54029] transition-colors"
+                                        >
+                                            {link.label}
+                                        </a>
+                                    )}
                                 </li>
                             ))}
                         </ul>

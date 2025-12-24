@@ -3,6 +3,7 @@ import { COMPARISONS } from '@/data/seo';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import ComparisonChart from '@/components/ComparisonChart';
 
 interface Props {
     params: Promise<{ slug: string }>;
@@ -70,14 +71,15 @@ export default async function ComparisonPage({ params }: Props) {
                         <p className="text-lg text-white leading-relaxed min-h-[100px]">
                             {comparison.tucAdvantage}
                         </p>
-                        <div className="mt-8 border-t border-utility-red/20 pt-6">
+                        <section className="mt-8 pt-6 border-t border-utility-red/20">
                             <h4 className="text-sm font-bold text-utility-red mb-2">ADVANTAGES</h4>
-                            <ul className="list-disc list-inside text-gray-300 space-y-2">
+                            <ul className="list-disc list-inside text-gray-300 space-y-2 mb-6">
                                 <li>Holistic Industrial Automation</li>
                                 <li>Deep RWA & Utility Binding</li>
                                 <li>Self-Optimizing Architecture</li>
                             </ul>
-                        </div>
+                            <ComparisonChart competitorName={comparison.competitor} />
+                        </section>
 
                         <div className="mt-8 flex justify-center">
                             <div className="w-16 h-16 bg-utility-red rounded-full flex items-center justify-center text-2xl font-bold shadow-[0_0_20px_var(--utility-red)]">

@@ -11,15 +11,21 @@
   "dependencies": {
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.2",
+    "@types/d3-geo": "^3.1.0",
+    "@types/react-simple-maps": "^3.0.6",
     "@types/three": "^0.182.0",
+    "@types/topojson-client": "^3.1.5",
     "clsx": "^2.1.1",
+    "d3-geo": "^3.1.1",
     "framer-motion": "^12.23.26",
     "next": "16.1.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "react-simple-maps": "^3.0.0",
     "sharp": "^0.34.5",
     "tailwind-merge": "^3.4.0",
-    "three": "^0.182.0"
+    "three": "^0.182.0",
+    "topojson-client": "^3.1.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

@@ -4,8 +4,11 @@ export interface SEOLocation {
     country: string;
     region: string;
     description: string;
-    coordinates: { x: number; y: number }; // Percentage from left/top for simple styling
+    coordinates: { x: number; y: number }; // [Longitude, Latitude] for react-simple-maps
     keyFocus: string; // e.g., "DeFi", "Supply Chain"
+    code: string; // IATA-style code (e.g. NYC, LON)
+    regulatoryContext: string; // Detailed regulatory analysis
+    activeSubsidiaries: string[]; // List of subsidiaries compliant in this region
 }
 
 export interface SEOIndustry {
@@ -33,8 +36,11 @@ export const LOCATIONS: SEOLocation[] = [
         country: 'USA',
         region: 'North America',
         description: 'As the global center of traditional finance (TradFi), New York represents the ultimate bridge for RWA tokenization. TUC empowers Wall Street institutions to migrate complex asset classes onto the blockchain with ensuring compliance and liquidity.',
-        coordinates: { x: 29, y: 32 },
+        coordinates: { x: -74.006, y: 40.7128 },
         keyFocus: 'RWA Tokenization',
+        code: 'NYC',
+        regulatoryContext: 'Strict SEC oversight requires Regulation D/S compliant issuances. TUC operates here solely through accredited investor channels for Ledger1 and Osiris Protocol, ensuring full KYC/AML adherence while navigating the complex "BitLicense" framework.',
+        activeSubsidiaries: ['Ledger1', 'Osiris Protocol', 'Cornucopia Robotics'],
     },
     {
         city: 'London',
@@ -42,8 +48,11 @@ export const LOCATIONS: SEOLocation[] = [
         country: 'UK',
         region: 'Europe',
         description: 'London is leading the charge in fintech innovation. TUC\'s presence here focuses on modernizing insurance and banking infrastructure through the Ledger1 ecosystem.',
-        coordinates: { x: 49, y: 23 },
+        coordinates: { x: -0.1276, y: 51.5074 },
         keyFocus: 'Fintech & Insurance',
+        code: 'LON',
+        regulatoryContext: 'The UK\'s FCA offers a progressive sandbox for fintech. Ledger1 leverages this to pilot automated insurance underwriting. We are fully compliant with the new UK crypto asset promotion rules.',
+        activeSubsidiaries: ['Ledger1', 'The Graine Ledger', 'Requiem Electric'],
     },
     {
         city: 'Singapore',
@@ -51,8 +60,11 @@ export const LOCATIONS: SEOLocation[] = [
         country: 'Singapore',
         region: 'Asia',
         description: 'A global hub for supply chain and logistics. TUC deploys smart contract automation here to streamline global trade routes, enhancing transparency for DigiBazaar and global shipping partners.',
-        coordinates: { x: 78, y: 55 },
+        coordinates: { x: 103.8198, y: 1.3521 },
         keyFocus: 'Supply Chain',
+        code: 'SIN',
+        regulatoryContext: 'Singapore\'s MAS provides clarity on payment services and utility tokens. This allows DigiBazaar to operate its asset discovery mechanisms with reduced friction, while Vulcan Forge utilizes the free trade zones for distributed manufacturing nodes.',
+        activeSubsidiaries: ['DigiBazaar', 'Vulcan Forge', 'Cornucopia Robotics'],
     },
     {
         city: 'Zurich',
@@ -60,8 +72,11 @@ export const LOCATIONS: SEOLocation[] = [
         country: 'Switzerland',
         region: 'Europe',
         description: 'The heart of Crypto Valley. Zurich is where TUC aligns with deep-tech decentralized governance models, optimizing DAO structures for The Graine Ledger and other cooperatives.',
-        coordinates: { x: 52, y: 28 },
+        coordinates: { x: 8.5417, y: 47.3769 },
         keyFocus: 'Decentralized Governance',
+        code: 'ZRH',
+        regulatoryContext: 'Switzerland\'s FINMA provides the global gold standard for DAO recognition. The Graine Ledger is domiciled here as a Swiss Association, protecting member rights while allowing for fully decentralized governance of the whiskey distillery operations.',
+        activeSubsidiaries: ['The Graine Ledger', 'Arthaneeti', 'The Loch Ness Botanical Society'],
     },
     {
         city: 'Dubai',
@@ -69,8 +84,11 @@ export const LOCATIONS: SEOLocation[] = [
         country: 'UAE',
         region: 'Middle East',
         description: 'With its ambitious smart city initiatives, Dubai is the perfect testing ground for Requiem Electric\'s distributed energy grids and Vulcan Forge\'s localized manufacturing.',
-        coordinates: { x: 62, y: 40 },
+        coordinates: { x: 55.2708, y: 25.2048 },
         keyFocus: 'Smart Cities & Energy',
+        code: 'DXB',
+        regulatoryContext: 'VARA (Virtual Assets Regulatory Authority) actively encourages metaverse and energy tokenization. Requiem Electric pilots its P2P energy trading grids here, and Elysium Athletica hosts its AR-enhanced sports events in the permissive special economic zones.',
+        activeSubsidiaries: ['Requiem Electric', 'Elysium Athletica', 'Vulcan Forge'],
     },
     {
         city: 'Hong Kong',
@@ -78,8 +96,11 @@ export const LOCATIONS: SEOLocation[] = [
         country: 'China',
         region: 'Asia',
         description: 'A critical gateway for Asian capital markets. TUC facilitates cross-border digital asset settlements and high-frequency trading infrastructure via Osiris Protocol.',
-        coordinates: { x: 80, y: 42 },
+        coordinates: { x: 114.1694, y: 22.3193 },
         keyFocus: 'Digital Assets',
+        code: 'HKG',
+        regulatoryContext: 'With new SFC licensing for retail crypto trading, Hong Kong is reclaiming its crypto hub status. Osiris Protocol provides the institutional-grade data pipes compliant with these new rigorous exchange standards.',
+        activeSubsidiaries: ['Osiris Protocol', 'Ledger1', 'DigiBazaar'],
     },
     {
         city: 'San Francisco',
@@ -87,8 +108,11 @@ export const LOCATIONS: SEOLocation[] = [
         country: 'USA',
         region: 'North America',
         description: 'The epicenter of tech innovation. TUC bridges the gap between Web2 Silicon Valley giants and Web3 infrastructure, focusing on Cornucopia Robotics and AI integration.',
-        coordinates: { x: 15, y: 35 },
+        coordinates: { x: -122.4194, y: 37.7749 },
         keyFocus: 'AI & Robotics',
+        code: 'SFO',
+        regulatoryContext: 'While US token laws are strict, software and AI innovation is unrestricted. Cornucopia Robotics develops its core AI vision models here, separating the IP development from the tokenized economic layers handled in other jurisdictions.',
+        activeSubsidiaries: ['Cornucopia Robotics', 'Osiris Protocol'],
     },
     {
         city: 'Tokyo',
@@ -96,8 +120,11 @@ export const LOCATIONS: SEOLocation[] = [
         country: 'Japan',
         region: 'Asia',
         description: 'A powerhouse of robotics and precision manufacturing. Vulcan Forge finds its spiritual home here, automating distributed production lines for the next industrial revolution.',
-        coordinates: { x: 85, y: 35 },
+        coordinates: { x: 139.6917, y: 35.6895 },
         keyFocus: 'Manufacturing & Robotics',
+        code: 'TYO',
+        regulatoryContext: 'Japan\'s DAO law allows for real-world legal recognition of decentralized groups. Vulcan Forge utilizes this to allow decentralized ownership of 3D printing fleets by DAO members.',
+        activeSubsidiaries: ['Vulcan Forge', 'Cornucopia Robotics', 'Requiem Electric'],
     },
     {
         city: 'São Paulo',
@@ -105,8 +132,11 @@ export const LOCATIONS: SEOLocation[] = [
         country: 'Brazil',
         region: 'South America',
         description: 'Leading agricultural innovation in South America. The Loch Ness Botanical Society leverages this hub to pioneer blockchain-based yield appropriation and sustainable farming.',
-        coordinates: { x: 32, y: 70 },
+        coordinates: { x: -46.6333, y: -23.5505 },
         keyFocus: 'AgriTech',
+        code: 'GRU',
+        regulatoryContext: 'Brazil\'s Central Bank Digital Currency (Drex) pilot encourages smart contract innovation in agriculture. The Loch Ness Botanical Society uses this framework for fractionalizing harvest yields.',
+        activeSubsidiaries: ['The Loch Ness Botanical Society', 'Cornucopia Robotics', 'DigiBazaar'],
     },
     {
         city: 'Lagos',
@@ -114,8 +144,11 @@ export const LOCATIONS: SEOLocation[] = [
         country: 'Nigeria',
         region: 'Africa',
         description: 'One of the fastest-growing crypto adopters. TUC empowers local communities here through Arthaneeti, fostering economic inclusion and decentralized political engagement.',
-        coordinates: { x: 50, y: 55 },
+        coordinates: { x: 3.3792, y: 6.5244 },
         keyFocus: 'Financial Inclusion',
+        code: 'LOS',
+        regulatoryContext: 'Nigeria has high grassroots crypto adoption despite banking restrictions. Arthaneeti operates a P2P governance model here that bypasses traditional rails, focusing on community consensus rather than fiat settlement.',
+        activeSubsidiaries: ['Arthaneeti', 'DigiBazaar'],
     },
 ];
 

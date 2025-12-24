@@ -120,11 +120,11 @@ export default function Navbar({ themeColor = '#F54029' }: NavbarProps) {
 
                         {/* CTA Button */}
                         <Link
-                            href="/#subsidiaries"
+                            href="https://portal.theutilitycompany.co"
                             className="text-xs font-mono tracking-wider px-6 py-3 rounded bg-white text-black font-bold hover:opacity-90 transition-opacity"
                             style={{ backgroundColor: themeColor, color: '#000' }}
                         >
-                            EXPLORE
+                            PORTAL
                         </Link>
 
                         {/* Mobile Menu Button */}

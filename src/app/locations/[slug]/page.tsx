@@ -3,6 +3,8 @@ import { LOCATIONS } from '@/data/seo';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import GeometricCyberGrid from '@/components/GeometricCyberGrid';
+import { getMedallionUrl } from '@/utils/medallions';
 
 interface Props {
     params: Promise<{ slug: string }>;
@@ -58,19 +60,76 @@ export default async function LocationPage({ params }: Props) {
                         </div>
                     </div>
 
-                    {/* Visualization / Graphic Placeholder */}
-                    <div className="relative aspect-square rounded-full bg-gradient-to-br from-gray-900 to-black border border-white/5 flex items-center justify-center overflow-hidden">
-                        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-20" />
-                        <div className="text-center z-10 p-8">
-                            <div className="text-9xl font-black text-white/5 select-none">{location.slug.slice(0, 3).toUpperCase()}</div>
-                            <div className="mt-4 text-utility-red font-mono text-sm tracking-[0.5em] uppercase">
-                                Coordinates: {location.coordinates.x}°N / {location.coordinates.y}°E
+                    {/* Visualization */}
+                    <GeometricCyberGrid
+                        title={location.code}
+                        subtitle={`${location.coordinates.y.toFixed(2)}°N / ${location.coordinates.x.toFixed(2)}°E`}
+                    />
+                </div>
+
+                {/* Detailed Metrics Section */}
+                <div className="grid md:grid-cols-4 gap-6 mb-16">
+                    {[
+                        { label: 'Network Nodes', value: '142', trend: '+12%' },
+                        { label: 'RWA Volume', value: '$2.4B', trend: '+8%' },
+                        { label: 'Active Daos', value: '15', trend: 'STABLE' },
+                        { label: 'Compliance Score', value: '99.9%', trend: 'AUDITED' }
+                    ].map((stat, i) => (
+                        <div key={i} className="glass-panel p-6 rounded-xl border border-white/5 hover:border-utility-red/30 transition-colors">
+                            <div className="text-gray-500 text-xs uppercase tracking-wider mb-2">{stat.label}</div>
+                            <div className="text-3xl font-bold text-white flex items-end gap-2">
+                                {stat.value}
+                                <span className={`text-xs mb-1 ${stat.trend.startsWith('+') ? 'text-green-500' : 'text-utility-red'}`}>{stat.trend}</span>
                             </div>
                         </div>
+                    ))}
+                </div>
 
-                        {/* Animated Rings */}
-                        <div className="absolute inset-0 border border-utility-red/20 rounded-full animate-[spin_10s_linear_infinite]" />
-                        <div className="absolute inset-10 border border-white/10 rounded-full animate-[spin_15s_linear_infinite_reverse]" />
+                <div className="grid lg:grid-cols-2 gap-16">
+                    <div className="space-y-8">
+                        <div className="bg-white/5 p-8 rounded-2xl border border-white/5">
+                            <h3 className="text-2xl font-bold mb-6 text-utility-red flex items-center gap-3">
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Regulatory Deep Dive
+                            </h3>
+                            <p className="text-gray-300 leading-relaxed text-lg">
+                                {location.regulatoryContext}
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 className="text-2xl font-bold mb-6">Strategic Importance</h3>
+                            <p className="text-gray-400 leading-relaxed">
+                                {location.city} is not just a location; it is a strategic anchor for the {location.region} region.
+                                Our infrastructure here is designed to be resilient, compliant, and scalable, ensuring that local
+                                enterprises can transition to Web3 rails without disrupting their existing operational mandates.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="space-y-8">
+                        <div>
+                            <h3 className="text-lg font-bold mb-6 uppercase tracking-wider text-gray-500">Ecosystem Footprint</h3>
+                            <div className="grid gap-4">
+                                {location.activeSubsidiaries.map(sub => (
+                                    <div key={sub} className="flex items-center justify-between p-4 bg-white/5 rounded-lg border border-white/10 hover:border-utility-red/50 transition-colors group">
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-12 h-12 relative flex-shrink-0">
+                                                <img
+                                                    src={getMedallionUrl(sub)}
+                                                    alt={sub}
+                                                    className="w-full h-full object-contain drop-shadow-[0_0_10px_rgba(245,64,41,0.3)] group-hover:drop-shadow-[0_0_15px_rgba(245,64,41,0.6)] transition-all"
+                                                />
+                                            </div>
+                                            <span className="font-semibold text-sm">{sub}</span>
+                                        </div>
+                                        <div className="text-[10px] text-gray-500 px-2 py-0.5 border border-white/10 rounded-full uppercase tracking-wider">ACTIVE</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </main>

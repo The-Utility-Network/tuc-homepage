@@ -46,8 +46,8 @@ export default async function Image() {
                     justifyContent: 'center',
                     padding: '40px 260px 40px 40px',
                     boxShadow: 'inset 2px 2px 20px rgba(255,255,255,0.2)',
+                    background: 'rgba(255,255,255,0.1)'
                 }}>
-                    <img src={bgBase64} width={2400} height={1260} style={{ position: 'absolute', left: -200, top: -480, width: 2400, height: 1260, objectFit: 'cover', filter: 'blur(6px)', transform: 'scale(1.05)' }} />
                     <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.05)' }} />
                     <div style={{ position: 'absolute', inset: 0, border: '2px solid rgba(255,255,255,0.1)', borderRight: 'none', borderRadius: '40px 0 0 40px' }} />
 
@@ -84,8 +84,8 @@ export default async function Image() {
                     justifyContent: 'center',
                     padding: '40px 40px 40px 240px',
                     boxShadow: 'inset -2px 2px 20px rgba(255,255,255,0.2)',
+                    background: 'rgba(255,255,255,0.1)'
                 }}>
-                    <img src={bgBase64} width={2400} height={1260} style={{ position: 'absolute', right: -100, top: -480, width: 2400, height: 1260, objectFit: 'cover', filter: 'blur(6px)', transform: 'scale(1.05)' }} />
                     <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.05)' }} />
                     <div style={{ position: 'absolute', inset: 0, border: '2px solid rgba(255,255,255,0.3)', borderLeft: 'none', borderRadius: '0 40px 40px 0' }} />
 
@@ -113,9 +113,9 @@ export default async function Image() {
                     display: 'flex',
                     zIndex: '40',
                     boxShadow: 'inset 0 0 20px rgba(255,255,255,0.3)',
-                    border: `4px solid ${THEME}`
+                    border: `4px solid ${THEME}`,
+                    background: 'rgba(255,255,255,0.05)'
                 }}>
-                    <img src={bgBase64} width={2400} height={1260} style={{ position: 'absolute', left: -810, top: -240, width: 2400, height: 1260, objectFit: 'cover', filter: 'blur(12px)', transform: 'scale(1.05)' }} />
                     <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.05)' }} />
                 </div>
 
@@ -136,23 +136,19 @@ export default async function Image() {
                 </div>
 
                 {/* FRAME BARS */}
-                <div style={{ position: 'absolute', left: 40, top: 40, width: 2320, height: 40, overflow: 'hidden', borderRadius: '24px 24px 0 0', display: 'flex', zIndex: '5', boxShadow: 'inset 0 0 10px rgba(255,255,255,0.2)' }}>
-                    <img src={bgBase64} width={2400} height={1260} style={{ position: 'absolute', left: -40, top: -40, objectFit: 'cover', filter: 'blur(6px)', transform: 'scale(1.05)' }} />
+                <div style={{ position: 'absolute', left: 40, top: 40, width: 2320, height: 40, overflow: 'hidden', borderRadius: '24px 24px 0 0', display: 'flex', zIndex: '5', boxShadow: 'inset 0 0 10px rgba(255,255,255,0.2)', background: 'rgba(255,255,255,0.1)' }}>
                     <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.05)' }} />
                     <div style={{ position: 'absolute', inset: 0, border: '2px solid rgba(255,255,255,0.3)', borderBottom: 'none' }} />
                 </div>
-                <div style={{ position: 'absolute', left: 40, top: 1180, width: 2320, height: 40, overflow: 'hidden', borderRadius: '0 0 24px 24px', display: 'flex', zIndex: '5', boxShadow: 'inset 0 0 10px rgba(255,255,255,0.2)' }}>
-                    <img src={bgBase64} width={2400} height={1260} style={{ position: 'absolute', left: -40, top: -1180, objectFit: 'cover', filter: 'blur(6px)', transform: 'scale(1.05)' }} />
+                <div style={{ position: 'absolute', left: 40, top: 1180, width: 2320, height: 40, overflow: 'hidden', borderRadius: '0 0 24px 24px', display: 'flex', zIndex: '5', boxShadow: 'inset 0 0 10px rgba(255,255,255,0.2)', background: 'rgba(255,255,255,0.1)' }}>
                     <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.05)' }} />
                     <div style={{ position: 'absolute', inset: 0, border: '2px solid rgba(255,255,255,0.3)', borderTop: 'none' }} />
                 </div>
-                <div style={{ position: 'absolute', left: 40, top: 80, width: 40, height: 1100, overflow: 'hidden', display: 'flex', zIndex: '5', boxShadow: 'inset 0 0 10px rgba(255,255,255,0.2)' }}>
-                    <img src={bgBase64} width={2400} height={1260} style={{ position: 'absolute', left: -40, top: -80, objectFit: 'cover', filter: 'blur(6px)', transform: 'scale(1.05)' }} />
+                <div style={{ position: 'absolute', left: 40, top: 80, width: 40, height: 1100, overflow: 'hidden', display: 'flex', zIndex: '5', boxShadow: 'inset 0 0 10px rgba(255,255,255,0.2)', background: 'rgba(255,255,255,0.1)' }}>
                     <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.05)' }} />
                     <div style={{ position: 'absolute', inset: 0, border: '2px solid rgba(255,255,255,0.3)', borderTop: 'none', borderBottom: 'none' }} />
                 </div>
-                <div style={{ position: 'absolute', left: 2320, top: 80, width: 40, height: 1100, overflow: 'hidden', display: 'flex', zIndex: '5', boxShadow: 'inset 0 0 10px rgba(255,255,255,0.2)' }}>
-                    <img src={bgBase64} width={2400} height={1260} style={{ position: 'absolute', left: -2320, top: -80, objectFit: 'cover', filter: 'blur(6px)', transform: 'scale(1.05)' }} />
+                <div style={{ position: 'absolute', left: 2320, top: 80, width: 40, height: 1100, overflow: 'hidden', display: 'flex', zIndex: '5', boxShadow: 'inset 0 0 10px rgba(255,255,255,0.2)', background: 'rgba(255,255,255,0.1)' }}>
                     <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.05)' }} />
                     <div style={{ position: 'absolute', inset: 0, border: '2px solid rgba(255,255,255,0.3)', borderTop: 'none', borderBottom: 'none' }} />
                 </div>

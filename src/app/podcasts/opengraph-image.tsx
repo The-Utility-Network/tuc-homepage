@@ -9,7 +9,6 @@ export const contentType = 'image/png';
 const THEME = '#F54029';
 
 export default async function Image() {
-    // Background Image - The Refrain Clandestine BG
     const bgData = readFileSync(join(process.cwd(), 'public', 'og-images', 'podcasts_og.jpg'));
     const bgBase64 = `data:image/jpeg;base64,${bgData.toString('base64')}`;
 
@@ -30,7 +29,6 @@ export default async function Image() {
                 position: 'relative',
                 fontFamily: 'Helvetica, Arial, sans-serif'
             }}>
-                {/* 1. Base Darkening */}
                 <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.5)' }} />
 
                 {/* Left Wing - QUOTE */}
@@ -48,9 +46,9 @@ export default async function Image() {
                     justifyContent: 'center',
                     padding: '40px 260px 40px 40px',
                     boxShadow: 'inset 2px 2px 20px rgba(255,255,255,0.2)',
+                    background: 'rgba(255,255,255,0.1)'
                 }}>
-                    <img src={bgBase64} width={2400} height={1260} style={{ position: 'absolute', left: -200, top: -480, width: 2400, height: 1260, objectFit: 'cover', filter: 'blur(20px)', transform: 'scale(1.2)' }} />
-                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.6)' }} />
+                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.05)' }} />
                     <div style={{ position: 'absolute', inset: 0, border: '2px solid rgba(255,255,255,0.1)', borderRight: 'none', borderRadius: '40px 0 0 40px' }} />
 
                     <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', zIndex: '10' }}>
@@ -75,9 +73,9 @@ export default async function Image() {
                     justifyContent: 'center',
                     padding: '40px 40px 40px 240px',
                     boxShadow: 'inset -2px 2px 20px rgba(255,255,255,0.2)',
+                    background: 'rgba(255,255,255,0.1)'
                 }}>
-                    <img src={bgBase64} width={2400} height={1260} style={{ position: 'absolute', right: -100, top: -480, width: 2400, height: 1260, objectFit: 'cover', filter: 'blur(20px)', transform: 'scale(1.2)' }} />
-                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.6)' }} />
+                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.05)' }} />
                     <div style={{ position: 'absolute', inset: 0, border: '2px solid rgba(255,255,255,0.3)', borderLeft: 'none', borderRadius: '0 40px 40px 0' }} />
 
                     <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', zIndex: '10' }}>
@@ -104,10 +102,10 @@ export default async function Image() {
                     display: 'flex',
                     zIndex: '40',
                     boxShadow: 'inset 0 0 20px rgba(255,255,255,0.3)',
-                    border: `4px solid ${THEME}`
+                    border: `4px solid ${THEME}`,
+                    background: 'rgba(255,255,255,0.05)'
                 }}>
-                    <img src={bgBase64} width={2400} height={1260} style={{ position: 'absolute', left: -810, top: -240, width: 2400, height: 1260, objectFit: 'cover', filter: 'blur(12px)', transform: 'scale(1.05)' }} />
-                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)' }} />
+                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.05)' }} />
                 </div>
 
                 {/* Visual Medallion */}
@@ -117,8 +115,6 @@ export default async function Image() {
                     top: 280,
                     width: 700,
                     height: 700,
-                    borderRadius: '50%',
-                    overflow: 'hidden',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -128,7 +124,7 @@ export default async function Image() {
                     <img src={medallionBase64} width={700} height={700} style={{ position: 'relative', width: 700, height: 700, objectFit: 'contain', padding: 30 }} />
                 </div>
 
-                {/* FRAME BARS */}
+                {/* FRAME BARS - Keeping Podcasts unique frame style (opacity 0.1 theme blocks) */}
                 <div style={{ position: 'absolute', left: 40, top: 40, width: 2320, height: 40, overflow: 'hidden', borderRadius: '24px 24px 0 0', display: 'flex', zIndex: '5', boxShadow: 'inset 0 0 10px rgba(255,255,255,0.2)' }}>
                     <div style={{ position: 'absolute', inset: 0, background: THEME, opacity: 0.1 }} />
                     <div style={{ position: 'absolute', inset: 0, border: '2px solid rgba(255,255,255,0.3)', borderBottom: 'none' }} />

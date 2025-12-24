@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# The Utility Company
 
-## Getting Started
+> **Welcome to the future of utility.**
+> A next-generation digital experience powered by modern web technologies.
 
-First, run the development server:
+![TUC Screenshot](https://theutilityco.com/opengraph-image.png)
+
+## Overview
+
+**The Utility Company (TUC)** homepage is a high-performance, visually immersive web application serving as the central hub for TUC's ecosystem. Built with **Next.js 16** and **React 19**, it features a sophisticated, dark-mode aesthetic, complex 3D-like animations, and a dynamic "Game of Life" background simulation that runs efficiently on the client side.
+
+This repository contains the source code for the frontend interface, showcasing modular architecture, modern CSS styling with Tailwind v4, and optimized asset delivery.
+
+## ✨ Key Features
+
+- **🌊 Dynamic Visuals**: A custom, performant implementation of **Conway's Game of Life** rendered on a canvas overlay (`WaveConwayBackground`), creating a living, breathing backdrop.
+- **🏗️ Architectural Pillars**: Interactive 3D component showcases representing the core pillars of the TUC ecosystem.
+- **⚡ High Performance**: Utilizing Next.js App Router, Server Components, and dynamic imports for optimal load times and SEO scores.
+- **🎨 Modern Design System**: Built with **Tailwind CSS v4**, featuring glassmorphism, fluid typography, and responsive layouts that adapt seamlessly from mobile to desktop.
+- **🧩 Modular Components**: Strictly typed TypeScript components for maintainability and scalability (Hero, About, Subsidiaries, Services, Partners).
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
+- **Library**: [React 19](https://react.dev/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Optimization**: `next/image`, `next/font`, `sharp`
+
+## 🚀 Getting Started
+
+Follow these instructions to get a local copy of the project up and running.
+
+### Prerequisites
+
+- Node.js 18.17 or later
+- npm or yarn
+
+### Installation
+
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/yourusername/tuc-homepage.git
+    cd tuc-homepage
+    ```
+
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
+
+3.  **Run the development server**
+    ```bash
+    npm run dev
+    ```
+
+4.  **Open your browser**
+    Navigate to [http://localhost:3000](http://localhost:3000) to view the application.
+
+## 📁 Project Structure
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+src/
+├── app/                # Next.js App Router pages and layouts
+│   ├── globals.css     # Global styles and Tailwind directives
+│   ├── layout.tsx      # Root layout definition
+│   └── page.tsx        # Main homepage composition
+├── components/         # Reusable UI components
+│   ├── Hero.tsx        # Top-fold hero section
+│   ├── Navbar.tsx      # Responsive navigation
+│   ├── WaveConwayBackground.tsx # Canvas-based background animation
+│   └── ...             # Feature sections (About, Pillars, etc.)
+└── lib/                # Utility functions and shared logic
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔒 Security
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This repository is scanned to ensure no sensitive credentials or private keys are exposed.
+- Environment variables are managed via `.env` files (excluded from git).
+- All API interactions are handled securely.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📄 License
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+© 2024 The Utility Company. All rights reserved.

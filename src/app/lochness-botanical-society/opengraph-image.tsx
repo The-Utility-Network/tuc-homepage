@@ -12,7 +12,7 @@ export default async function Image() {
     const bgData = readFileSync(join(process.cwd(), 'public', 'og-images', 'lochness_og.jpg'));
     const bgBase64 = `data:image/jpeg;base64,${bgData.toString('base64')}`;
 
-    const medallionData = readFileSync(join(process.cwd(), 'public', 'Medallions', 'TLN.png'));
+    const medallionData = readFileSync(join(process.cwd(), 'public', 'Medallions', 'TLN_opt.png'));
     const medallionBase64 = `data:image/png;base64,${medallionData.toString('base64')}`;
 
     return new ImageResponse(

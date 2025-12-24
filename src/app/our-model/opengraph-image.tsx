@@ -9,15 +9,12 @@ export const contentType = 'image/png';
 const THEME = '#10B981';
 
 export default async function Image() {
-    console.log('Generating Our Model OG Image...');
-    console.log('Reading background from:', join(process.cwd(), 'public', 'artifacts', 'creative_revolution_bg.png'));
-
     // Background Image - Creative Revolution Spectrum
     const bgData = readFileSync(join(process.cwd(), 'public', 'og-images', 'our_model_og.jpg'));
     const bgBase64 = `data:image/jpeg;base64,${bgData.toString('base64')}`;
 
     // Medallion
-    const medallionData = readFileSync(join(process.cwd(), 'public', 'Medallions', 'creative_revolution_medallion_opt.png'));
+    const medallionData = readFileSync(join(process.cwd(), 'public', 'Medallions', 'our_model_medallion_opt.png'));
     const medallionBase64 = `data:image/png;base64,${medallionData.toString('base64')}`;
 
     return new ImageResponse(

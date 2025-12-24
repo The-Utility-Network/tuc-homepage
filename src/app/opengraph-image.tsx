@@ -10,10 +10,11 @@ export default async function Image() {
     const primaryColor = '#F54029';
 
     // Background - Conway's Game of Life snapshot (optimized)
+    // Background - Conway's Game of Life snapshot (optimized)
     const bgData = readFileSync(join(process.cwd(), 'public', 'og-images', 'tuc_og.jpg'));
     const bgBase64 = `data:image/jpeg;base64,${bgData.toString('base64')}`;
 
-    const medallionData = readFileSync(join(process.cwd(), 'public', 'Medallions', 'TUC.png'));
+    const medallionData = readFileSync(join(process.cwd(), 'public', 'Medallions', 'TUC_opt.png'));
     const medallionBase64 = `data:image/png;base64,${medallionData.toString('base64')}`;
 
     return new ImageResponse(

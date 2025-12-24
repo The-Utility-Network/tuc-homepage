@@ -9,6 +9,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'engram1.blob.core.windows.net',
+        port: '',
+        pathname: '/tuc-homepage/**',
+      },
     ],
   },
 };

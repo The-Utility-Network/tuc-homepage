@@ -20,15 +20,14 @@ const externalLinks = [
 const socialLinks = [
     { label: 'Contact Us', href: '/contact' },
     { label: 'Blog', href: 'https://medium.com/@theutilityco' },
-    { label: 'Podcasts', href: 'https://youtu.be/R4RVVeGFy2U' },
-    { label: 'Discord', href: 'https://discord.gg/theutilitycompany' },
+    { label: 'Podcasts', href: '/podcasts' },
+    { label: 'Discord', href: 'https://discord.gg/scHwVByn9m' },
 ];
 
 const teamMembers = [
     'Milan Joshi - Founder',
     'Krishna Patel - Operations',
     'Kerul Patel - Developer',
-    'Manoj Mhapankar - Artist',
 ];
 
 export default function Footer() {

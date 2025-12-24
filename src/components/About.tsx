@@ -6,8 +6,8 @@ export default function About() {
         { name: 'Michael Milton', title: 'Chief Marketing Officer (Ledger1)', image: '/team/member3.png' },
         { name: 'Shahir Monjour', title: 'Senior VP, Engineering (Ledger1)', image: '/team/member4.png' },
         { name: 'John Garcia', title: 'Senior VP, AI Research (Ledger1)', image: '/team/member5.png' },
-        { name: 'Milan Joshi', title: 'Founder & CTO (Requiem Electric)', image: 'https://theutilitycompany.co/theme/default/assets/images/team/team-4.jpg' },
-        { name: 'Kerul Patel', title: 'CTO (TUC)', image: 'https://theutilitycompany.co/theme/default/assets/images/team/team-1.jpg' },
+        { name: 'Milan Joshi', title: 'Founder & CTO (Requiem Electric)', image: '/team/Milan.png' },
+        { name: 'Kerul Patel', title: 'CTO (TUC)', image: '/team/Kerul.png' },
     ];
 
     return (

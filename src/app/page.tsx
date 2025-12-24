@@ -12,6 +12,7 @@ import Services from '@/components/Services';
 import Osiris from '@/components/Osiris';
 import Partners from '@/components/Partners';
 import Philosophy from '@/components/Philosophy';
+import SeoLinks from '@/components/SeoLinks';
 import Footer from '@/components/Footer';
 
 // Dynamic import for client-only canvas component
@@ -41,6 +42,7 @@ export default function Home() {
         <Osiris />
         <Partners />
         <Philosophy />
+        <SeoLinks />
       </main>
 
       {/* Footer */}

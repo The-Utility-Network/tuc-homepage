@@ -13,8 +13,8 @@ export default async function Image() {
     console.log('Reading background from:', join(process.cwd(), 'public', 'artifacts', 'creative_revolution_bg.png'));
 
     // Background Image - Creative Revolution Spectrum
-    const bgData = readFileSync(join(process.cwd(), 'public', 'artifacts', 'creative_revolution_bg_opt.png'));
-    const bgBase64 = `data:image/png;base64,${bgData.toString('base64')}`;
+    const bgData = readFileSync(join(process.cwd(), 'public', 'og-images', 'our_model_og.jpg'));
+    const bgBase64 = `data:image/jpeg;base64,${bgData.toString('base64')}`;
 
     // Medallion
     const medallionData = readFileSync(join(process.cwd(), 'public', 'Medallions', 'creative_revolution_medallion_opt.png'));

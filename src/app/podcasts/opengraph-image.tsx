@@ -10,8 +10,8 @@ const THEME = '#F54029';
 
 export default async function Image() {
     // Background Image - The Refrain Clandestine BG
-    const bgData = readFileSync(join(process.cwd(), 'public', 'artifacts', 'the_refrain_bg_opt.png'));
-    const bgBase64 = `data:image/png;base64,${bgData.toString('base64')}`;
+    const bgData = readFileSync(join(process.cwd(), 'public', 'og-images', 'podcasts_og.jpg'));
+    const bgBase64 = `data:image/jpeg;base64,${bgData.toString('base64')}`;
 
     const medallionData = readFileSync(join(process.cwd(), 'public', 'Medallions', 'the_refrain_medallion_opt.png'));
     const medallionBase64 = `data:image/png;base64,${medallionData.toString('base64')}`;

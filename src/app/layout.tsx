@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   authors: [{ name: "The Utility Company" }],
   creator: "The Utility Company",
   publisher: "The Utility Company",
-  metadataBase: new URL("https://theutilitycompany.io"),
+  metadataBase: new URL('https://theutilitycompany.co'),
   openGraph: {
     title: "The Utility Company | Simple Choices. Complex Outcomes.",
     description: "Industrial Automation as a Service. We weave blockchain, sustainable agriculture, and creative innovation into a tapestry of human flourishing—transforming industries through decentralized automation.",

@@ -44,7 +44,7 @@ export default function LochNessPage() {
                 title="THE LOCH NESS BOTANICAL SOCIETY"
                 subtitle="The First NFT-Mediated Crypto Greenhouse"
                 color={THEME_COLOR}
-                medallion="/medallions/TLN.png"
+                medallion="https://engram1.blob.core.windows.net/tuc-homepage/Medallions/TLN.png"
             />
 
             <div className="relative z-10">

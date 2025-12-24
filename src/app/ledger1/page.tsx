@@ -41,7 +41,7 @@ export default function Ledger1Page() {
                 title="LEDGER1"
                 subtitle="Neuromimetic Business Architecture"
                 color={THEME_COLOR}
-                medallion="/medallions/Ledger1.png"
+                medallion="https://engram1.blob.core.windows.net/tuc-homepage/Medallions/Ledger1.png"
             />
 
             <div className="relative z-10">

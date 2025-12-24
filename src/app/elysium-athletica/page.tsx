@@ -42,7 +42,7 @@ export default function ElysiumAthleticaPage() {
                 title="ELYSIUM ATHLETICA"
                 subtitle="The Future of Sports Operations & AR Experiences"
                 color="#f54029"
-                medallion="/medallions/Elysium.png"
+                medallion="https://engram1.blob.core.windows.net/tuc-homepage/Medallions/Elysium.png"
             />
 
             <div className="relative z-10">

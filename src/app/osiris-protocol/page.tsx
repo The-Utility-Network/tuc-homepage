@@ -122,7 +122,7 @@ export default function OsirisProtocolPage() {
                 title="OSIRIS PROTOCOL"
                 subtitle="Unlock the Mysteries of Blockchain"
                 color={OSIRIS_PURPLE}
-                medallion="/medallions/OP.png"
+                medallion="https://engram1.blob.core.windows.net/tuc-homepage/Medallions/OP.png"
                 imagePosition="center"
             />
 
@@ -381,7 +381,7 @@ export default function OsirisProtocolPage() {
                                         <div className="absolute inset-0 w-64 h-64 rounded-full border animate-[spin_20s_linear_infinite]" style={{ borderColor: `${OSIRIS_PURPLE}30` }} />
                                         <div className="absolute inset-4 w-56 h-56 rounded-full border animate-[spin_15s_linear_infinite_reverse]" style={{ borderColor: `${OSIRIS_PURPLE}50` }} />
                                         <div className="w-64 h-64 flex items-center justify-center">
-                                            <img src="/medallions/OP.png" alt="Osiris Protocol" className="w-40 h-40 object-contain" />
+                                            <img src="https://engram1.blob.core.windows.net/tuc-homepage/Medallions/OP.png" alt="Osiris Protocol" className="w-40 h-40 object-contain" />
                                         </div>
                                     </div>
                                 </div>

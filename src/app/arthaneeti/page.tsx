@@ -42,7 +42,7 @@ export default function ArthaneetiPage() {
                 title="ARTHANEETI"
                 subtitle="Democratizing Political Participation through Blockchain"
                 color={THEME_COLOR}
-                medallion="/medallions/ar.png"
+                medallion="https://engram1.blob.core.windows.net/tuc-homepage/Medallions/ar.png"
             />
 
             <div className="relative z-10">

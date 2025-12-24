@@ -134,7 +134,7 @@ export default function VulcanForgePage() {
                 title="VULCAN FORGE"
                 subtitle="Tokenized 3D Printing Infrastructure"
                 color={VULCAN_ORANGE}
-                medallion="/medallions/VulcanForge2.png"
+                medallion="https://engram1.blob.core.windows.net/tuc-homepage/Medallions/VulcanForge2.png"
             />
 
             <div className="relative z-10">

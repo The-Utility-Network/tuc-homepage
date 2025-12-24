@@ -38,7 +38,7 @@ export default function CornucopiaRoboticsPage() {
                 title="CORNUCOPIA ROBOTICS"
                 subtitle="AUTOMATED PRECISION AGRICULTURE"
                 color="#EC4899"
-                medallion="/medallions/CornucopiaRobotics.png"
+                medallion="https://engram1.blob.core.windows.net/tuc-homepage/Medallions/CornucopiaRobotics.png"
             />
 
             <div className="relative z-10">

@@ -40,7 +40,7 @@ export default function Footer() {
                         <div className="flex items-center gap-3 mb-6">
                             <div className="w-12 h-12 relative">
                                 <Image
-                                    src="/Medallions/Symbol.png"
+                                    src="https://engram1.blob.core.windows.net/tuc-homepage/Medallions/Symbol.png"
                                     alt="The Utility Company Logo"
                                     fill
                                     className="object-contain"

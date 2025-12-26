@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { LOCATIONS, INDUSTRIES, COMPARISONS } from '@/data/seo';
+import { CODEX } from '@/data/codex';
 
 export default function SeoLinks() {
     return (
@@ -18,35 +19,34 @@ export default function SeoLinks() {
                     </p>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-8">
-                    {/* Locations Column */}
+                <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-8">
+                    {/* Codex Column */}
                     <div className="glass-panel p-8 rounded-2xl flex flex-col h-full group hover:bg-white/5 transition-colors duration-500">
                         <h3 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                            <span className="text-utility-red">Locations</span>
+                            <span className="text-utility-red">The Codex</span>
                             <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                             </svg>
                         </h3>
                         <div className="flex-grow space-y-4 mb-8">
-                            <p className="text-gray-400 text-sm">Targeting global financial hubs and innovation centers.</p>
+                            <p className="text-gray-400 text-sm">Decoding the language of the machine economy.</p>
                             <div className="flex flex-wrap gap-2">
-                                {LOCATIONS.slice(0, 6).map((loc) => (
+                                {CODEX.slice(0, 6).map((term) => (
                                     <Link
-                                        key={loc.slug}
-                                        href={`/locations/${loc.slug}`}
+                                        key={term.slug}
+                                        href={`/codex/${term.slug}`}
                                         className="px-3 py-1 rounded-full bg-white/5 hover:bg-utility-red/20 hover:text-utility-red text-xs transition-colors border border-white/5 hover:border-utility-red/30"
                                     >
-                                        {loc.city}
+                                        {term.term}
                                     </Link>
                                 ))}
                             </div>
                         </div>
                         <Link
-                            href="/locations"
+                            href="/codex"
                             className="inline-flex items-center text-sm font-mono text-utility-red hover:tracking-wide transition-all"
                         >
-                            VIEW WORLD MAP <span className="ml-2">→</span>
+                            BROWSE LEXICON <span className="ml-2">→</span>
                         </Link>
                     </div>
 
@@ -77,6 +77,37 @@ export default function SeoLinks() {
                             className="inline-flex items-center text-sm font-mono text-utility-red hover:tracking-wide transition-all"
                         >
                             EXPLORE SECTORS <span className="ml-2">→</span>
+                        </Link>
+                    </div>
+
+                    {/* Locations Column */}
+                    <div className="glass-panel p-8 rounded-2xl flex flex-col h-full group hover:bg-white/5 transition-colors duration-500">
+                        <h3 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                            <span className="text-utility-red">Locations</span>
+                            <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </h3>
+                        <div className="flex-grow space-y-4 mb-8">
+                            <p className="text-gray-400 text-sm">Targeting global financial hubs and innovation centers.</p>
+                            <div className="flex flex-wrap gap-2">
+                                {LOCATIONS.slice(0, 6).map((loc) => (
+                                    <Link
+                                        key={loc.slug}
+                                        href={`/locations/${loc.slug}`}
+                                        className="px-3 py-1 rounded-full bg-white/5 hover:bg-utility-red/20 hover:text-utility-red text-xs transition-colors border border-white/5 hover:border-utility-red/30"
+                                    >
+                                        {loc.city}
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                        <Link
+                            href="/locations"
+                            className="inline-flex items-center text-sm font-mono text-utility-red hover:tracking-wide transition-all"
+                        >
+                            VIEW WORLD MAP <span className="ml-2">→</span>
                         </Link>
                     </div>
 

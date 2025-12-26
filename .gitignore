@@ -23,6 +23,7 @@
 # misc
 .DS_Store
 *.pem
+/tuc-template
 
 # debug
 npm-debug.log*

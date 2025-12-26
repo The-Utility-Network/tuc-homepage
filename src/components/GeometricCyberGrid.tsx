@@ -6,7 +6,7 @@ export default function GeometricCyberGrid({
     title,
     subtitle,
 }: {
-    title: string;
+    title?: string;
     subtitle?: string;
 }) {
     return (
@@ -39,27 +39,29 @@ export default function GeometricCyberGrid({
             />
 
             {/* Central Content */}
-            <div className="relative z-10 text-center backdrop-blur-sm bg-black/40 p-8 rounded-full border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.8)]">
-                <motion.div
-                    initial={{ scale: 0.9, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                >
-                    <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter">
-                        {title.toUpperCase()}
-                    </h2>
-                </motion.div>
-                {subtitle && (
+            {title && (
+                <div className="relative z-10 text-center backdrop-blur-sm bg-black/40 p-8 rounded-full border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.8)]">
                     <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                        className="mt-2 text-xs font-mono text-utility-red tracking-widest uppercase"
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.5 }}
                     >
-                        {subtitle}
+                        <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter">
+                            {title.toUpperCase()}
+                        </h2>
                     </motion.div>
-                )}
-            </div>
+                    {subtitle && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.2 }}
+                            className="mt-2 text-xs font-mono text-utility-red tracking-widest uppercase"
+                        >
+                            {subtitle}
+                        </motion.div>
+                    )}
+                </div>
+            )}
 
             {/* Scanning Line Effect */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-utility-red/10 to-transparent h-[20%] w-full animate-scan pointer-events-none" />

@@ -5,7 +5,7 @@ export function getMedallionUrl(subsidiaryName: string): string {
     const name = subsidiaryName.toLowerCase().trim();
 
     const mapping: Record<string, string> = {
-        'ledger1': 'Ledger1.png',
+        'basalthq': 'BasaltM.png',
         'the graine ledger': 'TGL.png',
         'arthaneeti': 'AR.png',
         'requiem electric': 'RE.png',

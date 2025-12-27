@@ -49,7 +49,7 @@ export const CODEX: CodexTerm[] = [
         term: 'Zero-Knowledge Proof',
         slug: 'zero-knowledge-proof',
         definition: 'A cryptographic method by which one party can prove to another that a statement is true without revealing any information apart from the fact that the statement is true.',
-        longDescription: 'In the TUC ecosystem, privacy is paramount, especially for enterprise partners. Zero-Knowledge Proofs (ZKPs) allow us to verify compliance without exposing trade secrets. For instance, a bank running on Ledger1 can prove to regulators that it has sufficient reserves (Solvency) without revealing the balances of its individual clients. Elysium Athletica users can prove they completed a workout to earn insurance discounts without uploading their GPS location history. ZKPs turn "Don\'t get breached" into "Have nothing to breach."',
+        longDescription: 'In the TUC ecosystem, privacy is paramount, especially for enterprise partners. Zero-Knowledge Proofs (ZKPs) allow us to verify compliance without exposing trade secrets. For instance, a bank running on BasaltHQ can prove to regulators that it has sufficient reserves (Solvency) without revealing the balances of its individual clients. Elysium Athletica users can prove they completed a workout to earn insurance discounts without uploading their GPS location history. ZKPs turn "Don\'t get breached" into "Have nothing to breach."',
         category: 'Technology',
         relatedIndustries: ['finance', 'sports', 'healthcare'],
         relatedLocations: ['zurich', 'london']

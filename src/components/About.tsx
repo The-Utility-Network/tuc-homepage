@@ -1,11 +1,11 @@
 export default function About() {
-    // TUC + Ledger1 Combined Team
+    // TUC + BasaltHQ Combined Team
     const leadership = [
         { name: 'Krishna Patel', title: 'Founder & CEO (TUC)', image: '/team/member1.png' },
-        { name: 'Eric Turner', title: 'Chief Executive Officer (Ledger1)', image: '/team/member6.png' },
-        { name: 'Michael Milton', title: 'Chief Marketing Officer (Ledger1)', image: '/team/member3.png' },
-        { name: 'Shahir Monjour', title: 'Senior VP, Engineering (Ledger1)', image: '/team/member4.png' },
-        { name: 'John Garcia', title: 'Senior VP, AI Research (Ledger1)', image: '/team/member5.png' },
+        { name: 'Eric Turner', title: 'Chief Executive Officer (BasaltHQ)', image: '/team/member6.png' },
+        { name: 'Michael Milton', title: 'Chief Marketing Officer (BasaltHQ)', image: '/team/member3.png' },
+        { name: 'Shahir Monjour', title: 'Senior VP, Engineering (BasaltHQ)', image: '/team/member4.png' },
+        { name: 'John Garcia', title: 'Senior VP, AI Research (BasaltHQ)', image: '/team/member5.png' },
         { name: 'Milan Joshi', title: 'Founder & CTO (Requiem Electric)', image: '/team/Milan.png' },
         { name: 'Kerul Patel', title: 'CTO (TUC)', image: '/team/Kerul.png' },
     ];
@@ -113,7 +113,7 @@ export default function About() {
                         <span className="section-heading">OUR PEOPLE</span>
                         <h2 className="section-title mt-4">Leadership Team</h2>
                         <p className="text-gray-400 mt-4 max-w-2xl mx-auto">
-                            A diverse team of innovators, engineers, and visionaries driving The Utility Company and Ledger1 forward.
+                            A diverse team of innovators, engineers, and visionaries driving The Utility Company and BasaltHQ forward.
                         </p>
                     </div>
 

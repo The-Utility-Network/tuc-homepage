@@ -1,12 +1,14 @@
 import Link from 'next/link';
 
+const THEME_COLOR_BASALT = '#ff6504'; // Basalt Orange
+
 const subsidiaries = [
   {
-    name: 'Ledger1',
+    name: 'BasaltHQ',
     description: 'Neuromimetic Business Architecture defining the future of AI-driven enterprise operations.',
-    image: 'https://engram1.blob.core.windows.net/tuc-homepage/Medallions/Ledger1.png',
-    url: '/ledger1',
-    color: '#DC2626',
+    image: '/Medallions/BasaltM.png',
+    url: '/basalthq',
+    color: THEME_COLOR_BASALT,
   },
   {
     name: 'The Graine Ledger',

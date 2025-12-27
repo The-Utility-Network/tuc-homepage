@@ -185,11 +185,11 @@ export default function Partners() {
                 {/* Partner CTA */}
                 <div className="glass-panel rounded-2xl p-8 md:p-12 text-center">
                     <h3 className="text-2xl font-bold text-white mb-4">
-                        The Graine Ledger Partner Program
+                        The Utility Foundation Partner Program
                     </h3>
                     <p className="text-gray-400 max-w-2xl mx-auto mb-8">
-                        NFT creators and projects have a unique opportunity to integrate with our
-                        automated distillery. Join our ecosystem and showcase your commitment to
+                        NFT creators, conservation organizations, and impact-driven projects have a unique opportunity to integrate with our
+                        Network State ecosystem. Join the Foundation and showcase your commitment to
                         making a real impact.
                     </p>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -200,6 +200,14 @@ export default function Partners() {
                             className="btn-primary"
                         >
                             APPLY TODAY
+                        </a>
+                        <a
+                            href="https://theutilityfoundation.org"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn-secondary"
+                        >
+                            THE UTILITY FOUNDATION
                         </a>
                         <a
                             href="https://theutilitycompany.co/partner-program/"

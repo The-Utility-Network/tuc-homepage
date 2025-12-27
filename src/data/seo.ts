@@ -46,24 +46,24 @@ export const LOCATIONS: SEOLocation[] = [
         coordinates: { x: -74.006, y: 40.7128 },
         keyFocus: 'RWA Tokenization',
         code: 'NYC',
-        regulatoryContext: 'Strict SEC oversight requires Regulation D/S compliant issuances. TUC operates here solely through accredited investor channels for Ledger1 and Osiris Protocol, ensuring full KYC/AML adherence while navigating the complex "BitLicense" framework.',
+        regulatoryContext: 'Strict SEC oversight requires Regulation D/S compliant issuances. TUC operates here solely through accredited investor channels for BasaltHQ and Osiris Protocol, ensuring full KYC/AML adherence while navigating the complex "BitLicense" framework.',
         complianceNarrative: 'Our Smart Legal Contracts automatically enforce Rule 506(c) accreditation checks before any trade settles. This is not "post-trade compliance"; it is "pre-trade permissioning," ensuring that no ineligible wallet can ever hold a restricted asset.',
         localTokenizationEconomy: 'High-value real estate tranches, private credit funds, and institutional treasury bills. The NYC hub focuses on high-ticket, low-velocity assets that demand absolute legal certainty.',
-        activeSubsidiaries: ['Ledger1', 'Osiris Protocol', 'Cornucopia Robotics'],
+        activeSubsidiaries: ['BasaltHQ', 'Osiris Protocol', 'Cornucopia Robotics'],
     },
     {
         city: 'London',
         slug: 'london',
         country: 'UK',
         region: 'Europe',
-        description: 'London is leading the charge in fintech innovation. TUC\'s presence here focuses on modernizing insurance and banking infrastructure through the Ledger1 ecosystem.',
+        description: 'London is leading the charge in fintech innovation. TUC\'s presence here focuses on modernizing insurance and banking infrastructure through the BasaltHQ ecosystem.',
         coordinates: { x: -0.1276, y: 51.5074 },
         keyFocus: 'Fintech & Insurance',
         code: 'LON',
-        regulatoryContext: 'The UK\'s FCA offers a progressive sandbox for fintech. Ledger1 leverages this to pilot automated insurance underwriting. We are fully compliant with the new UK crypto asset promotion rules.',
-        complianceNarrative: 'Utilizing the FCA Innovation Sandbox, Ledger1 runs parallel reporting nodes. Every insurance policy underwritten is simultaneously hashed to a private ledger, providing regulators with a real-time "View Mode" that replaces quarterly audits.',
+        regulatoryContext: 'The UK\'s FCA offers a progressive sandbox for fintech. BasaltHQ leverages this to pilot automated insurance underwriting. We are fully compliant with the new UK crypto asset promotion rules.',
+        complianceNarrative: 'Utilizing the FCA Innovation Sandbox, BasaltHQ runs parallel reporting nodes. Every insurance policy underwritten is simultaneously hashed to a private ledger, providing regulators with a real-time "View Mode" that replaces quarterly audits.',
         localTokenizationEconomy: 'Parametric insurance policies, reusable KYC credentials, and Lloyd\'s syndication risks. The London node optimizes for high-frequency risk transfer and automated claim settlement.',
-        activeSubsidiaries: ['Ledger1', 'The Graine Ledger', 'Requiem Electric'],
+        activeSubsidiaries: ['BasaltHQ', 'The Graine Ledger', 'Requiem Electric'],
     },
     {
         city: 'Singapore',
@@ -119,7 +119,7 @@ export const LOCATIONS: SEOLocation[] = [
         regulatoryContext: 'With new SFC licensing for retail crypto trading, Hong Kong is reclaiming its crypto hub status. Osiris Protocol provides the institutional-grade data pipes compliant with these new rigorous exchange standards.',
         complianceNarrative: 'Osiris Protocol implements "Travel Rule" compliance at the protocol level. All cross-exchange transfers automatically embed encrypted originator/beneficiary data, satisfying SFC requirements without exposing sensitive data to the public chain.',
         localTokenizationEconomy: 'Security tokens (STOs), stablecoins, and inter-bank settlements. Hong Kong is the high-velocity trading engine of the network.',
-        activeSubsidiaries: ['Osiris Protocol', 'Ledger1', 'DigiBazaar'],
+        activeSubsidiaries: ['Osiris Protocol', 'BasaltHQ', 'DigiBazaar'],
     },
     {
         city: 'San Francisco',
@@ -217,7 +217,7 @@ export const LOCATIONS: SEOLocation[] = [
         regulatoryContext: 'Miami\'s pro-crypto stance invites innovation in asset tokenization. We use this friendly climate to pilot novel "fractional ownership" models for luxury real estate.',
         complianceNarrative: 'We integrate with local title companies to ensure that on-chain token transfers legally constitute a transfer of beneficial interest in the underlying property LLC.',
         localTokenizationEconomy: 'Luxury condos, hospitality revenue shares, and yacht charter yields.',
-        activeSubsidiaries: ['Ledger1', 'DigiBazaar'],
+        activeSubsidiaries: ['BasaltHQ', 'DigiBazaar'],
     },
     {
         city: 'Tel Aviv',
@@ -273,7 +273,7 @@ export const LOCATIONS: SEOLocation[] = [
         regulatoryContext: 'Estonia\'s e-Residency program allows global citizens to run EU-compliant businesses online. We use this to incorporate individual node operators as micro-enterprises.',
         complianceNarrative: 'Our API connects directly to the Estonian Tax and Customs Board (EMTA), automating VAT reporting for all digital services sold within the EU.',
         localTokenizationEconomy: 'DAO equity, digital service contracts, and e-Residency utility tokens.',
-        activeSubsidiaries: ['Arthaneeti', 'Ledger1'],
+        activeSubsidiaries: ['Arthaneeti', 'BasaltHQ'],
     },
     {
         city: 'Chicago',
@@ -287,7 +287,7 @@ export const LOCATIONS: SEOLocation[] = [
         regulatoryContext: 'CFTC regulation is key here. We enable compliant trading of commodity derivatives by ensuring all participants are eligible contract participants (ECPs).',
         complianceNarrative: 'Our matching engine enforces position limits and margin requirements on-chain, preventing the kinds of leverage blowups seen in traditional markets.',
         localTokenizationEconomy: 'Wheat futures, pork belly tokens, and weather derivatives.',
-        activeSubsidiaries: ['The Loch Ness Botanical Society', 'Ledger1'],
+        activeSubsidiaries: ['The Loch Ness Botanical Society', 'BasaltHQ'],
     },
     {
         city: 'Paris',
@@ -380,7 +380,7 @@ export const INDUSTRIES: SEOIndustry[] = [
         title: 'Finance & Banking',
         slug: 'finance',
         description: 'Revolutionizing traditional banking with immutable ledgers, instant settlements, and tokenized real-time assets.',
-        automationNarrative: 'Ledger1 acts as a "Shadow Central Bank" for our partners. It automates key banking functions—account reconciliation, interest payouts, and risk assessment—executing them not continuously, but *instantly* with every block confirmation.',
+        automationNarrative: 'BasaltHQ acts as a "Shadow Central Bank" for our partners. It automates key banking functions—account reconciliation, interest payouts, and risk assessment—executing them not continuously, but *instantly* with every block confirmation.',
         tokenizationNarrative: 'We do not just tokenize cash; we tokenize *debt*. By converting active loan portfolios into tradeable ERC-20 tokens, we unlock liquidity for regional banks, allowing them to sell fractionalized loan ownership to a global liquidity pool.',
         complianceNarrative: 'KYC is baked into the token standard itself (ERC-3643). A token cannot physically move to a wallet that hasn\'t passed a valid identity attestation, making money laundering technically impossible rather than just legally illegal.',
         reportingNarrative: 'Auditors no longer need to request files. They are given a "View-Only" key to the private ledger, allowing them to watch the bank\'s solvency ratios update in real-time, second by second.',
@@ -390,7 +390,7 @@ export const INDUSTRIES: SEOIndustry[] = [
             { icon: '🪙', title: 'Minting', desc: 'Loans become Tokens' },
             { icon: '📈', title: 'Liquidity', desc: 'sold on DigiBazaar' }
         ],
-        subsidiaries: ['Ledger1', 'Osiris Protocol'],
+        subsidiaries: ['BasaltHQ', 'Osiris Protocol'],
     },
     {
         title: 'Agriculture',
@@ -534,7 +534,7 @@ export const INDUSTRIES: SEOIndustry[] = [
             { icon: '💰', title: 'Rent', desc: 'Daily Payout' },
             { icon: '🔄', title: 'Trade', desc: 'Liquid Market' }
         ],
-        subsidiaries: ['Ledger1', 'DigiBazaar'],
+        subsidiaries: ['BasaltHQ', 'DigiBazaar'],
     },
     {
         title: 'Logistics & Shipping',
@@ -646,7 +646,7 @@ export const INDUSTRIES: SEOIndustry[] = [
             { icon: '⚠️', title: 'Trigger', desc: 'Event Verify' },
             { icon: '💸', title: 'Payout', desc: 'Auto-Transfer' }
         ],
-        subsidiaries: ['Ledger1'],
+        subsidiaries: ['BasaltHQ'],
     },
     {
         title: 'Gaming & Metaverse',
@@ -672,7 +672,7 @@ export const COMPARISONS: SEOComparison[] = [
         slug: 'helium',
         category: 'DePIN',
         description: 'Helium built a decentralized wireless network incentivized by tokens.',
-        tucAdvantage: 'While Helium focuses on wireless connectivity, TUC builds a holistic industrial automation layer. We don\'t just connect devices; we automate the entire economic logic between them using Ledger1 and Osiris Protocol.',
+        tucAdvantage: 'While Helium focuses on wireless connectivity, TUC builds a holistic industrial automation layer. We don\'t just connect devices; we automate the entire economic logic between them using BasaltHQ and Osiris Protocol.',
     },
     {
         competitor: 'IoTeX',
@@ -742,7 +742,7 @@ export const COMPARISONS: SEOComparison[] = [
         slug: 'blackrock-aladdin',
         category: 'RWA',
         description: 'The world\'s most powerful investment management technology.',
-        tucAdvantage: 'Aladdin is a walled garden for the elite. TUC democratizes this power. Through Ledger1, a small credit union or even a DAO can access the same level of risk analytics and asset management tooling as the world\'s largest asset manager.',
+        tucAdvantage: 'Aladdin is a walled garden for the elite. TUC democratizes this power. Through BasaltHQ, a small credit union or even a DAO can access the same level of risk analytics and asset management tooling as the world\'s largest asset manager.',
     },
     {
         competitor: 'Snowflake',

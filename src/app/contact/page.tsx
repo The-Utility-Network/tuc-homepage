@@ -24,7 +24,7 @@ export default function ContactPage() {
                                 <span className="text-gray-500">The Future.</span>
                             </h1>
                             <p className="text-xl text-gray-400 leading-relaxed max-w-lg">
-                                Whether you're interested in integrating Ledger1, exploring investment opportunities,
+                                Whether you're interested in integrating BasaltHQ, exploring investment opportunities,
                                 or simply want to learn more about our neuromimetic architecture, we're here to listen.
                             </p>
                         </div>

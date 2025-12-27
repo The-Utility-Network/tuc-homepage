@@ -22,7 +22,7 @@ const JOBS = [
   { src: 'requiem_bg.png', dest: 'requiem_og.jpg' },
   { src: 'vulcanbg.png', dest: 'vulcan_og.jpg' },
   { src: 'dbbg.png', dest: 'digibazaar_og.jpg' },
-  { src: 'ledgerbg.png', dest: 'ledger1_og.jpg' },
+  { src: 'ledgerbg.png', dest: 'basalthq_og.jpg' },
   { src: 'tlnbg.png', dest: 'lochness_og.jpg' },
   { src: 'osiris_og.jpg', dest: 'osiris_og.jpg', isOgSource: true }, // Already in OG dir but ensure optimized? No, source is likely artifacts/something or just verify existence.
   // Actually osiris_og.jpg exists in og-images. Let's assume the ones in og-images are good IF they are small.
@@ -78,7 +78,7 @@ async function processImages() {
     { src: 'Elysium.png', dest: 'Elysium_opt.png' },
     { src: 'GlobalStorage.png', dest: 'GlobalStorage_opt.png' },
     { src: 'IE.png', dest: 'IE_opt.png' },
-    { src: 'Ledger1.png', dest: 'Ledger1_opt.png' },
+    { src: 'BasaltM.png', dest: 'BasaltM_opt.png' },
     { src: 'MKVLI.png', dest: 'MKVLI_opt.png' },
     { src: 'OP.png', dest: 'OP_opt.png' },
     { src: 'RE.png', dest: 'RE_opt.png' },

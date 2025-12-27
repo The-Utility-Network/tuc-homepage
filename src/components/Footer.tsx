@@ -131,8 +131,8 @@ export default function Footer() {
                         <div className="space-y-4">
                             {[
                                 { name: 'Krishna Patel', title: 'Founder & CEO' },
-                                { name: 'Eric Turner', title: 'CEO (Ledger1)' },
-                                { name: 'Michael Milton', title: 'CMO (Ledger1)' }
+                                { name: 'Eric Turner', title: 'CEO (BasaltHQ)' },
+                                { name: 'Michael Milton', title: 'CMO (BasaltHQ)' }
                             ].map((member) => (
                                 <div key={member.name} className="flex flex-col">
                                     <span className="text-white text-sm font-semibold">{member.name}</span>
@@ -157,12 +157,12 @@ export default function Footer() {
                         © {new Date().getFullYear()} The Utility Company LLC. All rights reserved.
                     </p>
                     <div className="flex items-center gap-6">
-                        <a href="#" className="text-gray-500 text-xs hover:text-white transition-colors">
-                            Privacy Policy
-                        </a>
-                        <a href="#" className="text-gray-500 text-xs hover:text-white transition-colors">
+                        <Link href="/privacy" className="text-gray-500 text-xs hover:text-white transition-colors">
+                            Privacy Protocols
+                        </Link>
+                        <Link href="/terms" className="text-gray-500 text-xs hover:text-white transition-colors">
                             Terms of Service
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

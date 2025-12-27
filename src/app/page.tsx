@@ -6,12 +6,13 @@ import Hero from '@/components/Hero';
 import Pillars from '@/components/Pillars';
 import About from '@/components/About';
 import Features from '@/components/Features';
-import Ledger1 from '@/components/Ledger1';
+import BasaltHQ from '@/components/BasaltHQ';
 import Subsidiaries from '@/components/Subsidiaries';
 import Services from '@/components/Services';
 import Osiris from '@/components/Osiris';
 import Partners from '@/components/Partners';
 import Philosophy from '@/components/Philosophy';
+import NetworkStateSection from '@/components/NetworkStateSection';
 import SeoLinks from '@/components/SeoLinks';
 import Footer from '@/components/Footer';
 
@@ -38,10 +39,11 @@ export default function Home() {
         <Subsidiaries />
         <Services />
         <Features />
-        <Ledger1 />
+        <BasaltHQ />
         <Osiris />
         <Partners />
         <Philosophy />
+        <NetworkStateSection />
         <SeoLinks />
       </main>
 

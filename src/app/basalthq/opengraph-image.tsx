@@ -9,7 +9,7 @@ export const contentType = 'image/png';
 const THEME = '#119dff'; // Basalt Blue
 
 export default async function Image() {
-    const bgData = readFileSync(join(process.cwd(), 'public', 'og-images', 'basalthq_og.jpg'));
+    const bgData = readFileSync(join(process.cwd(), 'public', 'og-images', 'ledger1_og.jpg'));
     const bgBase64 = `data:image/jpeg;base64,${bgData.toString('base64')}`;
 
     const medallionData = readFileSync(join(process.cwd(), 'public', 'Medallions', 'BasaltM.png'));

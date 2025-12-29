@@ -15,6 +15,7 @@ import Philosophy from '@/components/Philosophy';
 import NetworkStateSection from '@/components/NetworkStateSection';
 import SeoLinks from '@/components/SeoLinks';
 import Footer from '@/components/Footer';
+import NexusPreview from '@/components/NexusPreview';
 
 // Dynamic import for client-only canvas component
 const WaveConwayBackground = dynamic(
@@ -43,6 +44,7 @@ export default function Home() {
         <Osiris />
         <Partners />
         <Philosophy />
+        <NexusPreview />
         <NetworkStateSection />
         <SeoLinks />
       </main>

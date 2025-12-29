@@ -1,0 +1,52 @@
+<!-- 
+    TUC BRANDED EMAIL TEMPLATE
+    Copy this HTML into your Supabase Dashboard > Authentication > Email Templates
+    Theme: Utility Red (#F54029), Dark Mode
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Utility Company</title>
+    <style>
+        body { font-family: 'Courier New', Courier, monospace; background-color: #000000; color: #ffffff; padding: 20px; margin: 0; }
+        .container { max-width: 600px; margin: 0 auto; background-color: #0a0a0a; border: 1px solid #333; border-radius: 8px; overflow: hidden; }
+        .header { background-color: #000000; padding: 20px; border-bottom: 1px solid #F54029; text-align: center; }
+        .logo { font-size: 24px; font-weight: bold; letter-spacing: 2px; color: #ffffff; text-decoration: none; }
+        .logo span { color: #F54029; }
+        .content { padding: 40px 30px; text-align: left; }
+        .heading { font-size: 18px; margin-bottom: 20px; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; }
+        .text { font-size: 14px; line-height: 1.6; color: #a0a0a0; margin-bottom: 30px; }
+        .button { display: inline-block; padding: 12px 24px; background-color: #F54029; color: #ffffff; text-decoration: none; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; }
+        .footer { padding: 20px; background-color: #050505; border-top: 1px solid #1a1a1a; text-align: center; font-size: 10px; color: #666; }
+        .link { color: #F54029; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">TUC<span>NEXUS</span></div>
+        </div>
+        <div class="content">
+            <div class="heading">Confirm Your Access</div>
+            <div class="text">
+                You have requested secure access to The Utility Network. To proceed with your investor verification, please confirm your identity.
+            </div>
+            <!-- Supabase Helper: {{ .ConfirmationURL }} -->
+            <center>
+                <a href="{{ .ConfirmationURL }}" class="button">Confirm Secure Access</a>
+            </center>
+            <div class="text" style="margin-top: 30px; font-size: 12px;">
+                Or copy this link: <br>
+                <a href="{{ .ConfirmationURL }}" class="link">{{ .ConfirmationURL }}</a>
+            </div>
+        </div>
+        <div class="footer">
+            SECURE TRANSMISSION // THE UTILITY COMPANY LLC<br>
+            AUSTIN, TEXAS
+        </div>
+    </div>
+</body>
+</html>

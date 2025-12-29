@@ -168,7 +168,7 @@ export default function ProfilePage() {
                                             // Handle login/signing if needed
                                         },
                                         getLoginPayload: async (params) => {
-                                            return {};
+                                            return {} as any;
                                         },
                                         doLogout: async () => {
                                             // Handle logout

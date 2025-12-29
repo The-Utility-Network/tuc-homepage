@@ -157,8 +157,8 @@ export default function ProfilePage() {
                                 <ConnectButton
                                     client={client}
                                     theme={"dark"}
-                                    btnTitle={"Connect Wallet"}
-                                    modalTitle={"Link Wallet"}
+                                    connectButton={{ label: "Connect Wallet" }}
+                                    connectModal={{ title: "Link Wallet" }}
                                     auth={{
                                         isLoggedIn: async (address) => {
                                             // Optional: Verification logic
@@ -182,7 +182,7 @@ export default function ProfilePage() {
                                                 .update({ wallet_address: address })
                                                 .eq('id', profile.id);
                                             setMessage('Wallet linked successfully.');
-                                            setProfile(prev => ({ ...prev, wallet_address: address }));
+                                            setProfile((prev: any) => ({ ...prev, wallet_address: address }));
                                         }
                                     }}
                                 />

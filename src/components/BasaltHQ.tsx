@@ -22,7 +22,7 @@ const products = [
         )
     },
     {
-        name: 'Voice Hub',
+        name: 'BasaltEcho',
         desc: 'Enterprise Voice AI Platform',
         detail: 'Custom voice agents for meetings, streams, and customer interaction.',
         icon: (
@@ -32,7 +32,7 @@ const products = [
         )
     },
     {
-        name: 'PortalPay',
+        name: 'BasaltSurge',
         desc: 'Web3-Native Commerce',
         detail: 'Crypto payments with instant settlement across 90+ chains.',
         icon: (

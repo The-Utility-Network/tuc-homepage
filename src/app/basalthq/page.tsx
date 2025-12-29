@@ -95,12 +95,12 @@ export default function BasaltHQPage() {
                                 icon: '🧠'
                             },
                             {
-                                title: 'PortalPay',
+                                title: 'BasaltSurge',
                                 desc: 'Web3-native commerce engine supporting 90+ chains and 6,500+ tokens. Frictionless global payments.',
                                 icon: '💳'
                             },
                             {
-                                title: 'VoiceHub',
+                                title: 'BasaltEcho',
                                 desc: 'Enterprise voice AI that handles customer intelligence, autonomous sales, and support at scale.',
                                 icon: '🎙️'
                             }

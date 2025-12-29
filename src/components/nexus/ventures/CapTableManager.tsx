@@ -101,7 +101,7 @@ export default function CapTableManager({ subsidiaryId, authorizedShares = 10000
         }
 
         const { error } = await supabase.from('transactions').insert({
-            campaign_id: genesis.id,
+            campaign_id: genesis?.id,
             amount: 0, // Grant, usually $0 cost basis for founders or par value
             status: 'completed',
             type: 'initial_grant',
@@ -176,7 +176,7 @@ export default function CapTableManager({ subsidiaryId, authorizedShares = 10000
                             <Tooltip
                                 contentStyle={{ backgroundColor: '#000', border: '1px solid #333' }}
                                 itemStyle={{ color: '#fff' }}
-                                formatter={(val: number) => new Intl.NumberFormat('en-US').format(val) + ' Shares'}
+                                formatter={(val: any) => new Intl.NumberFormat('en-US').format(val) + ' Shares'}
                             />
                             <Legend verticalAlign="bottom" height={36} />
                         </RechartsPie>

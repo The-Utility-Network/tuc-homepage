@@ -34,7 +34,7 @@ export default async function NexusLayout({
                 role={role}
                 name={name}
                 company={company}
-                userEmail={user.email}
+                userEmail={user.email || ''}
             >
                 {children}
             </NexusShell>

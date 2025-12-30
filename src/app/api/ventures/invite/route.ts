@@ -1,16 +1,16 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@/lib/supabase-server'
+import { createClient as createAdminClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
 // Need SERVICE_ROLE key to invite users
-const supabaseAdmin = createClient(
+const supabaseAdmin = createAdminClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
 export async function POST(request: Request) {
-    const supabase = createRouteHandlerClient({ cookies })
+    const supabase = await createClient()
     const { data: { session } } = await supabase.auth.getSession()
 
     if (!session) {

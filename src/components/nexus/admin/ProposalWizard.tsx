@@ -106,7 +106,11 @@ export default function ProposalWizard({ subsidiaryId }: Props) {
 
     function updateInvestor(index: number, field: 'name' | 'amount', value: any) {
         const updated = [...newInvestors]
-        updated[index][field] = value
+        if (field === 'name') {
+            updated[index].name = value as string
+        } else if (field === 'amount') {
+            updated[index].amount = value as number
+        }
         setNewInvestors(updated)
     }
 
@@ -204,8 +208,8 @@ export default function ProposalWizard({ subsidiaryId }: Props) {
                                         key={type}
                                         onClick={() => setProposalType(type)}
                                         className={`p-4 rounded-lg border-2 transition-all ${proposalType === type
-                                                ? 'bg-[#F54029]/20 border-[#F54029]'
-                                                : 'bg-white/5 border-white/10 hover:border-white/30'
+                                            ? 'bg-[#F54029]/20 border-[#F54029]'
+                                            : 'bg-white/5 border-white/10 hover:border-white/30'
                                             }`}
                                     >
                                         <p className="text-white font-medium capitalize">{type.replace('_', ' ')}</p>
@@ -355,9 +359,9 @@ export default function ProposalWizard({ subsidiaryId }: Props) {
                                                 <h3 className="text-white font-bold">{stakeholder.name}</h3>
                                                 {severity && (
                                                     <span className={`inline-block px-3 py-1 rounded text-xs font-medium mt-2 ${severity.color === 'green' ? 'bg-green-500/20 text-green-400' :
-                                                            severity.color === 'yellow' ? 'bg-yellow-500/20 text-yellow-400' :
-                                                                severity.color === 'orange' ? 'bg-orange-500/20 text-orange-400' :
-                                                                    'bg-red-500/20 text-red-400'
+                                                        severity.color === 'yellow' ? 'bg-yellow-500/20 text-yellow-400' :
+                                                            severity.color === 'orange' ? 'bg-orange-500/20 text-orange-400' :
+                                                                'bg-red-500/20 text-red-400'
                                                         }`}>
                                                         {severity.description}
                                                     </span>
@@ -377,9 +381,9 @@ export default function ProposalWizard({ subsidiaryId }: Props) {
                                             <div>
                                                 <p className="text-white/60 text-xs uppercase mb-1">Dilution</p>
                                                 <p className={`text-xl font-bold ${(stakeholder.dilutionPercent || 0) < 5 ? 'text-green-400' :
-                                                        (stakeholder.dilutionPercent || 0) < 15 ? 'text-yellow-400' :
-                                                            (stakeholder.dilutionPercent || 0) < 30 ? 'text-orange-400' :
-                                                                'text-red-400'
+                                                    (stakeholder.dilutionPercent || 0) < 15 ? 'text-yellow-400' :
+                                                        (stakeholder.dilutionPercent || 0) < 30 ? 'text-orange-400' :
+                                                            'text-red-400'
                                                     }`}>
                                                     -{stakeholder.dilution?.toFixed(2)}%
                                                 </p>
@@ -410,8 +414,8 @@ export default function ProposalWizard({ subsidiaryId }: Props) {
                                             key={rule.id}
                                             onClick={() => setSelectedRule(rule)}
                                             className={`w-full p-4 rounded-lg border-2 transition-all text-left ${selectedRule?.id === rule.id
-                                                    ? 'bg-[#F54029]/20 border-[#F54029]'
-                                                    : 'bg-white/5 border-white/10 hover:border-white/30'
+                                                ? 'bg-[#F54029]/20 border-[#F54029]'
+                                                : 'bg-white/5 border-white/10 hover:border-white/30'
                                                 }`}
                                         >
                                             <div className="flex justify-between items-start mb-2">

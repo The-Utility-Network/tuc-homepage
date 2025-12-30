@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase'
 
 export async function POST(
     req: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     const supabase = createClient()
 
@@ -14,7 +14,7 @@ export async function POST(
     }
 
     try {
-        const proposalId = params.id
+        const { id: proposalId } = await params
         const body = await req.json()
         const {
             voteChoice,

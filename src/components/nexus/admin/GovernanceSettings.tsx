@@ -51,7 +51,7 @@ const RULE_TEMPLATES = {
 export default function GovernanceSettings({ subsidiaryId }: Props) {
     const [rules, setRules] = useState<GovernanceRule[]>([])
     const [editing, setEditing] = useState<GovernanceRule | null>(null)
-    const [showTemplates, setShowTemplates] = useState(false)
+    const [showTemplates, setShowTemplates] = useState<string | false>(false)
     const [loading, setLoading] = useState(true)
     const supabase = createClient()
 
@@ -96,6 +96,7 @@ export default function GovernanceSettings({ subsidiaryId }: Props) {
             subsidiaryId,
             ruleType,
             ...template,
+            requiresApproval: true,
             eligibleVoters: { all_stakeholders: true },
             votingPeriodDays: 7,
             noticePeriodDays: 3,

@@ -144,8 +144,8 @@ export default function VotingInterface({ proposal, userStakeholder }: Props) {
 
                         {dilutionSeverity && dilutionSeverity.level !== 'low' && (
                             <div className={`p-6 rounded-lg border ${dilutionSeverity.level === 'severe' ? 'bg-red-500/10 border-red-500/30' :
-                                    dilutionSeverity.level === 'high' ? 'bg-orange-500/10 border-orange-500/30' :
-                                        'bg-yellow-500/10 border-yellow-500/30'
+                                dilutionSeverity.level === 'high' ? 'bg-orange-500/10 border-orange-500/30' :
+                                    'bg-yellow-500/10 border-yellow-500/30'
                                 } flex items-start gap-4`}>
                                 <AlertTriangle className={
                                     dilutionSeverity.level === 'severe' ? 'text-red-400' :
@@ -176,9 +176,9 @@ export default function VotingInterface({ proposal, userStakeholder }: Props) {
                             <div className="text-center p-6 bg-gradient-to-r from-[#F54029]/10 to-purple-500/10 border border-[#F54029]/30 rounded-lg">
                                 <p className="text-white/60 text-sm uppercase tracking-wider mb-2">Dilution</p>
                                 <p className={`text-5xl font-bold ${(userStakeholder.dilutionPercent || 0) < 5 ? 'text-green-400' :
-                                        (userStakeholder.dilutionPercent || 0) < 15 ? 'text-yellow-400' :
-                                            (userStakeholder.dilutionPercent || 0) < 30 ? 'text-orange-400' :
-                                                'text-red-400'
+                                    (userStakeholder.dilutionPercent || 0) < 15 ? 'text-yellow-400' :
+                                        (userStakeholder.dilutionPercent || 0) < 30 ? 'text-orange-400' :
+                                            'text-red-400'
                                     }`}>
                                     -{userStakeholder.dilution?.toFixed(2)}%
                                 </p>
@@ -333,8 +333,8 @@ export default function VotingInterface({ proposal, userStakeholder }: Props) {
                             <button
                                 onClick={() => setVoteChoice('for')}
                                 className={`p-6 rounded-lg border-2 transition-all ${voteChoice === 'for'
-                                        ? 'bg-green-500/20 border-green-500 shadow-lg shadow-green-500/20'
-                                        : 'bg-white/5 border-white/10 hover:border-green-500/50'
+                                    ? 'bg-green-500/20 border-green-500 shadow-lg shadow-green-500/20'
+                                    : 'bg-white/5 border-white/10 hover:border-green-500/50'
                                     }`}
                             >
                                 <CheckCircle className={`mx-auto mb-3 ${voteChoice === 'for' ? 'text-green-400' : 'text-white/40'}`} size={48} />
@@ -344,8 +344,8 @@ export default function VotingInterface({ proposal, userStakeholder }: Props) {
                             <button
                                 onClick={() => setVoteChoice('against')}
                                 className={`p-6 rounded-lg border-2 transition-all ${voteChoice === 'against'
-                                        ? 'bg-red-500/20 border-red-500 shadow-lg shadow-red-500/20'
-                                        : 'bg-white/5 border-white/10 hover:border-red-500/50'
+                                    ? 'bg-red-500/20 border-red-500 shadow-lg shadow-red-500/20'
+                                    : 'bg-white/5 border-white/10 hover:border-red-500/50'
                                     }`}
                             >
                                 <AlertTriangle className={`mx-auto mb-3 ${voteChoice === 'against' ? 'text-red-400' : 'text-white/40'}`} size={48} />
@@ -355,8 +355,8 @@ export default function VotingInterface({ proposal, userStakeholder }: Props) {
                             <button
                                 onClick={() => setVoteChoice('abstain')}
                                 className={`p-6 rounded-lg border-2 transition-all ${voteChoice === 'abstain'
-                                        ? 'bg-gray-500/20 border-gray-500 shadow-lg shadow-gray-500/20'
-                                        : 'bg-white/5 border-white/10 hover:border-gray-500/50'
+                                    ? 'bg-gray-500/20 border-gray-500 shadow-lg shadow-gray-500/20'
+                                    : 'bg-white/5 border-white/10 hover:border-gray-500/50'
                                     }`}
                             >
                                 <div className="w-12 h-12 mx-auto mb-3 rounded-full border-4 border-current" style={{ color: voteChoice === 'abstain' ? '#9ca3af' : 'rgba(255,255,255,0.4)' }} />
@@ -393,7 +393,7 @@ export default function VotingInterface({ proposal, userStakeholder }: Props) {
                         </div>
 
                         <div className="bg-white/5 rounded-lg p-6">
-                            <SignaturePad onSignatureChange={setSignature} />
+                            <SignaturePad onSave={setSignature} />
                         </div>
 
                         <div className="p-4 bg-white/5 rounded-lg">
@@ -402,8 +402,8 @@ export default function VotingInterface({ proposal, userStakeholder }: Props) {
                                 <div className="flex justify-between">
                                     <span className="text-white/60">Your Vote:</span>
                                     <span className={`font-bold ${voteChoice === 'for' ? 'text-green-400' :
-                                            voteChoice === 'against' ? 'text-red-400' :
-                                                'text-gray-400'
+                                        voteChoice === 'against' ? 'text-red-400' :
+                                            'text-gray-400'
                                         }`}>
                                         {voteChoice?.toUpperCase()}
                                     </span>

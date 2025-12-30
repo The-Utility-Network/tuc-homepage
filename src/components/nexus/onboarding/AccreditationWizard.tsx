@@ -227,8 +227,13 @@ export default function AccreditationWizard({ onComplete }: { onComplete?: (data
     )
 }
 
+interface StepProps {
+    responses: Partial<AccreditationCriteria>
+    updateResponse: (key: keyof AccreditationCriteria, value: any) => void
+}
+
 // Step 1: Investor Type
-function Step1InvestorType({ responses, updateResponse }: any) {
+function Step1InvestorType({ responses, updateResponse }: StepProps) {
     const types: { value: InvestorType; label: string; icon: any; description: string }[] = [
         {
             value: 'individual',
@@ -268,8 +273,8 @@ function Step1InvestorType({ responses, updateResponse }: any) {
                         key={value}
                         onClick={() => updateResponse('investorType', value)}
                         className={`p-6 rounded-xl border-2 transition-all text-left ${responses.investorType === value
-                                ? 'border-[#F54029] bg-[#F54029]/10'
-                                : 'border-white/10 bg-white/5 hover:border-white/20'
+                            ? 'border-[#F54029] bg-[#F54029]/10'
+                            : 'border-white/10 bg-white/5 hover:border-white/20'
                             }`}
                     >
                         <Icon
@@ -287,7 +292,7 @@ function Step1InvestorType({ responses, updateResponse }: any) {
 }
 
 // Step 2: Income Verification
-function Step2IncomeVerification({ responses, updateResponse }: any) {
+function Step2IncomeVerification({ responses, updateResponse }: StepProps) {
     return (
         <div className="space-y-6">
             <div className="flex items-center gap-4 pb-6 border-b border-white/10">
@@ -342,7 +347,7 @@ function Step2IncomeVerification({ responses, updateResponse }: any) {
                     <p className="text-xs text-white/40 mt-1">Combined income with spouse for the past 2 years</p>
                 </div>
 
-                {(responses.annualIncome >= 200_000 || responses.jointIncome >= 300_000) && (
+                {((responses.annualIncome ?? 0) >= 200_000 || (responses.jointIncome ?? 0) >= 300_000) && (
                     <div className="flex items-center gap-2 text-green-400 bg-green-400/10 border border-green-400/20 rounded-lg p-4">
                         <CheckCircle size={20} />
                         <span className="text-sm">Meets income requirements for accredited investor status</span>
@@ -354,7 +359,7 @@ function Step2IncomeVerification({ responses, updateResponse }: any) {
 }
 
 // Step 3: Net Worth Assessment
-function Step3NetWorth({ responses, updateResponse }: any) {
+function Step3NetWorth({ responses, updateResponse }: StepProps) {
     return (
         <div className="space-y-6">
             <div className="flex items-center gap-4 pb-6 border-b border-white/10">
@@ -395,14 +400,14 @@ function Step3NetWorth({ responses, updateResponse }: any) {
                     </p>
                 </div>
 
-                {responses.netWorth >= 1_000_000 && (
+                {(responses.netWorth ?? 0) >= 1_000_000 && (
                     <div className="flex items-center gap-2 text-green-400 bg-green-400/10 border border-green-400/20 rounded-lg p-4">
                         <CheckCircle size={20} />
                         <span className="text-sm">Meets net worth requirements for accredited investor status</span>
                     </div>
                 )}
 
-                {responses.netWorth >= 5_000_000 && (
+                {(responses.netWorth ?? 0) >= 5_000_000 && (
                     <div className="flex items-center gap-2 text-blue-400 bg-blue-400/10 border border-blue-400/20 rounded-lg p-4">
                         <Award size={20} />
                         <span className="text-sm">Qualifies as a Qualified Purchaser ($5M+ net worth)</span>
@@ -414,7 +419,7 @@ function Step3NetWorth({ responses, updateResponse }: any) {
 }
 
 // Step 4: Professional Credentials
-function Step4Credentials({ responses, updateResponse }: any) {
+function Step4Credentials({ responses, updateResponse }: StepProps) {
     return (
         <div className="space-y-6">
             <div className="flex items-center gap-4 pb-6 border-b border-white/10">
@@ -487,7 +492,7 @@ function Step4Credentials({ responses, updateResponse }: any) {
 }
 
 // Step 5: Entity Information
-function Step5EntityInfo({ responses, updateResponse }: any) {
+function Step5EntityInfo({ responses, updateResponse }: StepProps) {
     const isEntity = responses.investorType === 'entity'
     const isTrust = responses.investorType === 'trust'
 
@@ -547,7 +552,7 @@ function Step5EntityInfo({ responses, updateResponse }: any) {
                         </span>
                     </label>
 
-                    {(responses.entityAssets >= 5_000_000 || responses.allOwnersAccredited) && (
+                    {((responses.entityAssets ?? 0) >= 5_000_000 || responses.allOwnersAccredited) && (
                         <div className="flex items-center gap-2 text-green-400 bg-green-400/10 border border-green-400/20 rounded-lg p-4">
                             <CheckCircle size={20} />
                             <span className="text-sm">Entity qualifies as an accredited investor</span>
@@ -584,7 +589,7 @@ function Step5EntityInfo({ responses, updateResponse }: any) {
                         </span>
                     </label>
 
-                    {(responses.trustAssets >= 5_000_000 || responses.trustorAccredited) && (
+                    {((responses.trustAssets ?? 0) >= 5_000_000 || responses.trustorAccredited) && (
                         <div className="flex items-center gap-2 text-green-400 bg-green-400/10 border border-green-400/20 rounded-lg p-4">
                             <CheckCircle size={20} />
                             <span className="text-sm">Trust qualifies as an accredited investor</span>
@@ -596,8 +601,14 @@ function Step5EntityInfo({ responses, updateResponse }: any) {
     )
 }
 
+interface DocumentStepProps {
+    uploadedDocuments: any[]
+    setUploadedDocuments: (docs: any[]) => void
+    determination: ReturnType<typeof determineAccreditation> | null
+}
+
 // Step 6: Document Upload
-function Step6DocumentUpload({ uploadedDocuments, setUploadedDocuments, determination }: any) {
+function Step6DocumentUpload({ uploadedDocuments, setUploadedDocuments, determination }: DocumentStepProps) {
     return (
         <div className="space-y-6">
             <div className="flex items-center gap-4 pb-6 border-b border-white/10">
@@ -614,7 +625,7 @@ function Step6DocumentUpload({ uploadedDocuments, setUploadedDocuments, determin
                 <div className="bg-blue-400/10 border border-blue-400/20 rounded-lg p-6">
                     <h3 className="text-blue-400 font-bold mb-3">Recommended Documents:</h3>
                     <ul className="list-disc list-inside text-sm text-white/80 space-y-2">
-                        {determination.verificationNeeded.map((doc, i) => (
+                        {determination.verificationNeeded.map((doc: string, i: number) => (
                             <li key={i}>{doc}</li>
                         ))}
                     </ul>
@@ -629,8 +640,14 @@ function Step6DocumentUpload({ uploadedDocuments, setUploadedDocuments, determin
     )
 }
 
+interface SummaryStepProps {
+    responses: Partial<AccreditationCriteria>
+    determination: ReturnType<typeof determineAccreditation> | null
+    uploadedDocuments: any[]
+}
+
 // Step 7: Summary
-function Step7Summary({ responses, determination, uploadedDocuments }: any) {
+function Step7Summary({ responses, determination, uploadedDocuments }: SummaryStepProps) {
     if (!determination) return null
 
     const statusColors = {

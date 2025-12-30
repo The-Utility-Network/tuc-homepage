@@ -1,0 +1,120 @@
+\\documentclass[12pt,letterpaper]{article}
+\\usepackage[margin=1in]{geometry}
+\\usepackage{fancyhdr}
+\\usepackage{graphicx}
+\\usepackage{color}
+
+\\pagestyle{fancy}
+\\fancyhf{}
+\\fancyhead[L]{\\textsc{{{ENTITY_NAME}}}}
+\\fancyhead[R]{\\textsc{Subscription Agreement}}
+\\fancyfoot[C]{\\thepage}
+
+\\renewcommand{\\headrulewidth}{0.4pt}
+\\renewcommand{\\footrulewidth}{0.4pt}
+
+\\begin{document}
+
+\\begin{center}
+    {\\LARGE \\textbf{SUBSCRIPTION AGREEMENT}}\\\\[0.3cm]
+    {\\large For {{ROUND_NAME}} Financing}\\\\[0.5cm]
+    \\rule{\\textwidth}{1pt}
+\\end{center}
+
+\\vspace{1cm}
+
+\\noindent This Subscription Agreement (this ``Agreement'') is entered into as of {{DATE}}, by and between:
+
+\\vspace{0.5cm}
+
+\\noindent \\textbf{{{ENTITY_NAME}}} (the ``Company''), a corporation organized and existing under the laws of {{ENTITY_STATE}}, and
+
+\\vspace{0.5cm}
+
+\\noindent \\textbf{{{INVESTOR_NAME}}} (the ``Investor''), residing at {{INVESTOR_ADDRESS}}.
+
+\\vspace{1cm}
+
+\\section{Subscription}
+
+The Investor hereby subscribes for and agrees to purchase from the Company, and the Company hereby agrees to sell and issue to the Investor, {{SHARE_COUNT}} shares (the ``Shares'') of the Company's {{SECURITY_TYPE}} at a purchase price of \\${{SHARE_PRICE}} per share, for an aggregate purchase price of \\textbf{\\${{INVESTMENT_AMOUNT}}} (the ``Purchase Price'').
+
+\\section{Payment}
+
+The Investor shall pay the Purchase Price to the Company by wire transfer, check, or other method acceptable to the Company on or before {{PAYMENT_DEADLINE}}.
+
+\\section{Representations and Warranties of the Investor}
+
+The Investor hereby represents and warrants to the Company as follows:
+
+\\subsection{Authority}
+The Investor has full power and authority to enter into this Agreement and to consummate the transactions contemplated hereby.
+
+\\subsection{Investment Intent}
+The Investor is acquiring the Shares for investment purposes only and not with a view to, or for resale in connection with, any distribution thereof.
+
+\\subsection{Accredited Investor Status}
+The Investor is an ``accredited investor'' as defined in Rule 501 of Regulation D promulgated under the Securities Act of 1933, as amended (the ``Securities Act''), by virtue of:
+
+\\begin{itemize}
+    \\item {{ACCREDITATION_REASON}}
+\\end{itemize}
+
+\\subsection{Experience and Sophistication}
+The Investor has such knowledge, sophistication, and experience in business and financial matters so as to be capable of evaluating the merits and risks of the prospective investment in the Shares.
+
+\\subsection{Risk Acknowledgment}
+The Investor understands that the purchase of the Shares involves substantial risk and has determined that the Shares are a suitable investment for the Investor.
+
+\\section{Representations and Warranties of the Company}
+
+The Company hereby represents and warrants to the Investor as follows:
+
+\\subsection{Organization and Good Standing}
+The Company is a corporation duly organized, validly existing, and in good standing under the laws of {{ENTITY_STATE}}.
+
+\\subsection{Authorization}
+The execution, delivery, and performance of this Agreement by the Company have been duly authorized by all necessary corporate action.
+
+\\subsection{Valuation}
+The pre-money valuation of the Company for this financing round is \\${{PRE_MONEY_VALUATION}}.
+
+\\section{Closing}
+
+The closing of the purchase and sale of the Shares (the ``Closing'') shall take place remotely via electronic exchange of documents and signatures on or before {{CLOSING_DATE}}.
+
+\\section{Governing Law}
+
+This Agreement shall be governed by and construed in accordance with the laws of the State of {{GOVERNING_LAW_STATE}}, without regard to conflicts of law principles.
+
+\\section{Entire Agreement}
+
+This Agreement constitutes the entire agreement between the parties with respect to the subject matter hereof and supersedes all prior agreements and understandings, both written and oral.
+
+\\section{Amendments}
+
+This Agreement may not be amended except by a written instrument signed by both parties.
+
+\\vspace{2cm}
+
+\\noindent IN WITNESS WHEREOF, the parties have executed this Agreement as of the date first written above.
+
+\\vspace{1.5cm}
+
+\\noindent
+\\begin{minipage}[t]{0.45\\textwidth}
+\\textbf{COMPANY:}\\\\[1cm]
+\\rule{6cm}{0.4pt}\\\\
+By: {{COMPANY_SIGNATORY_NAME}}\\\\
+Title: {{COMPANY_SIGNATORY_TITLE}}\\\\
+Date: \\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_
+\\end{minipage}
+\\hfill
+\\begin{minipage}[t]{0.45\\textwidth}
+\\textbf{INVESTOR:}\\\\[1cm]
+\\rule{6cm}{0.4pt}\\\\
+Signature: {{INVESTOR_NAME}}\\\\
+Date: \\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_
+\\end{minipage}
+
+\\end{document}

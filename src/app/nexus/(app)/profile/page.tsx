@@ -2,13 +2,16 @@
 
 import { createClient } from '@/lib/supabase'
 import { useState, useEffect } from 'react'
-import { User, Mail, Phone, Shield, Save, Check, RefreshCw, Wallet, Landmark } from 'lucide-react'
+import { User, Mail, Phone, Shield, Save, Check, RefreshCw, Wallet, Landmark, CheckCircle, AlertCircle, ArrowRight } from 'lucide-react'
 import { ConnectButton } from "thirdweb/react"
 import { client } from "@/lib/client"
+import { getInvestorStatus } from '@/lib/investment-limits'
+import Link from 'next/link'
 
 export default function ProfilePage() {
     const supabase = createClient()
     const [profile, setProfile] = useState<any>(null)
+    const [investorStatus, setInvestorStatus] = useState<any>(null)
     const [bankAccounts, setBankAccounts] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
     const [saving, setSaving] = useState(false)
@@ -20,6 +23,10 @@ export default function ProfilePage() {
             if (user) {
                 const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single()
                 setProfile(data)
+
+                // Fetch investor status
+                const status = await getInvestorStatus(user.id)
+                setInvestorStatus(status)
             }
 
             // Fetch Mercury Accounts
@@ -193,6 +200,94 @@ export default function ProfilePage() {
                                 </p>
                             )}
                         </div>
+                    </div>
+                </div>
+
+                {/* Accreditation Status */}
+                <div className="border-t border-white/5 pt-8">
+                    <h3 className="text-xl font-bold font-rajdhani text-white mb-6 flex items-center gap-2">
+                        <Shield className="text-[#F54029]" size={24} /> Investor Accreditation
+                    </h3>
+
+                    <div className="bg-white/5 border border-white/10 rounded-xl p-6">
+                        {investorStatus ? (
+                            <div className="space-y-4">
+                                <div className="flex items-start justify-between">
+                                    <div className="flex-1">
+                                        <div className="flex items-center gap-3 mb-3">
+                                            {investorStatus.isVerified ? (
+                                                <CheckCircle className="text-green-400" size={24} />
+                                            ) : investorStatus.verificationPending ? (
+                                                <AlertCircle className="text-yellow-400" size={24} />
+                                            ) : (
+                                                <AlertCircle className="text-orange-400" size={24} />
+                                            )}
+                                            <div>
+                                                <p className="text-white font-bold">
+                                                    {investorStatus.accreditationStatus === 'accredited' && 'Accredited Investor'}
+                                                    {investorStatus.accreditationStatus === 'qualified_purchaser' && 'Qualified Purchaser'}
+                                                    {investorStatus.accreditationStatus === 'non_accredited' && 'Non-Accredited Investor'}
+                                                    {investorStatus.accreditationStatus === 'unknown' && 'Accreditation Required'}
+                                                </p>
+                                                <p className="text-white/60 text-sm">
+                                                    {investorStatus.isVerified && 'Status verified by admin'}
+                                                    {investorStatus.verificationPending && 'Pending admin review'}
+                                                    {!investorStatus.isVerified && !investorStatus.verificationPending && 'Complete accreditation questionnaire'}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        {investorStatus.investmentLimit && (
+                                            <div className="bg-black/20 rounded-lg p-4 mt-4">
+                                                <p className="text-white/40 text-xs uppercase tracking-wider mb-2">Investment Limit</p>
+                                                <div className="grid grid-cols-3 gap-4 text-sm">
+                                                    <div>
+                                                        <p className="text-white/60 text-xs">Maximum</p>
+                                                        <p className="text-white font-bold">
+                                                            {investorStatus.investmentLimit.maxInvestment >= 999999999999
+                                                                ? 'Unlimited'
+                                                                : `$${investorStatus.investmentLimit.maxInvestment.toLocaleString()}`}
+                                                        </p>
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-white/60 text-xs">Invested</p>
+                                                        <p className="text-white font-bold">${investorStatus.investmentLimit.totalInvested.toLocaleString()}</p>
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-white/60 text-xs">Remaining</p>
+                                                        <p className="text-green-400 font-bold">${investorStatus.investmentLimit.remainingCapacity.toLocaleString()}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <Link
+                                    href="/nexus/onboarding"
+                                    className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors text-sm"
+                                >
+                                    {investorStatus.accreditationStatus === 'unknown' ? 'Complete Accreditation' : 'Update Accreditation'}
+                                    <ArrowRight size={16} />
+                                </Link>
+                            </div>
+                        ) : (
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-white font-medium mb-2">Complete Investor Accreditation</p>
+                                    <p className="text-white/60 text-sm max-w-md">
+                                        Complete the accreditation questionnaire to determine your investor status and investment limits.
+                                    </p>
+                                </div>
+                                <Link
+                                    href="/nexus/onboarding"
+                                    className="px-6 py-3 bg-[#F54029] hover:bg-[#F54029]/90 text-white rounded-lg transition-colors flex items-center gap-2"
+                                >
+                                    Get Started
+                                    <ArrowRight size={18} />
+                                </Link>
+                            </div>
+                        )}
                     </div>
                 </div>
 

@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase-server'
 import InvestorDashboard from '@/components/nexus/InvestorDashboard'
 import AdminDashboard from '@/components/nexus/AdminDashboard'
+import MedallionStrip from '@/components/nexus/MedallionStrip'
 
 export default async function DashboardPage() {
     const supabase = await createClient()
@@ -19,6 +20,8 @@ export default async function DashboardPage() {
 
     return (
         <div className="space-y-8">
+            {user && <MedallionStrip userId={user.id} />}
+
             <header>
                 <h1 className="text-3xl font-rajdhani font-bold text-white uppercase tracking-wider">
                     {role === 'admin' ? 'Management Console' : 'Investor Dashboard'}

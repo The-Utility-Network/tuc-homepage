@@ -76,6 +76,43 @@ export default async function AdminDashboard({ profile }: { profile: any }) {
                 ))}
             </div>
 
+            {/* Fundraising Operations - New Section */}
+            <div className="bg-gradient-to-br from-[#F54029]/10 via-purple-500/5 to-black/40 border border-[#F54029]/20 rounded-2xl p-8">
+                <h2 className="text-2xl font-bold font-rajdhani text-white mb-6 flex items-center gap-3">
+                    <TrendingUp className="text-[#F54029]" size={28} />
+                    Fundraising Operations
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <Link href="/nexus/ventures" className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#F54029]/30 rounded-xl p-6 transition-all group">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="p-3 bg-[#F54029]/20 rounded-lg">
+                                <DollarSign className="text-[#F54029]" size={24} />
+                            </div>
+                            <h3 className="text-white font-bold text-lg">Ventures Workspace</h3>
+                        </div>
+                        <p className="text-white/60 text-sm mb-4">Manage all subsidiary operations: campaigns, cap table, financials, data room & compliance</p>
+                        <div className="flex items-center gap-2 text-[#F54029] group-hover:gap-3 transition-all">
+                            <span className="text-sm font-medium">Open Workspace</span>
+                            <ExternalLink size={16} />
+                        </div>
+                    </Link>
+
+                    <Link href="/nexus/my-investments" className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#F54029]/30 rounded-xl p-6 transition-all group">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="p-3 bg-cyan-500/20 rounded-lg">
+                                <Users className="text-cyan-400" size={24} />
+                            </div>
+                            <h3 className="text-white font-bold text-lg">Investor Portal</h3>
+                        </div>
+                        <p className="text-white/60 text-sm mb-4">View investor perspective - portfolio, updates, and metrics</p>
+                        <div className="flex items-center gap-2 text-[#F54029] group-hover:gap-3 transition-all">
+                            <span className="text-sm font-medium">Preview Portal</span>
+                            <ExternalLink size={16} />
+                        </div>
+                    </Link>
+                </div>
+            </div>
+
             {/* Quick Actions */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="bg-black/40 border border-white/10 rounded-2xl p-6">

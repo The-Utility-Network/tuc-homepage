@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
 import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
+import InvestorStatusCard from './InvestorStatusCard'
 
 export default function InvestorDashboard({ profile }: { profile: any }) {
     const supabase = createClient()
@@ -31,6 +32,9 @@ export default function InvestorDashboard({ profile }: { profile: any }) {
 
     return (
         <div className="space-y-8 animate-fadeIn">
+            {/* Investor Status & Accreditation */}
+            <InvestorStatusCard />
+
             {/* Portfolio Overview */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Main Value Card */}

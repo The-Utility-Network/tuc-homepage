@@ -2,11 +2,16 @@
 
 import { createClient } from '@/lib/supabase'
 import { useState, useEffect } from 'react'
-import { PieChart, TrendingUp, Users, DollarSign, Plus, ChevronRight, Layers, ArrowUpRight, FileSignature, Landmark, Wallet, Check, Download, Lock, Trash2, X, AlertOctagon, LayoutGrid, Briefcase, Menu } from 'lucide-react'
+import { PieChart, TrendingUp, Users, DollarSign, Plus, ChevronRight, Layers, ArrowUpRight, FileSignature, Landmark, Wallet, Check, Download, Lock, Trash2, X, AlertOctagon, LayoutGrid, Briefcase, Menu, FileText, Shield } from 'lucide-react'
 import { format } from 'date-fns'
 import LegalDocument from '@/components/nexus/LegalDocument'
 import CapTableManager from '@/components/nexus/ventures/CapTableManager'
 import RoundWizard from '@/components/nexus/ventures/RoundWizard'
+import CampaignDashboard from '@/components/nexus/fundraising/CampaignDashboard'
+import FinancialDashboard from '@/components/nexus/fundraising/FinancialDashboard'
+import DataRoomManager from '@/components/nexus/fundraising/DataRoomManager'
+import ComplianceCalendar from '@/components/nexus/fundraising/ComplianceCalendar'
+import ActivityDashboard from '@/components/nexus/admin/ActivityDashboard'
 
 export default function VenturesPage() {
     const supabase = createClient()
@@ -23,7 +28,7 @@ export default function VenturesPage() {
 
     // UI State
     const [activeTab, setActiveTab] = useState<string>('network')
-    const [viewMode, setViewMode] = useState<'overview' | 'rounds' | 'captable'>('overview')
+    const [viewMode, setViewMode] = useState<'overview' | 'invest' | 'captable' | 'fundraising' | 'metrics' | 'dataroom' | 'compliance'>('overview')
     const [createWizardOpen, setCreateWizardOpen] = useState(false)
 
     // Mobile Sidebar Toggle
@@ -150,8 +155,8 @@ export default function VenturesPage() {
                                 setMobileSubsidiaryOpen(false);
                             }}
                             className={`w-full text-left p-4 rounded-xl border transition-all flex items-center gap-4 group relative overflow-hidden ${activeTab === sub.id
-                                    ? 'bg-white/5 border-white/10 shadow-lg'
-                                    : 'bg-transparent border-transparent text-white/40 hover:text-white hover:bg-white/5'
+                                ? 'bg-white/5 border-white/10 shadow-lg'
+                                : 'bg-transparent border-transparent text-white/40 hover:text-white hover:bg-white/5'
                                 }`}
                         >
                             <div className={`w-10 h-10 rounded-lg flex items-center justify-center p-2 transition-all ${activeTab === sub.id ? 'bg-black/40 opacity-100' : 'opacity-50 group-hover:opacity-100'}`}>
@@ -203,14 +208,19 @@ export default function VenturesPage() {
                                 {[
                                     { id: 'overview', icon: LayoutGrid, label: 'Overview' },
                                     { id: 'captable', icon: PieChart, label: 'Cap Table' },
-                                    { id: 'rounds', icon: Briefcase, label: 'Rounds' }
+                                    { id: 'invest', icon: Briefcase, label: 'Invest' }, // Renamed from Rounds
+                                    // Fundraising only visible for admin? Or everyone? Let's show for all but maybe empty for investors if no permission
+                                    ...(role === 'admin' ? [{ id: 'fundraising', icon: DollarSign, label: 'Fundraising' }] : []),
+                                    { id: 'metrics', icon: TrendingUp, label: 'Metrics' },
+                                    { id: 'dataroom', icon: FileText, label: 'Data Room' },
+                                    { id: 'compliance', icon: Shield, label: 'Compliance' }
                                 ].map(mode => (
                                     <button
                                         key={mode.id}
                                         onClick={() => setViewMode(mode.id as any)}
                                         className={`px-3 md:px-4 py-2 rounded-md flex items-center gap-2 text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap ${viewMode === mode.id
-                                                ? 'bg-white/10 text-white shadow-sm'
-                                                : 'text-white/40 hover:text-white'
+                                            ? 'bg-white/10 text-white shadow-sm'
+                                            : 'text-white/40 hover:text-white'
                                             }`}
                                     >
                                         <mode.icon size={14} /> {mode.label}
@@ -272,19 +282,12 @@ export default function VenturesPage() {
                             </div>
                         )}
 
-                        {/* VIEW: ROUNDS */}
-                        {viewMode === 'rounds' && (
+                        {/* VIEW: INVEST (Formerly Rounds) */}
+                        {viewMode === 'invest' && (
                             <div className="space-y-8 animate-fadeIn">
                                 <div className="flex justify-between items-center">
-                                    <h3 className="text-xl font-bold font-rajdhani text-white uppercase tracking-wider">Investment Vehicles</h3>
-                                    {role === 'admin' && (
-                                        <button
-                                            onClick={() => setCreateWizardOpen(true)}
-                                            className="px-6 py-3 bg-[#F54029] hover:bg-[#C53020] text-white font-bold rounded-xl flex items-center gap-2 uppercase tracking-wide text-xs shadow-lg"
-                                        >
-                                            <Plus size={16} /> Launch Pro Round
-                                        </button>
-                                    )}
+                                    <h3 className="text-xl font-bold font-rajdhani text-white uppercase tracking-wider">Investment Opportunities</h3>
+                                    {/* Admin create button removed from here, moved to Fundraising tab */}
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -324,17 +327,48 @@ export default function VenturesPage() {
                                             )}
                                             {role === 'admin' && (
                                                 <div className="w-full py-2 bg-white/5 rounded-lg text-center text-xs text-white/40 uppercase tracking-wider border border-white/5">
-                                                    Manage via Admin Ops
+                                                    Switch to Fundraising Tab to Manage
                                                 </div>
                                             )}
                                         </div>
                                     ))}
                                     {campaigns.length === 0 && (
                                         <div className="col-span-full py-12 text-center border border-dashed border-white/10 rounded-2xl">
-                                            <p className="text-white/40">No rounds found for {currentEntity.name}.</p>
+                                            <p className="text-white/40">No investment opportunities open for {currentEntity.name}.</p>
                                         </div>
                                     )}
                                 </div>
+                            </div>
+                        )}
+
+                        {/* VIEW: FUNDRAISING (Admin Only) */}
+                        {viewMode === 'fundraising' && (
+                            <div className="animate-fadeIn">
+                                <CampaignDashboard
+                                    subsidiaryId={currentEntity.id}
+                                    onOpenWizard={() => setCreateWizardOpen(true)}
+                                />
+                            </div>
+                        )}
+
+                        {/* VIEW: METRICS */}
+                        {viewMode === 'metrics' && (
+                            <div className="animate-fadeIn">
+                                <FinancialDashboard subsidiaryId={currentEntity.id} />
+                            </div>
+                        )}
+
+                        {/* VIEW: DATA ROOM */}
+                        {viewMode === 'dataroom' && (
+                            <div className="animate-fadeIn">
+                                <DataRoomManager subsidiaryId={currentEntity.id} />
+                            </div>
+                        )}
+
+                        {/* VIEW: COMPLIANCE */}
+                        {viewMode === 'compliance' && (
+                            <div className="animate-fadeIn">
+                                <ComplianceCalendar subsidiaryId={currentEntity.id} />
                             </div>
                         )}
                     </div>

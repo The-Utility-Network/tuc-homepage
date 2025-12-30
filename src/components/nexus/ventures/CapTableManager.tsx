@@ -70,50 +70,90 @@ export default function CapTableManager({ subsidiaryId, authorizedShares = 10000
         setLoading(false)
     }
 
+
+
+    // State for Invites
+    const [invites, setInvites] = useState<any[]>([])
+    const [inviteEmail, setInviteEmail] = useState('')
+
+    useEffect(() => {
+        fetchCapTable()
+        fetchInvites()
+    }, [subsidiaryId])
+
+    const fetchInvites = async () => {
+        const { data } = await supabase
+            .from('cap_table_invites')
+            .select('*')
+            .eq('subsidiary_id', subsidiaryId)
+            .eq('status', 'pending')
+            .order('created_at', { ascending: false })
+
+        if (data) setInvites(data)
+    }
+
     const handleAddGrant = async () => {
-        if (!newHolder.name || !newHolder.shares) return
+        if (!newHolder.shares) return
 
-        // Create a "Genesis" campaign if it doesn't exist for this sub? 
-        // Or just modify schema to allow null campaign_id.
-        // For robust "Fortune 500" data integrity, let's create a hidden/system "Genesis Allocation" campaign if needed,
-        // OR just rely on a null campaign_id if schema permits.
+        const isEmail = newHolder.name.includes('@')
 
-        // Checking schema: campaign_id is likely text/uuid. 
-        // Let's try to insert with null campaign_id if permitted, or fetch a "Genesis" round.
+        if (isEmail) {
+            // Invite Flow
+            const { error } = await supabase.from('cap_table_invites').insert({
+                subsidiary_id: subsidiaryId,
+                email: newHolder.name,
+                shares: parseFloat(newHolder.shares),
+                role: newHolder.role || 'Investor'
+            })
 
-        // Find or Create Genesis Round
-        let { data: genesis } = await supabase.from('campaigns').select('id').eq('subsidiary', subsidiaryId).eq('name', 'Genesis Allocation').single()
-
-        if (!genesis) {
-            const { data: newGenesis, error } = await supabase.from('campaigns').insert({
-                subsidiary: subsidiaryId,
-                name: 'Genesis Allocation',
-                status: 'closed', // Hidden from public list usually
-                round_type: 'Equity',
-                target_amount: 0,
-                description: 'Initial Cap Table Setup'
-            }).select().single()
             if (error) {
-                alert('Error creating Genesis container: ' + error.message)
-                return
+                alert('Error sending invite: ' + error.message)
+            } else {
+                console.log(`[MOCK EMAIL SERVICE] Sending invite to ${newHolder.name} for ${newHolder.shares} shares in ${subsidiaryId}`)
+                alert(`Invite sent to ${newHolder.name}`)
+                setNewHolder({ name: '', role: 'Adjusted Grant', shares: '' })
+                fetchInvites()
+                // Mock notification
+                console.log(`[NOTIFICATION] Admins notified of new invite sent to ${newHolder.name}`)
             }
-            genesis = newGenesis
-        }
-
-        const { error } = await supabase.from('transactions').insert({
-            campaign_id: genesis?.id,
-            amount: 0, // Grant, usually $0 cost basis for founders or par value
-            status: 'completed',
-            type: 'initial_grant',
-            share_count: parseFloat(newHolder.shares),
-            notes: newHolder.name // Storing name in notes for manual entry
-        })
-
-        if (!error) {
-            setNewHolder({ name: '', role: 'Adjusted Grant', shares: '' })
-            fetchCapTable()
         } else {
-            alert('Failed to add grant: ' + error.message)
+            // Direct Grant Flow (Existing)
+            // Find or Create Genesis Round
+            let { data: genesis } = await supabase.from('campaigns').select('id').eq('subsidiary', subsidiaryId).eq('name', 'Genesis Allocation').single()
+
+            if (!genesis) {
+                const { data: newGenesis, error } = await supabase.from('campaigns').insert({
+                    subsidiary: subsidiaryId,
+                    name: 'Genesis Allocation',
+                    status: 'closed', // Hidden from public list usually
+                    round_type: 'Equity',
+                    target_amount: 0,
+                    description: 'Initial Cap Table Setup'
+                }).select().single()
+                if (error) {
+                    alert('Error creating Genesis container: ' + error.message)
+                    return
+                }
+                genesis = newGenesis
+            }
+
+            const { error } = await supabase.from('transactions').insert({
+                campaign_id: genesis?.id,
+                amount: 0, // Grant, usually $0 cost basis for founders or par value
+                status: 'completed',
+                type: 'initial_grant',
+                share_count: parseFloat(newHolder.shares),
+                notes: newHolder.name // Storing name in notes for manual entry
+            })
+
+            if (!error) {
+                setNewHolder({ name: '', role: 'Adjusted Grant', shares: '' })
+                fetchCapTable()
+                // Mock notification
+                console.log(`[NOTIFICATION] Cap table updated: ${newHolder.name} added with ${newHolder.shares} shares`)
+            } else {
+                alert('Failed to add grant: ' + error.message)
+            }
         }
     }
 
@@ -193,32 +233,52 @@ export default function CapTableManager({ subsidiaryId, authorizedShares = 10000
                 {/* Right: List & Entry */}
                 <div className="p-6 overflow-y-auto max-h-[400px] bg-white/[0.01]">
                     {editMode && (
-                        <div className="mb-6 p-4 bg-[#F54029]/10 border border-[#F54029]/20 rounded-xl space-y-4">
-                            <h4 className="text-xs font-bold text-[#F54029] uppercase tracking-wider flex items-center gap-2">
-                                <Plus size={14} /> Add Initial Grant
-                            </h4>
-                            <div className="grid grid-cols-2 gap-4">
-                                <input
-                                    type="text"
-                                    placeholder="Holder Name (e.g. Founder)"
-                                    className="col-span-2 bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-[#F54029]"
-                                    value={newHolder.name}
-                                    onChange={(e) => setNewHolder({ ...newHolder, name: e.target.value })}
-                                />
-                                <input
-                                    type="number"
-                                    placeholder="Shares"
-                                    className="bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-[#F54029]"
-                                    value={newHolder.shares}
-                                    onChange={(e) => setNewHolder({ ...newHolder, shares: e.target.value })}
-                                />
-                                <button
-                                    onClick={handleAddGrant}
-                                    disabled={!newHolder.shares || !newHolder.name}
-                                    className="bg-[#F54029] hover:bg-[#C53020] disabled:opacity-50 text-white rounded-lg font-bold text-xs uppercase tracking-wider transition-colors"
-                                >
-                                    Add
-                                </button>
+                        <div className="mb-6 space-y-4">
+                            <div className="p-4 bg-[#F54029]/10 border border-[#F54029]/20 rounded-xl space-y-4">
+                                <h4 className="text-xs font-bold text-[#F54029] uppercase tracking-wider flex items-center gap-2">
+                                    <Plus size={14} /> Add Grant / Invite
+                                </h4>
+                                <p className="text-[10px] text-white/40">Enter name for manual grant, or email to invite external user.</p>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <input
+                                        type="text"
+                                        placeholder="Name or Email (e.g. founder@tuc.co)"
+                                        className="col-span-2 bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-[#F54029]"
+                                        value={newHolder.name}
+                                        onChange={(e) => setNewHolder({ ...newHolder, name: e.target.value })}
+                                    />
+                                    <input
+                                        type="number"
+                                        placeholder="Shares"
+                                        className="bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-[#F54029]"
+                                        value={newHolder.shares}
+                                        onChange={(e) => setNewHolder({ ...newHolder, shares: e.target.value })}
+                                    />
+                                    <button
+                                        onClick={handleAddGrant}
+                                        disabled={!newHolder.shares || !newHolder.name}
+                                        className="bg-[#F54029] hover:bg-[#C53020] disabled:opacity-50 text-white rounded-lg font-bold text-xs uppercase tracking-wider transition-colors"
+                                    >
+                                        {newHolder.name.includes('@') ? 'Send Invite' : 'Add Grant'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {invites.length > 0 && (
+                        <div className="mb-6">
+                            <h4 className="text-[10px] uppercase text-white/40 mb-2 font-bold tracking-widest">Pending Invites</h4>
+                            <div className="space-y-2">
+                                {invites.map(inv => (
+                                    <div key={inv.id} className="flex justify-between items-center p-3 bg-white/5 border border-white/5 rounded-lg border-dashed">
+                                        <div>
+                                            <p className="text-sm font-medium text-white">{inv.email}</p>
+                                            <p className="text-xs text-white/40">{new Intl.NumberFormat('en-US').format(inv.shares)} Shares • Pending</p>
+                                        </div>
+                                        <div className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse" />
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     )}

@@ -8,6 +8,7 @@ const navLinks = [
     { label: 'ABOUT', href: '#about' },
     { label: 'SUBSIDIARIES', href: '#subsidiaries' },
     { label: 'SERVICES', href: '#services' },
+    { label: 'INVESTORS', href: '/investors' },
     { label: 'PARTNERS', href: '#partners' },
     { label: 'PHILOSOPHY', href: '#philosophy' },
 ];

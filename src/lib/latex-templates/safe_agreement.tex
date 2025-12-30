@@ -1,0 +1,148 @@
+\\documentclass[12pt,letterpaper]{article}
+\\usepackage[margin=1in]{geometry}
+\\usepackage{fancyhdr}
+\\usepackage{graphicx}
+
+\\pagestyle{fancy}
+\\fancyhf{}
+\\fancyhead[L]{\\textsc{{{ENTITY_NAME}}}}
+\\fancyhead[R]{\\textsc{SAFE Agreement}}
+\\fancyfoot[C]{\\thepage}
+
+\\renewcommand{\\headrulewidth}{0.4pt}
+\\renewcommand{\\footrulewidth}{0.4pt}
+
+\\begin{document}
+
+\\begin{center}
+    {\\LARGE \\textbf{SIMPLE AGREEMENT FOR FUTURE EQUITY}}\\\\[0.3cm]
+    {\\large (Valuation Cap, No Discount)}\\\\[0.5cm]
+    \\rule{\\textwidth}{1pt}
+\\end{center}
+
+\\vspace{1cm}
+
+\\noindent THIS CERTIFIES THAT in exchange for the payment by {{INVESTOR_NAME}} (the ``Investor'') of \\textbf{\\${{PURCHASE_AMOUNT}}} (the ``Purchase Amount'') on or about {{DATE}}, {{ENTITY_NAME}}, a {{ENTITY_STATE}} corporation (the ``Company''), issues to the Investor the right to certain shares of the Company's Capital Stock, subject to the terms described below.
+
+\\vspace{1cm}
+
+\\section{Events}
+
+\\subsection{Equity Financing}
+
+If there is an Equity Financing before the termination of this Safe, on the initial closing of such Equity Financing, this Safe will automatically convert into the number of shares of Safe Preferred Stock equal to the Purchase Amount divided by the Conversion Price.
+
+\\noindent The ``Conversion Price'' is either:
+
+\\begin{enumerate}
+    \\item the Safe Price, or
+    \\item the Discount Price,
+\\end{enumerate}
+
+whichever calculation results in a greater number of shares of Safe Preferred Stock.
+
+\\noindent The ``Safe Price'' is the price per share equal to the Valuation Cap divided by the Company Capitalization.
+
+\\noindent The ``Valuation Cap'' is \\textbf{\\${{VALUATION_CAP}}}.
+
+\\subsection{Liquidity Event}
+
+If there is a Liquidity Event before the termination of this Safe, this Safe will automatically be entitled to receive a portion of Proceeds, due and payable to the Investor immediately prior to, or concurrent with, the consummation of such Liquidity Event, equal to the greater of:
+
+\\begin{enumerate}
+    \\item the Purchase Amount (the ``Cash-Out Amount''), or
+    \\item the amount payable on the number of shares of Common Stock equal to the Purchase Amount divided by the Liquidity Price (the ``Conversion Amount'').
+\\end{enumerate}
+
+\\subsection{Dissolution Event}
+
+If there is a Dissolution Event before the termination of this Safe, the Investor will automatically be entitled to receive a portion of Proceeds equal to the Cash-Out Amount, due and payable to the Investor immediately prior to the consummation of the Dissolution Event.
+
+\\subsection{Termination}
+
+This Safe will expire and terminate upon the earlier of:
+
+\\begin{enumerate}
+    \\item the issuance of Capital Stock to the Investor pursuant to the conversion of this Safe under Section 1(a) or Section 1(b);
+    \\item the payment, or setting aside for payment, of amounts due the Investor pursuant to Section 1(b) or Section 1(c); or
+    \\item the expiration of {{TERMINATION_YEARS}} years from the date of this Safe.
+\\end{enumerate}
+
+\\section{Definitions}
+
+\\textbf{``Capital Stock''} means the capital stock of the Company, including, without limitation, the ``Common Stock'' and the ``Preferred Stock.''
+
+\\textbf{``Company Capitalization''} means the sum of:
+
+\\begin{enumerate}
+    \\item all shares of Capital Stock (on an as-converted basis) issued and outstanding, assuming exercise or conversion of all outstanding vested and unvested options, warrants and other convertible securities, but excluding:
+    \\begin{itemize}
+        \\item this Safe,
+        \\item all other Safes, and
+        \\item convertible promissory notes; and
+    \\end{itemize}
+    \\item all shares of Common Stock reserved and available for future grant under any equity incentive or similar plan.
+\\end{enumerate}
+
+\\textbf{``Equity Financing''} means a bona fide transaction or series of transactions with the principal purpose of raising capital, pursuant to which the Company issues and sells Preferred Stock at a fixed pre-money valuation.
+
+\\textbf{``Liquidity Event''} means a Change of Control or an Initial Public Offering.
+
+\\textbf{``Safe Preferred Stock''} means the shares of the series of Preferred Stock issued to the Investor in an Equity Financing, having the identical rights, privileges, preferences and restrictions as the shares of Standard Preferred Stock, other than with respect to certain protection provisions.
+
+\\section{Company Representations}
+
+The Company represents and warrants that:
+
+\\begin{enumerate}
+    \\item The Company is a corporation duly organized, validly existing and in good standing under the laws of {{ENTITY_STATE}}.
+    \\item The execution, delivery and performance by the Company of this Safe is within the power of the Company and has been duly authorized.
+    \\item This Safe constitutes a legal, valid and binding obligation of the Company, enforceable against the Company in accordance with its terms.
+\\end{enumerate}
+
+\\section{Investor Representations}
+
+The Investor represents and warrants that:
+
+\\begin{enumerate}
+    \\item The Investor is acquiring this Safe for investment purposes only and not with a view to distribution.
+    \\item The Investor is an accredited investor as defined in Rule 501 of Regulation D under the Securities Act.
+    \\item The Investor understands that this Safe has not been registered under the Securities Act and may not be resold unless registered or an exemption from registration is available.
+\\end{enumerate}
+
+\\section{Miscellaneous}
+
+\\subsection{Governing Law}
+
+This Safe and any dispute arising out of or related to it will be governed by the laws of the State of {{GOVERNING_LAW_STATE}}, without regard to conflict of law principles.
+
+\\subsection{Entire Agreement}
+
+This Safe constitutes the entire agreement between the parties with respect to the subject matter hereof and supersedes all prior agreements and understandings.
+
+\\subsection{Amendment}
+
+This Safe may be amended and the rights and restrictions may be waived only with the written consent of the Company and the Investor.
+
+\\vspace{2cm}
+
+\\noindent IN WITNESS WHEREOF, the undersigned have caused this Safe to be executed as of {{DATE}}.
+
+\\vspace{1.5cm}
+
+\\noindent
+\\begin{minipage}[t]{0.45\\textwidth}
+\\textbf{COMPANY:}\\\\
+{{ENTITY_NAME}}\\\\[1.5cm]
+\\rule{6cm}{0.4pt}\\\\
+By: {{COMPANY_SIGNATORY_NAME}}\\\\
+Title: {{COMPANY_SIGNATORY_TITLE}}
+\\end{minipage}
+\\hfill
+\\begin{minipage}[t]{0.45\\textwidth}
+\\textbf{INVESTOR:}\\\\[2cm]
+\\rule{6cm}{0.4pt}\\\\
+{{INVESTOR_NAME}}
+\\end{minipage}
+
+\\end{document}

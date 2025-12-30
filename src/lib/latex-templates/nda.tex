@@ -1,0 +1,87 @@
+\\documentclass[12pt,letterpaper]{article}
+\\usepackage[margin=1in]{geometry}
+\\usepackage{fancyhdr}
+
+\\pagestyle{fancy}
+\\fancyhf{}
+\\fancyhead[L]{\\textsc{{{ENTITY_NAME}}}}
+\\fancyhead[R]{\\textsc{Non-Disclosure Agreement}}
+\\fancyfoot[C]{\\thepage}
+
+\\renewcommand{\\headrulewidth}{0.4pt}
+\\renewcommand{\\footrulewidth}{0.4pt}
+
+\\begin{document}
+
+\\begin{center}
+    {\\LARGE \\textbf{NON-DISCLOSURE AGREEMENT}}\\\\[0.5cm]
+    \\rule{\\textwidth}{1pt}
+\\end{center}
+
+\\vspace{1cm}
+
+\\noindent This Non-Disclosure Agreement (``Agreement'') is entered into as of {{DATE}}, by and between {{ENTITY_NAME}} (``Disclosing Party'') and {{RECIPIENT_NAME}} (``Receiving Party'').
+
+\\section{Purpose}
+
+The parties wish to explore a business opportunity of mutual interest (the ``Purpose'') and, in connection with the Purpose, may disclose to each other certain confidential technical and business information that the parties desire to treat as confidential.
+
+\\section{Confidential Information}
+
+``Confidential Information'' means any information disclosed by either party to the other party, either directly or indirectly, in writing, orally or by inspection of tangible objects, including without limitation documents, business plans, source code, software, financial information, and investor information.
+
+\\section{Non-Disclosure and Non-Use Obligations}
+
+The Receiving Party agrees:
+
+\\begin{enumerate}
+    \\item to hold and maintain the Confidential Information in strict confidence;
+    \\item not to disclose Confidential Information to any third parties;
+    \\item not to use the Confidential Information for any purpose except the Purpose; and
+    \\item to protect the Confidential Information with at least the same degree of care used to protect its own confidential information, but in no case less than reasonable care.
+\\end{enumerate}
+
+\\section{Exceptions}
+
+The obligations under Section 3 shall not apply to Confidential Information that:
+
+\\begin{enumerate}
+    \\item was already known to the Receiving Party prior to disclosure;
+    \\item is or becomes publicly available through no breach of this Agreement;
+    \\item is rightfully received by the Receiving Party from a third party;
+    \\item is independently developed by the Receiving Party; or
+    \\item is required to be disclosed by law or court order.
+\\end{enumerate}
+
+\\section{Term}
+
+This Agreement shall remain in effect for a period of {{TERM_YEARS}} years from the date of execution, unless earlier terminated by either party with 30 days written notice.
+
+\\section{Return of Materials}
+
+Upon request by the Disclosing Party, all Confidential Information shall promptly be returned or destroyed, including all copies and derivatives.
+
+\\section{Governing Law}
+
+This Agreement shall be governed by the laws of the State of {{GOVERNING_LAW_STATE}}.
+
+\\vspace{2cm}
+
+\\noindent
+\\begin{minipage}[t]{0.45\\textwidth}
+\\textbf{DISCLOSING PARTY:}\\\\
+{{ENTITY_NAME}}\\\\[1.5cm]
+\\rule{6cm}{0.4pt}\\\\
+Signature\\\\[0.3cm]
+Name: {{COMPANY_SIGNATORY_NAME}}\\\\
+Title: {{COMPANY_SIGNATORY_TITLE}}
+\\end{minipage}
+\\hfill
+\\begin{minipage}[t]{0.45\\textwidth}
+\\textbf{RECEIVING PARTY:}\\\\[2cm]
+\\rule{6cm}{0.4pt}\\\\
+Signature\\\\[0.3cm]
+Name: {{RECIPIENT_NAME}}
+\\end{minipage}
+
+\\end{document}

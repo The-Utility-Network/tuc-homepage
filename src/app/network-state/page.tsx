@@ -40,7 +40,7 @@ export default function NetworkStatePage() {
                         <motion.div variants={fadeInUp} className="flex justify-center mb-12">
                             <div className="relative w-48 h-48 md:w-64 md:h-64">
                                 <Image
-                                    src="/Medallions/TheUtilityNetwork.png"
+                                    src="https://storage.googleapis.com/tgl_cdn/images/Medallions/TheUtilityNetwork.png"
                                     alt="The Utility Network"
                                     fill
                                     className="object-contain drop-shadow-[0_0_30px_rgba(245,64,41,0.4)]"

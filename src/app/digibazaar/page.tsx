@@ -41,7 +41,7 @@ export default function DigiBazaarPage() {
                 title="DIGIBAZAAR"
                 subtitle="The Home of the Creative Revolution"
                 color={THEME_COLOR}
-                medallion="https://engram1.blob.core.windows.net/tuc-homepage/Medallions/DigiBazaarMedallion.png"
+                medallion="https://storage.googleapis.com/tgl_cdn/images/Medallions/DigiBazaarMedallion.png"
             />
 
             <div className="relative z-10">

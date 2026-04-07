@@ -41,7 +41,7 @@ export default function BasaltHQPage() {
                 title="BASALTHQ"
                 subtitle="Neuromimetic Business Architecture"
                 color={THEME_COLOR}
-                medallion="/Medallions/BasaltM.png"
+                medallion="https://storage.googleapis.com/tgl_cdn/images/Medallions/BasaltM.png"
             />
 
             <div className="relative z-10">

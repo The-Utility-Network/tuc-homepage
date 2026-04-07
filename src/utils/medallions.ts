@@ -1,5 +1,5 @@
 export function getMedallionUrl(subsidiaryName: string): string {
-    const baseUrl = 'https://engram1.blob.core.windows.net/tuc-homepage/Medallions';
+    const baseUrl = 'https://storage.googleapis.com/tgl_cdn/images/Medallions';
 
     // Normalize name to handle potential variations
     const name = subsidiaryName.toLowerCase().trim();

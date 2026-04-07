@@ -44,7 +44,7 @@ export default function LochNessPage() {
                 title="THE LOCH NESS BOTANICAL SOCIETY"
                 subtitle="The First NFT-Mediated Crypto Greenhouse"
                 color={THEME_COLOR}
-                medallion="https://engram1.blob.core.windows.net/tuc-homepage/Medallions/TLN.png"
+                medallion="https://storage.googleapis.com/tgl_cdn/images/Medallions/TLN.png"
             />
 
             <div className="relative z-10">
@@ -174,7 +174,7 @@ export default function LochNessPage() {
                                 <div className="flex justify-center mb-6">
                                     <div className="w-24 h-24 relative animate-pulse-slow">
                                         <Image
-                                            src="/Medallions/TSPAum1.png"
+                                            src="https://storage.googleapis.com/tgl_cdn/images/Medallions/TSPAum1.png"
                                             alt="TSP Om Medallion"
                                             fill
                                             className="object-contain drop-shadow-[0_0_15px_rgba(236,72,153,0.6)]"

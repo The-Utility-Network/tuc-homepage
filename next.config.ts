@@ -11,9 +11,9 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'engram1.blob.core.windows.net',
+        hostname: 'storage.googleapis.com',
         port: '',
-        pathname: '/tuc-homepage/**',
+        pathname: '/tgl_cdn/**',
       },
     ],
   },

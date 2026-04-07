@@ -42,7 +42,7 @@ export default function GraineLedgerPage() {
                 title="THE GRAINE LEDGER"
                 subtitle="The First NFT-Mediated Crypto Distillery"
                 color={THEME_COLOR}
-                medallion="https://engram1.blob.core.windows.net/tuc-homepage/Medallions/TGL.png"
+                medallion="https://storage.googleapis.com/tgl_cdn/images/Medallions/TGL.png"
             />
 
             <div className="relative z-10">

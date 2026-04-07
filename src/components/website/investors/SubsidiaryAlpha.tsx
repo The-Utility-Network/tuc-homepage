@@ -15,7 +15,7 @@ const subsidiaries = [
         citation: "McKinsey & Company",
         cagr: "39%",
         color: "#22c55e",
-        image: "/Medallions/TGN.png",
+        image: "https://storage.googleapis.com/tgl_cdn/images/Medallions/TGN.png",
         link: "https://thegrandenarrative.com"
     },
     {
@@ -27,7 +27,7 @@ const subsidiaries = [
         citation: "Bloomberg Intelligence",
         cagr: "42%",
         color: "#ff6504",
-        image: "/Medallions/BasaltM.png",
+        image: "https://storage.googleapis.com/tgl_cdn/images/Medallions/BasaltM.png",
         link: "/basalthq"
     },
     {
@@ -39,7 +39,7 @@ const subsidiaries = [
         citation: "BCG & ADDX",
         cagr: "50x Growth",
         color: "#A855F7",
-        image: "https://engram1.blob.core.windows.net/tuc-homepage/Medallions/OP.png",
+        image: "https://storage.googleapis.com/tgl_cdn/images/Medallions/OP.png",
         link: "/osiris-protocol"
     },
     {
@@ -51,7 +51,7 @@ const subsidiaries = [
         citation: "Grand View Research",
         cagr: "22.6%",
         color: "#EC4899",
-        image: "https://engram1.blob.core.windows.net/tuc-homepage/Medallions/CornucopiaRobotics.png",
+        image: "https://storage.googleapis.com/tgl_cdn/images/Medallions/CornucopiaRobotics.png",
         link: "/cornucopia-robotics"
     },
     {
@@ -63,7 +63,7 @@ const subsidiaries = [
         citation: "Fortune Business Insights",
         cagr: "35.5%",
         color: "#FFD700",
-        image: "https://engram1.blob.core.windows.net/tuc-homepage/Medallions/RE.png",
+        image: "https://storage.googleapis.com/tgl_cdn/images/Medallions/RE.png",
         link: "/requiem-electric"
     },
     {
@@ -75,7 +75,7 @@ const subsidiaries = [
         citation: "Deloitte",
         cagr: "23.5%",
         color: "#F97316",
-        image: "https://engram1.blob.core.windows.net/tuc-homepage/Medallions/VulcanForge2.png",
+        image: "https://storage.googleapis.com/tgl_cdn/images/Medallions/VulcanForge2.png",
         link: "/vulcan-forge"
     },
     {
@@ -87,7 +87,7 @@ const subsidiaries = [
         citation: "Grand View Research",
         cagr: "22.2%",
         color: "#f54029",
-        image: "https://engram1.blob.core.windows.net/tuc-homepage/Medallions/Elysium.png",
+        image: "https://storage.googleapis.com/tgl_cdn/images/Medallions/Elysium.png",
         link: "/elysium-athletica"
     },
     {
@@ -99,7 +99,7 @@ const subsidiaries = [
         citation: "Market Analysis",
         cagr: "12%",
         color: "#F97316",
-        image: "https://engram1.blob.core.windows.net/tuc-homepage/Medallions/TGL.png",
+        image: "https://storage.googleapis.com/tgl_cdn/images/Medallions/TGL.png",
         link: "/the-graine-ledger"
     },
     {
@@ -111,7 +111,7 @@ const subsidiaries = [
         citation: "McKinsey",
         cagr: "High",
         color: "#EF4444",
-        image: "https://engram1.blob.core.windows.net/tuc-homepage/Medallions/DigiBazaarMedallion.png",
+        image: "https://storage.googleapis.com/tgl_cdn/images/Medallions/DigiBazaarMedallion.png",
         link: "/digibazaar"
     },
     {
@@ -123,7 +123,7 @@ const subsidiaries = [
         citation: "Web3 Analysis",
         cagr: "Variable",
         color: "#3B82F6",
-        image: "https://engram1.blob.core.windows.net/tuc-homepage/Medallions/AR.png",
+        image: "https://storage.googleapis.com/tgl_cdn/images/Medallions/AR.png",
         link: "/arthaneeti"
     },
     {
@@ -135,7 +135,7 @@ const subsidiaries = [
         citation: "MarketsandMarkets",
         cagr: "11.3%",
         color: "#2ECC71",
-        image: "https://engram1.blob.core.windows.net/tuc-homepage/Medallions/TLN.png",
+        image: "https://storage.googleapis.com/tgl_cdn/images/Medallions/TLN.png",
         link: "/lochness-botanical-society"
     }
 

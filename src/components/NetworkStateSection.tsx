@@ -28,7 +28,7 @@ export default function NetworkStateSection() {
                             <div className="absolute inset-0 bg-[#F54029]/30 rounded-full blur-3xl group-hover:bg-[#F54029]/50 transition-colors duration-700" />
 
                             <Image
-                                src="/Medallions/TheUtilityNetwork.png"
+                                src="https://storage.googleapis.com/tgl_cdn/images/Medallions/TheUtilityNetwork.png"
                                 alt="The Utility Network Medallion"
                                 fill
                                 className="object-contain relative z-10 drop-shadow-[0_0_30px_rgba(245,64,41,0.3)] group-hover:drop-shadow-[0_0_50px_rgba(245,64,41,0.5)] transition-all duration-700 hover:scale-105"

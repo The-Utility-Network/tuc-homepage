@@ -47,7 +47,7 @@ export default function RequiemElectricPage() {
         title="REQUIEM ELECTRIC"
         subtitle="The Future of Distributed Energy & Community"
         color="#FFD700"
-        medallion="https://engram1.blob.core.windows.net/tuc-homepage/Medallions/RE.png"
+        medallion="https://storage.googleapis.com/tgl_cdn/images/Medallions/RE.png"
       />
 
       {/* Intro Section - Project Brief */}

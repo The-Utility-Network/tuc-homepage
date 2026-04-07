@@ -4,13 +4,13 @@ import { useEffect, useRef } from 'react';
 
 export default function CornucopiaContactForm() {
     const containerRef = useRef<HTMLDivElement>(null);
-    const formSlug = "cornucopia-robotics-stakeholder-contact-edc96142";
+    const formSlug = "cornucopia-robotics-contact-form-809f1d88";
 
     useEffect(() => {
         if (!containerRef.current) return;
         if (containerRef.current.querySelector('form')) return;
 
-        const apiEndpoint = "https://crm.ledger1.ai/api/forms/submit";
+        const apiEndpoint = "https://crm.basalthq.com/api/forms/submit";
 
         // Cornucopia Theme: Pink & Dark
         const theme = {
@@ -71,7 +71,7 @@ export default function CornucopiaContactForm() {
             { "name": "last_name", "label": "Last name", "type": "text", "required": true, "placeholder": "e.g., Lopez", "span": 6 },
             { "name": "email", "label": "Email", "type": "email", "required": true, "placeholder": "name@company.com", "span": 6 },
             { "name": "phone", "label": "Phone (optional)", "type": "phone", "required": false, "placeholder": "+1 555 123 4567", "span": 6 },
-            { "name": "stakeholder_type", "label": "I am a...", "type": "select", "required": true, "placeholder": null, "span": 6, "options": stakeholderTypeOptions },
+            { "name": "i_am_a", "label": "I am a...", "type": "select", "required": true, "placeholder": null, "span": 6, "options": stakeholderTypeOptions },
             { "name": "reason_for_contact", "label": "Reason for contact", "type": "select", "required": true, "placeholder": null, "span": 6, "options": reasonForContactOptions },
             { "name": "company", "label": "Company / Organization (optional)", "type": "text", "required": false, "placeholder": "e.g., Cornfield Co-Op", "span": 6 },
             { "name": "website", "label": "Website (optional)", "type": "text", "required": false, "placeholder": "https://yourcompany.com", "span": 6 },
@@ -82,7 +82,7 @@ export default function CornucopiaContactForm() {
             { "name": "country", "label": "Country (optional)", "type": "text", "required": false, "placeholder": "e.g., United States", "span": 12 },
             { "name": "message", "label": "Your message", "type": "textarea", "required": true, "placeholder": "Share details about your farm or project, investment interest, timelines, and any specific questions.", "span": 12 },
             { "name": "preferred_contact_method", "label": "Preferred contact method (optional)", "type": "radio", "required": false, "placeholder": null, "span": 12, "options": preferredContactOptions },
-            { "name": "contact_consent", "label": "I consent to be contacted regarding this inquiry.", "type": "checkbox", "required": true, "placeholder": null, "span": 12 }
+            { "name": "consent", "label": "I consent to be contacted regarding this inquiry.", "type": "checkbox", "required": true, "placeholder": null, "span": 12 }
         ];
 
         const allInputs: (HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement)[] = [];
@@ -195,8 +195,8 @@ export default function CornucopiaContactForm() {
                         input.appendChild(el);
                     });
 
-                    // Special handling for stakeholder_type to show/hide investor fields
-                    if (field.name === 'stakeholder_type') {
+                    // Special handling for i_am_a to show/hide investor fields
+                    if (field.name === 'i_am_a') {
                         input.addEventListener('change', () => {
                             const isInvestor = input.value === 'Investor / Financial Backer';
                             updateInvestorFieldsVisibility(isInvestor);

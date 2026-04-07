@@ -4,13 +4,13 @@ import { useEffect, useRef } from 'react';
 
 export default function ElysiumContactForm() {
     const containerRef = useRef<HTMLDivElement>(null);
-    const formSlug = "elysium-athletica-contact-consultation-2de0dcfc";
+    const formSlug = "elysium-athletica-contact-us-form-1aee5cbe";
 
     useEffect(() => {
         if (!containerRef.current) return;
         if (containerRef.current.querySelector('form')) return;
 
-        const apiEndpoint = "https://crm.ledger1.ai/api/forms/submit";
+        const apiEndpoint = "https://crm.basalthq.com/api/forms/submit";
 
         // Elysium Theme: White & Red
         // Primary: #f54029 (Red)
@@ -47,8 +47,8 @@ export default function ElysiumContactForm() {
             { "name": "phone", "label": "Phone", "type": "phone", "required": false, "placeholder": "+1 555 123 4567", "span": 6 },
             { "name": "company", "label": "Company / Organization", "type": "text", "required": false, "placeholder": "Your club, team, or organization", "span": 6 },
             { "name": "website", "label": "Website", "type": "text", "required": false, "placeholder": "https://yourcompany.com", "span": 6 },
-            { "name": "interest", "label": "Area of Interest", "type": "select", "required": true, "placeholder": null, "span": 12 },
-            { "name": "message", "label": "How can we help?", "type": "textarea", "required": true, "placeholder": "Share a brief overview of your goals, timeline, and any relevant leagues or programs.", "span": 12 },
+            { "name": "area_of_interest", "label": "Area of Interest", "type": "select", "required": true, "placeholder": null, "span": 12 },
+            { "name": "how_can_we_help", "label": "How can we help?", "type": "textarea", "required": true, "placeholder": "Share a brief overview of your goals, timeline, and any relevant leagues or programs.", "span": 12 },
             { "name": "consent", "label": "Consent to Contact", "type": "checkbox", "required": true, "placeholder": null, "span": 12 }
         ];
 

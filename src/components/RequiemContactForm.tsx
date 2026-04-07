@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 
 export default function RequiemContactForm() {
     const containerRef = useRef<HTMLDivElement>(null);
-    const formSlug = "requiem-electric-contact-host-interest-ad10a3f4";
+    const formSlug = "requiem-electric-contact-form-dd4e2270";
 
     useEffect(() => {
         if (!containerRef.current) return;
@@ -12,7 +12,7 @@ export default function RequiemContactForm() {
         // Check if form already exists to prevent duplicate injection
         if (containerRef.current.querySelector('form')) return;
 
-        const apiEndpoint = "https://crm.ledger1.ai/api/forms/submit";
+        const apiEndpoint = "https://crm.basalthq.com/api/forms/submit";
 
         // Adapted Theme configuration for Requiem Dark Mode
         const theme = {
@@ -48,13 +48,13 @@ export default function RequiemContactForm() {
             { "name": "phone", "label": "Phone", "type": "phone", "required": false, "placeholder": "(555) 123-4567", "span": 6 },
             { "name": "company", "label": "Company / Organization", "type": "text", "required": false, "placeholder": "Your company", "span": 12 },
             { "name": "engagement_type", "label": "Engagement Type", "type": "select", "required": true, "placeholder": null, "span": 12 },
-            { "name": "address", "label": "Property Address", "type": "text", "required": false, "placeholder": "123 Energy Ave", "span": 12 },
+            { "name": "property_address", "label": "Property Address", "type": "text", "required": false, "placeholder": "123 Energy Ave", "span": 12 },
             { "name": "city", "label": "City", "type": "text", "required": false, "placeholder": "City", "span": 4 },
             { "name": "state", "label": "State", "type": "text", "required": false, "placeholder": "State", "span": 4 },
             { "name": "zip", "label": "ZIP", "type": "text", "required": false, "placeholder": "ZIP", "span": 4 },
             { "name": "country", "label": "Country", "type": "text", "required": false, "placeholder": "Country", "span": 6 },
             { "name": "website", "label": "Website", "type": "text", "required": false, "placeholder": "https://", "span": 6 },
-            { "name": "spots_available", "label": "Est. Spots", "type": "number", "required": false, "placeholder": "4", "span": 12 },
+            { "name": "estimated_spots", "label": "Est. Spots", "type": "number", "required": false, "placeholder": "4", "span": 12 },
             { "name": "message", "label": "Message", "type": "textarea", "required": false, "placeholder": "Tell us about your project...", "span": 12 }
         ];
 

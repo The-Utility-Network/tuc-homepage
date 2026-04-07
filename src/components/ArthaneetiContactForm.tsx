@@ -8,13 +8,13 @@ interface ArthaneetiContactFormProps {
 
 export default function ArthaneetiContactForm({ themeColor = '#3B82F6' }: ArthaneetiContactFormProps) {
     const containerRef = useRef<HTMLDivElement>(null);
-    const formSlug = "early-registration-arthaneeti-platform-political-daos-e562fb25";
+    const formSlug = "arthaneeti-contact-form-d7369e93";
 
     useEffect(() => {
         if (!containerRef.current) return;
         if (containerRef.current.querySelector('form')) return;
 
-        const apiEndpoint = "https://crm.ledger1.ai/api/forms/submit";
+        const apiEndpoint = "https://crm.basalthq.com/api/forms/submit";
 
         // Arthaneeti Theme: Civic Blue & Clean
         const theme = {
@@ -59,7 +59,7 @@ export default function ArthaneetiContactForm({ themeColor = '#3B82F6' }: Arthan
             { "name": "company", "label": "Organization / Affiliation", "type": "text", "required": false, "placeholder": "e.g., Youth Political Action Committee", "span": 6 },
             { "name": "country", "label": "Country", "type": "text", "required": false, "placeholder": "e.g., India", "span": 6 },
             { "name": "primary_interest", "label": "Primary Interest", "type": "radio", "required": false, "placeholder": null, "span": 12, "options": interestOptions },
-            { "name": "comments", "label": "Topics or Causes (Optional)", "type": "textarea", "required": false, "placeholder": "Briefly share the issues you care about or DAOs you’d like to join.", "span": 12 }
+            { "name": "topic_or_causes", "label": "Topics or Causes (Optional)", "type": "textarea", "required": false, "placeholder": "Briefly share the issues you care about or DAOs you’d like to join.", "span": 12 }
         ];
 
         const allInputs: (HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement)[] = [];

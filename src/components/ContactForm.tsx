@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 
 export default function ContactForm() {
     const containerRef = useRef<HTMLDivElement>(null);
-    const formSlug = "the-utility-company-contact-form-915664af";
+    const formSlug = "tuc-contact-form-19f5af6a";
 
     useEffect(() => {
         if (!containerRef.current) return;
@@ -12,7 +12,7 @@ export default function ContactForm() {
         // Check if form already exists to prevent duplicate injection
         if (containerRef.current.querySelector('form')) return;
 
-        const apiEndpoint = "https://crm.ledger1.ai/api/forms/submit";
+        const apiEndpoint = "https://crm.basalthq.com/api/forms/submit";
 
         // TUC Core Theme
         const theme = {
@@ -38,11 +38,11 @@ export default function ContactForm() {
             { name: "phone", label: "Phone", type: "phone", required: false, placeholder: "(555) 123-4567", span: 6 },
             { name: "company", label: "Company", type: "text", required: true, placeholder: "Acme Industrial Co.", span: 12 },
             { name: "website", label: "Company website", type: "text", required: false, placeholder: "https://www.example.com", span: 12 },
-            { name: "subsidiary", label: "Subsidiary Interest", type: "select", required: true, placeholder: null, span: 12 },
+            { name: "subsidiary_interest", label: "Subsidiary Interest", type: "select", required: true, placeholder: null, span: 12 },
             { name: "city", label: "City", type: "text", required: false, placeholder: "City", span: 4 },
             { name: "state", label: "State/Region", type: "text", required: false, placeholder: "State", span: 4 },
             { name: "country", label: "Country", type: "select", required: false, placeholder: null, span: 4 },
-            { name: "message", label: "How can we help?", type: "textarea", required: true, placeholder: "Briefly describe your project, timelines, and goals...", span: 12 }
+            { name: "project_description", label: "How can we help?", type: "textarea", required: true, placeholder: "Briefly describe your project, timelines, and goals...", span: 12 }
         ];
 
         const allInputs: (HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement)[] = [];
@@ -67,7 +67,7 @@ export default function ContactForm() {
                 input = document.createElement("select");
 
                 let options: string[] = [];
-                if (field.name === 'subsidiary') {
+                if (field.name === 'subsidiary_interest') {
                     options = ["General Inquiry", "BasaltHQ", "Requiem Electric", "Vulcan Forge", "Osiris Protocol", "Cornucopia Robotics", "The Graine Ledger", "Elysium Athletica", "DigiBazaar", "Loch Ness Botanical Society"];
                 } else if (field.name === 'country') {
                     options = ["United States", "United Kingdom", "Canada", "Singapore", "Switzerland", "United Arab Emirates", "Other"];

@@ -8,7 +8,7 @@ interface GraineLedgerContactFormProps {
 
 export default function GraineLedgerContactForm({ themeColor = '#F97316' }: GraineLedgerContactFormProps) {
     const containerRef = useRef<HTMLDivElement>(null);
-    const formSlug = "the-graine-ledger-stakeholder-contact-00be621f";
+    const formSlug = "graine-ledger-form-5e26e79b";
 
     useEffect(() => {
         if (!containerRef.current) return;
@@ -16,7 +16,7 @@ export default function GraineLedgerContactForm({ themeColor = '#F97316' }: Grai
         // Check if form already exists to prevent duplicate injection
         if (containerRef.current.querySelector('form')) return;
 
-        const apiEndpoint = "https://crm.ledger1.ai/api/forms/submit";
+        const apiEndpoint = "https://crm.basalthq.com/api/forms/submit";
 
         // Theme configuration adapted for The Graine Ledger with whiskey orange
         const theme = {
@@ -84,14 +84,14 @@ export default function GraineLedgerContactForm({ themeColor = '#F97316' }: Grai
             { "name": "phone", "label": "Phone", "type": "phone", "required": false, "placeholder": "+1 555-123-4567", "span": 6 },
             { "name": "stakeholder_role", "label": "Stakeholder Role", "type": "select", "required": true, "placeholder": null, "span": 6, "options": stakeholderRoleOptions },
             { "name": "country", "label": "Country", "type": "text", "required": true, "placeholder": "United States", "span": 6 },
-            { "name": "company_brand", "label": "Company / Brand", "type": "text", "required": false, "placeholder": "Your brand or company", "span": 6 },
+            { "name": "company", "label": "Company / Brand", "type": "text", "required": false, "placeholder": "Your brand or company", "span": 6 },
             { "name": "website", "label": "Website", "type": "text", "required": false, "placeholder": "https://yourbrand.com", "span": 6 },
             // Investor-only fields
             { "name": "investment_level", "label": "Investment Interest", "type": "select", "required": false, "placeholder": null, "span": 6, "options": ["1 Barrel ($5K - $10K)", "2-5 Barrels ($10K - $50K)", "6-20 Barrels ($50K - $200K)", "Private Collection (20+ Barrels)"], "investorOnly": true },
             { "name": "project_timeline", "label": "Desired Timeline", "type": "select", "required": false, "placeholder": null, "span": 6, "options": timelineOptions, "investorOnly": true },
             // Common fields continue
             { "name": "areas_of_interest", "label": "Areas of Interest", "type": "multi_select", "required": false, "placeholder": null, "span": 12, "options": areasOfInterestOptions },
-            { "name": "message", "label": "How can we help?", "type": "textarea", "required": true, "placeholder": "Tell us about your goals, barrel preferences (e.g., char level, finish type), bottling plans, and distribution needs.", "span": 12 }
+            { "name": "how_can_we_help", "label": "How can we help?", "type": "textarea", "required": true, "placeholder": "Tell us about your goals, barrel preferences (e.g., char level, finish type), bottling plans, and distribution needs.", "span": 12 }
         ];
 
         const allInputs: (HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement)[] = [];

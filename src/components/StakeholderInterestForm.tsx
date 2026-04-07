@@ -8,7 +8,7 @@ interface StakeholderInterestFormProps {
 
 export default function StakeholderInterestForm({ themeColor = '#2ECC71' }: StakeholderInterestFormProps) {
     const containerRef = useRef<HTMLDivElement>(null);
-    const formSlug = "lnbs-stakeholder-interest-form-90412afd";
+    const formSlug = "loch-ness-contact-form-1363af2b";
 
     useEffect(() => {
         if (!containerRef.current) return;
@@ -16,7 +16,7 @@ export default function StakeholderInterestForm({ themeColor = '#2ECC71' }: Stak
         // Check if form already exists to prevent duplicate injection
         if (containerRef.current.querySelector('form')) return;
 
-        const apiEndpoint = "https://crm.ledger1.ai/api/forms/submit";
+        const apiEndpoint = "https://crm.basalthq.com/api/forms/submit";
 
         // Theme configuration adapted for LNBS with botanical green
         const theme = {
@@ -51,18 +51,18 @@ export default function StakeholderInterestForm({ themeColor = '#2ECC71' }: Stak
             { "name": "last_name", "label": "Last Name", "type": "text", "required": true, "placeholder": "e.g., Morgan", "span": 6 },
             { "name": "email", "label": "Email", "type": "email", "required": true, "placeholder": "you@domain.com", "span": 6 },
             { "name": "phone", "label": "Phone", "type": "phone", "required": false, "placeholder": "+1 555 123 4567", "span": 6 },
-            { "name": "stakeholder_role", "label": "I am interested as a...", "type": "select", "required": true, "placeholder": null, "span": 12, "options": ["Investor / Financial Backer", "Property Owner / Land Provider", "Farmer / Agricultural Partner", "Community Member / Local Advocate", "Restaurant / Food Service Partner", "Researcher / Academic", "Technology / Equipment Supplier", "Government / Municipal Representative", "General Inquiry / Just Curious"] },
+            { "name": "interested_as", "label": "I am interested as a...", "type": "select", "required": true, "placeholder": null, "span": 12, "options": ["Investor / Financial Backer", "Property Owner / Land Provider", "Farmer / Agricultural Partner", "Community Member / Local Advocate", "Restaurant / Food Service Partner", "Researcher / Academic", "Technology / Equipment Supplier", "Government / Municipal Representative", "General Inquiry / Just Curious"] },
             { "name": "country", "label": "Country of Residence", "type": "select", "required": true, "placeholder": null, "span": 6, "options": ["United States", "Canada", "United Kingdom", "Australia", "Germany", "France", "Japan", "Singapore", "United Arab Emirates", "Switzerland", "Other"] },
-            { "name": "state", "label": "State/Province/Region", "type": "text", "required": false, "placeholder": "e.g., California or Ontario", "span": 6 },
+            { "name": "state_province", "label": "State/Province/Region", "type": "text", "required": false, "placeholder": "e.g., California or Ontario", "span": 6 },
             // Investor-only fields
             { "name": "investment_interest", "label": "Desired Participation Level", "type": "select", "required": false, "placeholder": null, "span": 6, "options": ["Observer ($0 - Just want updates)", "Supporter ($1K - $10K)", "Investor ($10K - $50K)", "Major Stakeholder ($50K - $250K)", "Founding Partner ($250K+)"], "investorOnly": true },
             { "name": "accreditation_status", "label": "Investor Accreditation Status", "type": "select", "required": false, "placeholder": null, "span": 6, "options": ["Accredited Investor", "Qualified Purchaser", "Non-Accredited", "Unsure / Prefer not to say"], "investorOnly": true },
             // Common fields continue
-            { "name": "preferred_contact", "label": "Preferred Contact Method", "type": "select", "required": false, "placeholder": null, "span": 6, "options": ["Email", "Phone", "Either"] },
+            { "name": "preferred_contact_method", "label": "Preferred Contact Method", "type": "select", "required": false, "placeholder": null, "span": 6, "options": ["Email", "Phone", "Either"] },
             { "name": "company", "label": "Company (if applicable)", "type": "text", "required": false, "placeholder": "Your organization or leave blank", "span": 6 },
             { "name": "website", "label": "Website (optional)", "type": "text", "required": false, "placeholder": "https://example.com", "span": 6 },
-            { "name": "how_heard", "label": "How did you hear about us?", "type": "select", "required": false, "placeholder": null, "span": 6, "options": ["Social Media", "Search Engine", "Friend/Colleague Referral", "Conference/Event", "Podcast", "News/Article", "Other"] },
-            { "name": "message", "label": "Questions or Notes", "type": "textarea", "required": false, "placeholder": "Tell us about your goals, timeline, or any questions you have.", "span": 12 },
+            { "name": "how_did_you_hear", "label": "How did you hear about us?", "type": "select", "required": false, "placeholder": null, "span": 6, "options": ["Social Media", "Search Engine", "Friend/Colleague Referral", "Conference/Event", "Podcast", "News/Article", "Other"] },
+            { "name": "questions_or_notes", "label": "Questions or Notes", "type": "textarea", "required": false, "placeholder": "Tell us about your goals, timeline, or any questions you have.", "span": 12 },
             { "name": "consent", "label": "I confirm I am 21+ and consent to be contacted about stakeholder opportunities in my jurisdiction.", "type": "checkbox", "required": true, "placeholder": null, "span": 12 }
         ];
 
@@ -138,8 +138,8 @@ export default function StakeholderInterestForm({ themeColor = '#2ECC71' }: Stak
                         input.appendChild(el);
                     });
 
-                    // Special handling for stakeholder_role to show/hide investor fields
-                    if (field.name === 'stakeholder_role') {
+                    // Special handling for interested_as to show/hide investor fields
+                    if (field.name === 'interested_as') {
                         input.addEventListener('change', () => {
                             const isInvestor = input.value === 'Investor / Financial Backer';
                             updateInvestorFieldsVisibility(isInvestor);

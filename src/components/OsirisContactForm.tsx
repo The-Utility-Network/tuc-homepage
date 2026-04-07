@@ -8,13 +8,13 @@ interface OsirisContactFormProps {
 
 export default function OsirisContactForm({ themeColor = '#A855F7' }: OsirisContactFormProps) {
     const containerRef = useRef<HTMLDivElement>(null);
-    const formSlug = "osiris-protocol-contact-form-45e64b1e";
+    const formSlug = "osiris-protocol-contact-form-21ba5142";
 
     useEffect(() => {
         if (!containerRef.current) return;
         if (containerRef.current.querySelector('form')) return;
 
-        const apiEndpoint = "https://crm.ledger1.ai/api/forms/submit";
+        const apiEndpoint = "https://crm.basalthq.com/api/forms/submit";
 
         // Osiris Theme: Purple & Dark
         const theme = {
@@ -93,13 +93,13 @@ export default function OsirisContactForm({ themeColor = '#A855F7' }: OsirisCont
             { "name": "last_name", "label": "Last name", "type": "text", "required": true, "placeholder": "Lovelace", "span": 6 },
             { "name": "email", "label": "Email", "type": "email", "required": true, "placeholder": "ada@company.com", "span": 6 },
             { "name": "phone", "label": "Phone", "type": "phone", "required": false, "placeholder": "+1 415 555 0123", "span": 6 },
-            { "name": "company", "label": "Company / DAO", "type": "text", "required": false, "placeholder": "Your organization or DAO name", "span": 6 },
+            { "name": "company_dao", "label": "Company / DAO", "type": "text", "required": false, "placeholder": "Your organization or DAO name", "span": 6 },
             { "name": "website", "label": "Website", "type": "text", "required": false, "placeholder": "https://company.xyz", "span": 6 },
             { "name": "country", "label": "Country", "type": "text", "required": false, "placeholder": "United States", "span": 12 },
             { "name": "project_type", "label": "Project type", "type": "select", "required": true, "placeholder": null, "span": 6, "options": projectTypeOptions },
             { "name": "timeline", "label": "Timeline", "type": "select", "required": false, "placeholder": null, "span": 6, "options": timelineOptions },
             { "name": "budget_range", "label": "Budget range (USD)", "type": "select", "required": false, "placeholder": null, "span": 12, "options": budgetRangeOptions },
-            { "name": "chain_preference", "label": "Preferred chains / ecosystems", "type": "multi_select", "required": false, "placeholder": null, "span": 12, "options": chainPreferenceOptions },
+            { "name": "preferred_chains", "label": "Preferred chains / ecosystems", "type": "multi_select", "required": false, "placeholder": null, "span": 12, "options": chainPreferenceOptions },
             { "name": "project_description", "label": "Project description", "type": "textarea", "required": true, "placeholder": "Share scope, security requirements, oracle/data sources, commerce flows, integrations, and success criteria.", "span": 12 },
             { "name": "consent", "label": "I agree to be contacted about my inquiry", "type": "checkbox", "required": true, "placeholder": null, "span": 12 }
         ];

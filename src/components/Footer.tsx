@@ -19,7 +19,7 @@ const externalLinks = [
 
 const socialLinks = [
     { label: 'Contact Us', href: '/contact' },
-    { label: 'Blog', href: 'https://medium.com/@theutilityco' },
+    { label: 'Blog', href: '/blog' },
     { label: 'Podcasts', href: '/podcasts' },
     { label: 'Discord', href: 'https://discord.gg/scHwVByn9m' },
 ];
@@ -140,14 +140,12 @@ export default function Footer() {
                                 </div>
                             ))}
                         </div>
-                        <a
-                            href="https://theutilitycompany.co/pages/about-us/"
-                            target="_blank"
-                            rel="noopener noreferrer"
+                        <Link
+                            href="/team"
                             className="inline-block mt-6 text-xs font-mono text-[#F54029] hover:underline"
                         >
                             MEET THE TEAM →
-                        </a>
+                        </Link>
                     </div>
                 </div>
 

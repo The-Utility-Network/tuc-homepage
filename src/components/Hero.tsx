@@ -3,7 +3,16 @@ import Link from 'next/link';
 export default function Hero() {
     return (
         <section id="hero" className="relative min-h-screen flex items-center justify-center px-6 pt-24">
-            <div className="max-w-5xl mx-auto text-center z-10">
+            <div className="max-w-5xl mx-auto text-center z-10 relative">
+                {/* TUC Medallion Overlay - Absolutely positioned to prevent layout shift */}
+                <div className="absolute left-1/2 -translate-x-1/2 -top-24 opacity-0 animate-fadeInUp pointer-events-none">
+                    <img 
+                        src="https://storage.googleapis.com/tgl_cdn/images/Medallions/TUC.png" 
+                        alt="TUC Medallion" 
+                        className="w-20 h-20 object-contain" 
+                    />
+                </div>
+
                 {/* System Label */}
                 <div className="inline-flex items-center gap-2 mb-8 opacity-0 animate-fadeInUp">
                     <span className="w-2 h-2 bg-[#F54029] rounded-full animate-pulse" />

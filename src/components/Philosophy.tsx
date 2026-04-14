@@ -1,20 +1,21 @@
 import Link from 'next/link';
+import { Lightbulb, Rocket, Sprout } from 'lucide-react';
 
 const philosophyItems = [
     {
         title: 'Innovation',
         description: 'We push the boundaries of technology to discover new ways to empower individuals and communities.',
-        icon: '💡',
+        icon: Lightbulb,
     },
     {
         title: 'Empowerment',
         description: 'We believe in providing people with the tools and knowledge needed to be independent and create more than they consume.',
-        icon: '🚀',
+        icon: Rocket,
     },
     {
         title: 'Sustainability',
         description: 'We are committed to building a sustainable future where technology benefits both people and the environment.',
-        icon: '🌱',
+        icon: Sprout,
     },
 ];
 
@@ -44,8 +45,8 @@ export default function Philosophy() {
                 <div className="grid md:grid-cols-3 gap-8 mb-16">
                     {philosophyItems.map((item) => (
                         <div key={item.title} className="text-center">
-                            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-[#F54029]/10 border border-[#F54029]/30 mb-6">
-                                <span className="text-4xl">{item.icon}</span>
+                            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-[#F54029]/10 border border-[#F54029]/30 mb-6 text-[#F54029]">
+                                <item.icon className="w-10 h-10" />
                             </div>
                             <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
                             <p className="text-gray-400 text-sm leading-relaxed">{item.description}</p>

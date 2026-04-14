@@ -12,6 +12,7 @@ import Services from '@/components/Services';
 import Osiris from '@/components/Osiris';
 import Partners from '@/components/Partners';
 import Philosophy from '@/components/Philosophy';
+import BlogSection from '@/components/BlogSection';
 import NetworkStateSection from '@/components/NetworkStateSection';
 import SeoLinks from '@/components/SeoLinks';
 import Footer from '@/components/Footer';
@@ -44,6 +45,7 @@ export default function Home() {
         <Osiris />
         <Partners />
         <Philosophy />
+        <BlogSection />
         <NexusPreview />
         <NetworkStateSection />
         <SeoLinks />

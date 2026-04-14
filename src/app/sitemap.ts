@@ -1,6 +1,7 @@
 import { Metadata, MetadataRoute } from 'next';
 import { INDUSTRIES, LOCATIONS, COMPARISONS } from '@/data/seo';
 import { CODEX } from '@/data/codex';
+import { BLOG_POSTS } from '@/data/blog';
 
 const BASE_URL = 'https://theutilitycompany.co';
 
@@ -53,11 +54,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.6,
     }));
 
+    const blogRoutes = BLOG_POSTS.map((post) => ({
+        url: `${BASE_URL}/blog/${post.slug}`,
+        lastModified: new Date(post.date),
+        changeFrequency: 'monthly' as const,
+        priority: post.isHub ? 0.9 : 0.8,
+    }));
+
     return [
         ...routes,
         ...industryRoutes,
         ...locationRoutes,
         ...comparisonRoutes,
         ...codexRoutes,
+        ...blogRoutes,
     ];
 }

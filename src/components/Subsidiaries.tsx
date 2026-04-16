@@ -72,6 +72,13 @@ const subsidiaries = [
     image: 'https://storage.googleapis.com/tgl_cdn/images/Medallions/DigiBazaarMedallion.png',
     url: '/digibazaar',
     color: '#EF4444',
+  },
+  {
+    name: 'Hyperion Realty',
+    description: 'A sovereign wealth-grade real estate acquisition protocol tokenizing physical commercial assets.',
+    image: 'https://storage.googleapis.com/tgl_cdn/images/Medallions/HR.png',
+    url: 'https://hyperion.theutilitycompany.co',
+    color: '#d4af37',
   }
 ];
 

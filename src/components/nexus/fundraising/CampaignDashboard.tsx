@@ -101,7 +101,7 @@ export default function CampaignDashboard({ subsidiaryId, onOpenWizard }: Campai
         if (data) {
             setPendingCommitments(data.map(c => ({
                 id: c.id,
-                investorName: c.profiles?.full_name || 'Unknown Investor',
+                investorName: (c.profiles as any)?.full_name || (Array.isArray(c.profiles) ? (c.profiles as any)[0]?.full_name : null) || 'Unknown Investor',
                 amount: c.commitment_amount,
                 status: c.status,
                 date: c.created_at

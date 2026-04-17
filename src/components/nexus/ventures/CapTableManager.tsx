@@ -342,8 +342,8 @@ export default function CapTableManager({ subsidiaryId, authorizedShares = 10000
                                         {editGrant?.id === entry.id ? (
                                             <input 
                                                 autoFocus
-                                                value={editGrant.name} 
-                                                onChange={e => setEditGrant({...editGrant, name: e.target.value})}
+                                                value={editGrant?.name || ''} 
+                                                onChange={e => editGrant && setEditGrant({...editGrant, name: e.target.value})}
                                                 className="bg-black/60 border rounded px-2 py-1 text-xs text-white max-w-[120px] outline-none"
                                                 style={{ borderColor: themeColor }}
                                             />
@@ -355,8 +355,8 @@ export default function CapTableManager({ subsidiaryId, authorizedShares = 10000
                                         {editGrant?.id === entry.id ? (
                                             <input 
                                                 type="number"
-                                                value={editGrant.shares} 
-                                                onChange={e => setEditGrant({...editGrant, shares: e.target.value})}
+                                                value={editGrant?.shares || ''} 
+                                                onChange={e => editGrant && setEditGrant({...editGrant, shares: e.target.value})}
                                                 className="bg-black/60 border rounded px-2 py-1 text-xs text-right text-white max-w-[100px] outline-none"
                                                 style={{ borderColor: themeColor }}
                                             />

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase'
+import { sendEmail } from '@/lib/aws/ses'
 
 export async function POST(req: NextRequest) {
     const supabase = createClient()
@@ -51,26 +52,42 @@ export async function POST(req: NextRequest) {
             )
         }
 
-        // Get recipient count
-        let recipientCount = 0
+        // Resolve Recipient Emails
+        let recipientEmails: string[] = []
+        
         if (recipientType === 'all_investors' || !recipientType) {
-            const { count } = await supabase
-                .from('campaign_commitments')
-                .select('*', { count: 'exact', head: true })
-                .neq('status', 'cancelled')
+            // Find all campaigns for this subsidiary
+            const { data: campaigns } = await supabase
+                .from('fundraising_campaigns')
+                .select('id')
+                .eq('subsidiary_id', subsidiaryId)
+                
+            const campaignIds = (campaigns || []).map(c => c.id)
 
-            recipientCount = count || 0
+            if (campaignIds.length > 0) {
+                const { data: commitments } = await supabase
+                    .from('campaign_commitments')
+                    .select('profiles(email)')
+                    .neq('status', 'cancelled')
+                    .in('campaign_id', campaignIds)
+                    
+                const rawEmails = (commitments || []).map((c: any) => c.profiles?.email).filter(Boolean)
+                recipientEmails = Array.from(new Set(rawEmails)) // Deduplicate
+            }
         } else if (recipientType === 'campaign_specific' && campaignId) {
-            const { count } = await supabase
+            const { data: commitments } = await supabase
                 .from('campaign_commitments')
-                .select('*', { count: 'exact', head: true })
+                .select('profiles(email)')
                 .eq('campaign_id', campaignId)
                 .neq('status', 'cancelled')
-
-            recipientCount = count || 0
+                
+            const rawEmails = (commitments || []).map((c: any) => c.profiles?.email).filter(Boolean)
+            recipientEmails = Array.from(new Set(rawEmails))
         }
 
-        // Create update
+        const recipientCount = recipientEmails.length
+
+        // Create update record
         const { data: update, error } = await supabase
             .from('investor_updates')
             .insert({
@@ -94,8 +111,34 @@ export async function POST(req: NextRequest) {
 
         if (error) throw error
 
-        // TODO: Send actual emails to investors
-        // This would integrate with your email service (e.g., SendGrid, Postmark)
+        // Dispatch SES Emails
+        if (recipientEmails.length > 0) {
+            // Bcc everyone by looping, or sending individually to prevent seeing other investors' emails.
+            // A simple approach is to use SES's sendEmail looping concurrently (for a few scale), 
+            // or pass to SES in BCC. For optimal privacy, we can dispatch individual emails asynchronously.
+            const htmlMessage = `
+                <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
+                    <h2 style="color: #000;">${title}</h2>
+                    ${summary ? `<p style="font-size: 16px; color: #555;"><em>${summary}</em></p>` : ''}
+                    <hr style="border: none; border-top: 1px solid #eaeaea; margin: 24px 0;" />
+                    <div style="font-size: 14px; line-height: 1.6;">
+                        ${content.replace(/\ng/g, '<br />')}
+                    </div>
+                    <div style="margin-top: 40px; font-size: 12px; color: #888;">
+                        <p>This is an automated investor update from The Utility Network Nexus.</p>
+                    </div>
+                </div>
+            `;
+            
+            // To respect SES rate limits natively for tiny sets, we just map over promises.
+            await Promise.all(recipientEmails.map(email => 
+                sendEmail({
+                    toAddresses: [email],
+                    subject: `[Investor Update] ${title}`,
+                    htmlBody: htmlMessage
+                })
+            ));
+        }
 
         return NextResponse.json({
             update,

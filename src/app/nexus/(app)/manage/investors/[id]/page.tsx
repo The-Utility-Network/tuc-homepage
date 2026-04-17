@@ -3,7 +3,7 @@
 import { createClient } from '@/lib/supabase';
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { ArrowLeft, User, Building, Mail, Phone, Calendar, Shield, ExternalLink, FileText, Check, X, Ban } from 'lucide-react';
+import { ArrowLeft, User, Building, Mail, Phone, Calendar, Shield, ExternalLink, FileText, Check, X, Ban, Trash2 } from 'lucide-react';
 import { formatDistanceToNow, format } from 'date-fns';
 
 export default function InvestorDetailPage() {
@@ -36,15 +36,34 @@ export default function InvestorDetailPage() {
     const handleStatusChange = async (newStatus: string) => {
         if (!confirm(`Are you sure you want to set this user to ${newStatus}?`)) return;
 
-        const { error } = await supabase
-            .from('profiles')
-            .update({ status: newStatus })
-            .eq('id', id);
+        const res = await fetch('/api/admin/investors', {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ investorId: id, status: newStatus }),
+        });
 
-        if (error) {
-            alert('Error updating status');
+        if (!res.ok) {
+            const data = await res.json();
+            alert(data.error || 'Error updating status');
         } else {
             fetchDetails();
+        }
+    };
+
+    const handleDelete = async () => {
+        if (!confirm(`PERMANENTLY DELETE ${user?.full_name || 'this investor'}? This removes their profile, accreditation data, documents, and auth account. This cannot be undone.`)) return;
+
+        const res = await fetch('/api/admin/investors', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ investorId: id }),
+        });
+
+        if (!res.ok) {
+            const data = await res.json();
+            alert(data.error || 'Error deleting investor');
+        } else {
+            router.push('/nexus/manage/investors');
         }
     };
 
@@ -94,6 +113,9 @@ export default function InvestorDetailPage() {
                                 Deny / Ban
                             </button>
                         )}
+                        <button onClick={handleDelete} className="px-5 py-2.5 bg-red-900/20 hover:bg-red-600 text-red-400 hover:text-white font-bold rounded-xl transition-all border border-red-500/20 hover:border-red-500 flex items-center gap-2">
+                            <Trash2 size={16} /> Delete
+                        </button>
                     </div>
                 </div>
             </div>

@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase-server'
 import { createClient as createAdminClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
+import { sendEmail, FROM_ADDRESS } from '@/lib/aws/ses'
 
 // Need SERVICE_ROLE key to invite users
 const supabaseAdmin = createAdminClient(
@@ -67,12 +68,50 @@ export async function POST(request: Request) {
         })
 
         if (authError) {
-            // If user already exists, invitedUserByEmail returns error?
-            // Usually it says "User already registered".
-            // If so, we might want to just "Notify" them instead.
-            // For now, let's treat it as success for the CAP TABLE logic, but notify admin.
             console.log('User might already exist or invite error:', authError.message)
         }
+
+        // 4. Resolve Subsidiary Data for Email Template
+        const { data: subData } = await supabase.from('subsidiaries').select('name').eq('id', subsidiaryId).single()
+        const subsidiaryName = subData?.name || String(subsidiaryId).toUpperCase()
+
+        // 5. Send AWS SES Notifications
+        const userHtmlMessage = `
+            <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
+                <h1 style="color: #000;">Cap Table Allocation Notice</h1>
+                <p>Hello,</p>
+                <p>You have been formally invited to the <strong>${subsidiaryName}</strong> cap table via The Utility Network Nexus.</p>
+                <p><strong>Allocation:</strong> ${new Intl.NumberFormat('en-US').format(shares)} Shares</p>
+                <p><strong>Role:</strong> ${role}</p>
+                <hr style="border: none; border-top: 1px solid #eaeaea; margin: 24px 0;" />
+                <p>Please check for a secondary email containing your secure Nexus login instructions if this is your first time accessing the portal.</p>
+                <div style="margin-top: 40px; font-size: 12px; color: #888;">
+                    <p>The Utility Network</p>
+                </div>
+            </div>
+        `;
+
+        await sendEmail({
+            toAddresses: [email],
+            subject: `Allocation Confirmation - ${subsidiaryName}`,
+            htmlBody: userHtmlMessage
+        });
+
+        // Send Admin Audit Notification
+        await sendEmail({
+            toAddresses: ['founders@theutilitycompany.co'], // or FROM_ADDRESS
+            subject: `[Audit Log] Cap Table Grant Issued`,
+            htmlBody: `
+                <h3>Cap Table Event</h3>
+                <p>A new allocation was issued on the Network.</p>
+                <ul>
+                    <li><strong>Recipient:</strong> ${email}</li>
+                    <li><strong>Entity:</strong> ${subsidiaryName}</li>
+                    <li><strong>Shares:</strong> ${shares}</li>
+                    <li><strong>Initiator UUID:</strong> ${session.user.id}</li>
+                </ul>
+            `
+        });
 
         return NextResponse.json({ success: true, invite: inviteRecord, auth: authData })
 

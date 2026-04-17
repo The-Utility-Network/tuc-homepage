@@ -2,7 +2,7 @@
 
 import { createClient } from '@/lib/supabase'
 import { useState, useEffect } from 'react'
-import { PieChart, TrendingUp, Users, DollarSign, Plus, ChevronRight, Layers, ArrowUpRight, FileSignature, Landmark, Wallet, Check, Download, Lock, Trash2, X, AlertOctagon, LayoutGrid, Briefcase, Menu, FileText, Shield } from 'lucide-react'
+import { PieChart, TrendingUp, Users, DollarSign, Plus, ChevronRight, Layers, ArrowUpRight, FileSignature, Landmark, Wallet, Check, Download, Lock, Trash2, X, AlertOctagon, LayoutGrid, Briefcase, Menu, FileText, Shield, Settings } from 'lucide-react'
 import { format } from 'date-fns'
 import LegalDocument from '@/components/nexus/LegalDocument'
 import CapTableManager from '@/components/nexus/ventures/CapTableManager'
@@ -12,6 +12,11 @@ import FinancialDashboard from '@/components/nexus/fundraising/FinancialDashboar
 import DataRoomManager from '@/components/nexus/fundraising/DataRoomManager'
 import ComplianceCalendar from '@/components/nexus/fundraising/ComplianceCalendar'
 import ActivityDashboard from '@/components/nexus/admin/ActivityDashboard'
+import CompanySettings from '@/components/nexus/ventures/CompanySettings'
+import SignaturePad from '@/components/nexus/ventures/SignaturePad'
+import jsPDF from 'jspdf'
+import html2canvas from 'html2canvas'
+import { useRef } from 'react'
 
 export default function VenturesPage() {
     const supabase = createClient()
@@ -28,7 +33,7 @@ export default function VenturesPage() {
 
     // UI State
     const [activeTab, setActiveTab] = useState<string>('network')
-    const [viewMode, setViewMode] = useState<'overview' | 'invest' | 'captable' | 'fundraising' | 'metrics' | 'dataroom' | 'compliance'>('overview')
+    const [viewMode, setViewMode] = useState<'overview' | 'invest' | 'captable' | 'fundraising' | 'metrics' | 'dataroom' | 'compliance' | 'settings'>('overview')
     const [createWizardOpen, setCreateWizardOpen] = useState(false)
 
     // Mobile Sidebar Toggle
@@ -36,10 +41,18 @@ export default function VenturesPage() {
 
     // Investment Flow State
     const [investModalOpen, setInvestModalOpen] = useState(false)
-    const [investStep, setInvestStep] = useState<'safe' | 'wire' | 'funding' | 'confirm'>('safe')
+    const [investStep, setInvestStep] = useState<'details' | 'safe' | 'funding' | 'confirm'>('details')
     const [selectedRound, setSelectedRound] = useState<any>(null)
     const [investmentAmount, setInvestmentAmount] = useState('')
-    const [safeSigned, setSafeSigned] = useState(false)
+    
+    // E-Signature State
+    const [signatureData, setSignatureData] = useState<string | undefined>()
+    const [signatureType, setSignatureType] = useState<'drawn' | 'typed' | undefined>()
+    const [auditId, setAuditId] = useState<string | undefined>()
+    const [isSigning, setIsSigning] = useState(false)
+
+    // DOM Ref for PDF Download
+    const documentRef = useRef<HTMLDivElement>(null)
 
     // Initial Load
     useEffect(() => {
@@ -117,8 +130,10 @@ export default function VenturesPage() {
     // Actions
     const handleInvestClick = (round: any) => {
         setSelectedRound(round)
-        setInvestStep('safe')
-        setSafeSigned(false)
+        setInvestStep('details')
+        setSignatureData(undefined)
+        setSignatureType(undefined)
+        setAuditId(undefined)
         setInvestModalOpen(true)
     }
 
@@ -129,15 +144,76 @@ export default function VenturesPage() {
         setRefreshTrigger(p => p + 1)
     }
 
+    const handleExecuteSignature = async (sigData: string, type: 'drawn' | 'typed') => {
+        setIsSigning(true)
+        try {
+            const res = await fetch('/api/documents/sign', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    signatureData: sigData,
+                    type,
+                    campaignId: selectedRound.id,
+                    amount: parseFloat(investmentAmount)
+                })
+            })
+            
+            if (!res.ok) throw new Error('Signature capture failed')
+            
+            const { auditId } = await res.json()
+            setSignatureData(sigData)
+            setSignatureType(type)
+            setAuditId(auditId)
+            
+            // Move instantly to Funding step
+            setInvestStep('funding')
+        } catch (error) {
+            console.error(error)
+            alert('Failed to execute signature layer. Check connection.')
+        } finally {
+            setIsSigning(false)
+        }
+    }
+
+    const handleDownloadPDF = async () => {
+        if (!documentRef.current) return
+        
+        try {
+            const canvas = await html2canvas(documentRef.current, {
+                scale: 2,
+                useCORS: true,
+                logging: false,
+                windowWidth: 800, // force width for consistency
+            })
+            
+            const imgData = canvas.toDataURL('image/jpeg', 1.0)
+            
+            // PDF configuration (Portrait, 8.5 x 11)
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'in',
+                format: 'letter'
+            })
+            
+            const pdfWidth = pdf.internal.pageSize.getWidth()
+            const pdfHeight = (canvas.height * pdfWidth) / canvas.width
+            
+            pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight)
+            pdf.save(`${currentEntity?.name}_${selectedRound?.name}_Agreement.pdf`)
+        } catch (error) {
+            console.error('PDF Generation failed', error)
+        }
+    }
+
     return (
-        <div className="flex h-[calc(100vh-100px)] animate-fadeIn overflow-hidden rounded-2xl border border-white/10 bg-[#0A0A0A] relative">
+        <div className="flex w-full h-full animate-fadeIn overflow-hidden relative">
 
             {/* 1. LEFT SIDEBAR (Subsidiary List) - Desktop: Visible, Mobile: Hidden (Drawer) */}
             <div className={`
-                absolute inset-y-0 left-0 z-20 w-72 bg-black/90 backdrop-blur-xl border-r border-white/10 transform transition-transform duration-300 md:relative md:translate-x-0 md:bg-black/40 md:backdrop-blur-sm
+                absolute inset-y-0 left-0 z-20 w-72 bg-[#050505]/95 backdrop-blur-xl border-r border-white/5 transform transition-transform duration-300 md:relative md:translate-x-0 md:bg-black/20
                 ${mobileSubsidiaryOpen ? 'translate-x-0' : '-translate-x-full'}
             `}>
-                <div className="p-6 border-b border-white/5 flex justify-between items-center">
+                <div className="p-6 border-b border-white/5 flex justify-between items-center h-20">
                     <h3 className="text-xs font-bold font-rajdhani text-white/50 uppercase tracking-widest flex items-center gap-2">
                         <Layers size={14} /> Ecosystem Entities
                     </h3>
@@ -166,7 +242,7 @@ export default function VenturesPage() {
                                 {sub.name}
                             </span>
                             {activeTab === sub.id && (
-                                <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#F54029]" />
+                                <div className="absolute left-0 top-0 bottom-0 w-1" style={{ backgroundColor: sub.hex_color || '#F54029' }} />
                             )}
                         </button>
                     ))}
@@ -183,7 +259,8 @@ export default function VenturesPage() {
                 {/* Mobile Trigger for Sidebar */}
                 <button
                     onClick={() => setMobileSubsidiaryOpen(true)}
-                    className="md:hidden mb-6 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#F54029] border border-[#F54029]/20 px-4 py-2 rounded-lg bg-[#F54029]/5"
+                    className="md:hidden mb-6 flex items-center gap-2 text-xs font-bold uppercase tracking-widest border px-4 py-2 rounded-lg transition-colors"
+                    style={{ color: currentEntity?.hex_color || '#F54029', borderColor: `${currentEntity?.hex_color || '#F54029'}33`, backgroundColor: `${currentEntity?.hex_color || '#F54029'}0D` }}
                 >
                     <Menu size={14} /> Select Entity
                 </button>
@@ -191,17 +268,38 @@ export default function VenturesPage() {
                 {currentEntity && (
                     <div className="max-w-7xl mx-auto space-y-8">
 
-                        {/* Header Banner */}
-                        <div className="flex flex-col md:flex-row items-start justify-between gap-6 pb-8 border-b border-white/5">
-                            <div className="flex items-center gap-6">
-                                <div className="w-16 h-16 md:w-24 md:h-24 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center p-3 md:p-5 shadow-2xl shrink-0">
+                        {/* Conditional Rendering for BasaltHQ */}
+                        {currentEntity.name === 'BasaltHQ' ? (
+                            <div className="animate-fadeIn p-12 text-center border border-white/10 rounded-2xl bg-white/[0.02] flex flex-col items-center justify-center min-h-[500px]">
+                                <div className="w-24 h-24 bg-black border border-white/10 rounded-2xl flex items-center justify-center p-4 mb-6 shadow-2xl">
                                     <img src={currentEntity.logo_url} className="w-full h-full object-contain" />
                                 </div>
-                                <div className="space-y-2">
-                                    <h2 className="text-2xl md:text-4xl font-bold text-white font-rajdhani">{currentEntity.name}</h2>
-                                    <p className="text-white/60 text-sm md:text-lg leading-tight max-w-2xl">{currentEntity.description}</p>
-                                </div>
+                                <h2 className="text-3xl font-rajdhani font-bold text-white mb-4 uppercase tracking-widest">Central Operations Managed Externally</h2>
+                                <p className="text-white/60 max-w-lg mx-auto mb-10 text-sm leading-relaxed">
+                                    BasaltHQ is managed directly through the primary Basalt Nexus portal. All investments, cap tables, and compliance requirements for this entity are handled at its native source.
+                                </p>
+                                <a 
+                                    href="https://basalthq.com/nexus"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#F54029] hover:bg-[#C53020] text-white font-bold rounded-xl uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(245,64,41,0.2)] hover:shadow-[0_0_30px_rgba(245,64,41,0.4)]"
+                                >
+                                    Open Basalt Nexus <ArrowUpRight size={18} />
+                                </a>
                             </div>
+                        ) : (
+                            <>
+                                {/* Header Banner */}
+                                <div className="flex flex-col gap-6 pb-8 border-b border-white/5">
+                                    <div className="flex items-center gap-6">
+                                        <div className="w-16 h-16 md:w-24 md:h-24 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center p-3 md:p-5 shadow-2xl shrink-0">
+                                            <img src={currentEntity.logo_url} className="w-full h-full object-contain" />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <h2 className="text-2xl md:text-4xl font-bold text-white font-rajdhani whitespace-nowrap">{currentEntity.name}</h2>
+                                            <p className="text-white/60 text-sm md:text-lg leading-tight max-w-2xl">{currentEntity.description}</p>
+                                        </div>
+                                    </div>
 
                             {/* View Switcher - Scrollable on mobile */}
                             <div className="flex bg-white/5 rounded-lg p-1 border border-white/10 self-start shrink-0 overflow-x-auto max-w-full">
@@ -213,7 +311,8 @@ export default function VenturesPage() {
                                     ...(role === 'admin' ? [{ id: 'fundraising', icon: DollarSign, label: 'Fundraising' }] : []),
                                     { id: 'metrics', icon: TrendingUp, label: 'Metrics' },
                                     { id: 'dataroom', icon: FileText, label: 'Data Room' },
-                                    { id: 'compliance', icon: Shield, label: 'Compliance' }
+                                    { id: 'compliance', icon: Shield, label: 'Compliance' },
+                                    ...(role === 'admin' ? [{ id: 'settings', icon: Settings, label: 'Settings' }] : [])
                                 ].map(mode => (
                                     <button
                                         key={mode.id}
@@ -270,7 +369,7 @@ export default function VenturesPage() {
 
                                 {/* Row 2: Cap Table (Full Width) */}
                                 <div>
-                                    <CapTableManager subsidiaryId={currentEntity.id} authorizedShares={currentEntity.total_authorized_shares || 10000000} />
+                                    <CapTableManager subsidiaryId={currentEntity.id} authorizedShares={currentEntity.total_authorized_shares || 10000000} themeColor={currentEntity.hex_color} />
                                 </div>
                             </div>
                         )}
@@ -278,7 +377,7 @@ export default function VenturesPage() {
                         {/* VIEW: CAP TABLE */}
                         {viewMode === 'captable' && (
                             <div className="animate-fadeIn">
-                                <CapTableManager subsidiaryId={currentEntity.id} authorizedShares={currentEntity.total_authorized_shares || 10000000} />
+                                <CapTableManager subsidiaryId={currentEntity.id} authorizedShares={currentEntity.total_authorized_shares || 10000000} themeColor={currentEntity.hex_color} />
                             </div>
                         )}
 
@@ -371,6 +470,15 @@ export default function VenturesPage() {
                                 <ComplianceCalendar subsidiaryId={currentEntity.id} />
                             </div>
                         )}
+
+                        {/* VIEW: SETTINGS (Admin Only) */}
+                        {viewMode === 'settings' && (
+                            <div className="animate-fadeIn">
+                                <CompanySettings subsidiaryId={currentEntity.id} />
+                            </div>
+                        )}
+                        </>
+                        )}
                     </div>
                 )}
             </div>
@@ -406,53 +514,18 @@ export default function VenturesPage() {
                             </p>
 
                             {investStep === 'safe' && (
-                                <div className="space-y-6 flex-1">
-                                    <div className="space-y-2">
-                                        <label className="text-xs text-white/40 uppercase tracking-widest">Investment Amount ($)</label>
-                                        <div className="relative">
-                                            <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" size={16} />
-                                            <input
-                                                type="number"
-                                                className="w-full bg-black/40 border border-white/10 rounded-xl pl-10 pr-4 py-4 text-white text-lg font-mono outline-none focus:border-[#F54029]"
-                                                value={investmentAmount}
-                                                onChange={e => setInvestmentAmount(e.target.value)}
-                                                placeholder="0.00"
-                                            />
+                                <div className="space-y-6 flex-1 animate-fadeIn flex flex-col justify-center">
+                                    {isSigning ? (
+                                        <div className="text-center py-12">
+                                            <div className="animate-spin w-8 h-8 border-2 border-[#F54029] border-t-transparent rounded-full mx-auto mb-4" />
+                                            <p className="text-white/60 text-xs uppercase tracking-widest">Generating Audit Footprint...</p>
                                         </div>
-                                    </div>
-                                    {/* ... rest of inputs ... */}
-                                    {/* Simplified for brevity - reuse logic */}
-                                    <div className="p-4 bg-white/5 rounded-xl space-y-2 text-xs">
-                                        <div className="flex justify-between">
-                                            <span className="text-white/40">Round Type</span>
-                                            <span className="text-white font-bold">{selectedRound.round_type}</span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <span className="text-white/40">Valuation</span>
-                                            <span className="text-white font-mono">{formatUSD(selectedRound.valuation)}</span>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex-1" />
-
-                                    <div className="space-y-4">
-                                        <div className="flex items-start gap-3 p-4 bg-[#F54029]/10 rounded-xl border border-[#F54029]/20">
-                                            <Check className="text-[#F54029] mt-0.5" size={16} />
-                                            <p className="text-xs text-white/80 leading-relaxed">
-                                                By proceeding, I certify that I have reviewed the risks and am an accredited investor.
-                                            </p>
-                                        </div>
-                                        <button
-                                            disabled={!investmentAmount}
-                                            onClick={() => {
-                                                if (!investmentAmount) return;
-                                                // Normally proceed to 'doc view' or confirm
-                                            }}
-                                            className="w-full py-4 bg-[#F54029] disabled:opacity-50 hover:bg-[#C53020] text-white font-bold rounded-xl uppercase tracking-widest shadow-lg transition-all"
-                                        >
-                                            Generate Agreement
-                                        </button>
-                                    </div>
+                                    ) : (
+                                        <SignaturePad 
+                                            investorName={fullName || 'Valued Investor'} 
+                                            onSign={handleExecuteSignature} 
+                                        />
+                                    )}
                                 </div>
                             )}
 
@@ -462,13 +535,26 @@ export default function VenturesPage() {
                                         <Check className="mx-auto text-green-400 mb-2" size={32} />
                                         <h4 className="text-green-400 font-bold uppercase tracking-widest">Agreement Signed</h4>
                                     </div>
-                                    <div className="space-y-4">
-                                        <p className="text-sm text-white/60 text-center">
-                                            Please wire <strong>{formatUSD(parseFloat(investmentAmount))}</strong> to the account displayed on screen.
+                                    <div className="space-y-4 text-sm text-white/80">
+                                        <p className="text-center">
+                                            Please wire <strong>{formatUSD(parseFloat(investmentAmount))}</strong> to the account below. Your finalized legal agreement has been added to your Portfolio.
                                         </p>
+                                        <div className="p-4 bg-black/40 border border-white/10 rounded-xl font-mono text-center space-y-1">
+                                            <p>The Utility Company LLC</p>
+                                            <p>Routing: XXXXXXXXX</p>
+                                            <p>Account: 123456789</p>
+                                        </div>
+                                        
+                                        <button
+                                            onClick={handleDownloadPDF}
+                                            className="w-full py-3 bg-white/5 border border-white/10 hover:border-white/30 hover:bg-white/10 text-white font-bold rounded-xl flex items-center justify-center gap-2 mt-4 transition-all uppercase tracking-widest text-xs"
+                                        >
+                                            <Download size={16} /> Download Signed PDF
+                                        </button>
+                                        
                                         <button
                                             onClick={() => setInvestModalOpen(false)}
-                                            className="w-full py-4 bg-white text-black hover:bg-white/90 font-bold rounded-xl uppercase tracking-widest transition-all"
+                                            className="w-full py-4 bg-white text-black hover:bg-white/90 font-bold rounded-xl uppercase tracking-widest transition-all mt-4"
                                         >
                                             I have sent funds
                                         </button>
@@ -479,40 +565,30 @@ export default function VenturesPage() {
 
                         {/* Right: Document Preview */}
                         <div className="flex-1 bg-gray-900 md:border-l border-white/10 relative overflow-hidden hidden md:block">
-                            <div className="absolute inset-0 overflow-y-auto p-8 custom-scrollbar bg-gray-100">
-                                <LegalDocument
-                                    type={selectedRound.round_type === 'Equity' ? 'EQUITY' : 'SAFE'}
-                                    investorName={fullName || 'Valued Investor'}
-                                    entityName={currentEntity?.name || 'Network Entity'}
-                                    roundName={selectedRound.name}
-                                    amount={parseFloat(investmentAmount) || 0}
-                                    valuation={selectedRound.valuation || 0}
-                                    sharePrice={selectedRound.share_price}
-                                    date={new Date().toLocaleDateString()}
-                                    themeColor={currentEntity?.hex_color || '#000000'}
-                                />
-                            </div>
-
-                            {investStep === 'safe' && investmentAmount && (
-                                <div className="absolute bottom-0 left-0 right-0 p-6 bg-white border-t border-gray-200 flex justify-between items-center shadow-[0_-10px_30px_rgba(0,0,0,0.1)]">
-                                    <div className="flex items-center gap-3">
-                                        <div
-                                            onClick={() => setSafeSigned(!safeSigned)}
-                                            className={`w-6 h-6 border-2 rounded cursor-pointer transition-colors flex items-center justify-center ${safeSigned ? 'bg-black border-black text-white' : 'border-gray-400'}`}
-                                        >
-                                            {safeSigned && <Check size={14} />}
-                                        </div>
-                                        <span className="text-sm font-bold text-gray-900 text-xs uppercase tracking-wider">I agree to terms</span>
-                                    </div>
-                                    <button
-                                        onClick={() => setInvestStep('funding')}
-                                        disabled={!safeSigned}
-                                        className="px-8 py-3 bg-[#F54029] disabled:bg-gray-300 text-white font-bold rounded-lg uppercase tracking-wider text-xs transition-all"
-                                    >
-                                        Counter-Sign & Fund
-                                    </button>
+                            <div className="absolute inset-0 overflow-y-auto p-4 md:p-12 custom-scrollbar bg-gray-100 flex items-start justify-center">
+                                {/* The PDF capture bounds */}
+                                <div ref={documentRef} className="w-[800px] min-h-[1056px] shadow-2xl bg-white origin-top" style={{ transform: 'scale(0.85)', transformOrigin: 'top center', paddingBottom: '40px' }}>
+                                    <LegalDocument
+                                        type={selectedRound.round_type === 'Equity' ? 'EQUITY' : 'SAFE'}
+                                        investorName={fullName || 'Valued Investor'}
+                                        entityName={currentEntity?.name || 'Network Entity'}
+                                        roundName={selectedRound.name}
+                                        amount={parseFloat(investmentAmount) || 0}
+                                        valuation={selectedRound.valuation || 0}
+                                        sharePrice={selectedRound.share_price}
+                                        date={new Date().toLocaleDateString()}
+                                        themeColor={currentEntity?.hex_color || '#000000'}
+                                        entityConfig={{
+                                            type: currentEntity?.entity_type || 'C-Corp',
+                                            state: currentEntity?.incorporation_state || 'Delaware',
+                                            ein: currentEntity?.ein || 'PENDING'
+                                        }}
+                                        signatureData={signatureData}
+                                        signatureType={signatureType}
+                                        auditId={auditId}
+                                    />
                                 </div>
-                            )}
+                            </div>
                         </div>
                     </div>
                 </div>

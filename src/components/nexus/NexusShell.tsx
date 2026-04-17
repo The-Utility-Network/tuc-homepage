@@ -222,8 +222,8 @@ export default function NexusShell({ children, role, name, company, userEmail }:
                 </header>
 
                 {/* Main Content */}
-                <main className="flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
-                    <div className="max-w-[1600px] mx-auto animate-fadeInUp pb-10">
+                <main className={`flex-1 overflow-y-auto scroll-smooth scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent ${pathname === '/nexus/ventures' ? '' : 'p-4 md:p-8'}`}>
+                    <div className={`${pathname === '/nexus/ventures' ? 'h-full w-full' : 'max-w-[1600px] mx-auto pb-10'} animate-fadeInUp h-full`}>
                         {children}
                     </div>
                 </main>

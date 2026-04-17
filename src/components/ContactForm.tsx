@@ -68,7 +68,7 @@ export default function ContactForm() {
 
                 let options: string[] = [];
                 if (field.name === 'subsidiary_interest') {
-                    options = ["General Inquiry", "BasaltHQ", "Requiem Electric", "Vulcan Forge", "Osiris Protocol", "Cornucopia Robotics", "The Graine Ledger", "Elysium Athletica", "DigiBazaar", "Loch Ness Botanical Society"];
+                    options = ["General Inquiry", "BasaltHQ", "Requiem Electric", "Vulcan Forge", "Osiris Protocol", "Cornucopia Robotics", "The Graine Ledger", "Elysium Athletica", "DigiBazaar", "Loch Ness Botanical Society", "Hyperion Realty"];
                 } else if (field.name === 'country') {
                     options = ["United States", "United Kingdom", "Canada", "Singapore", "Switzerland", "United Arab Emirates", "Other"];
                 }

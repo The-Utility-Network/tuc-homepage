@@ -8,6 +8,10 @@ import { Eye, EyeOff, Loader2 } from 'lucide-react'
 export default function AuthForm() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [linkedinUrl, setLinkedinUrl] = useState('')
+    const [accreditationType, setAccreditationType] = useState('')
     const [loading, setLoading] = useState(false)
     const [message, setMessage] = useState<string | null>(null)
     const [isSignUp, setIsSignUp] = useState(false)
@@ -22,13 +26,18 @@ export default function AuthForm() {
 
         try {
             if (isSignUp) {
+                if (!accreditationType) {
+                    throw new Error('Please complete the accreditation questionnaire.')
+                }
                 const { data, error } = await supabase.auth.signUp({
                     email,
                     password,
                     options: {
                         emailRedirectTo: `${location.origin}/nexus/auth/callback`,
                         data: {
-                            full_name: email.split('@')[0], // Default name
+                            full_name: `${firstName} ${lastName}`.trim(),
+                            linkedin_url: linkedinUrl,
+                            accreditation_type: accreditationType,
                         }
                     },
                 })
@@ -61,7 +70,7 @@ export default function AuthForm() {
         <div className="w-full max-w-md p-8 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/10 shadow-2xl">
             <div className="text-center mb-8">
                 <h2 className="text-3xl font-light text-white mb-2 tracking-wide font-rajdhani">
-                    {isSignUp ? 'ACCESS REQUES' : 'TUC NEXUS'}
+                    {isSignUp ? 'ACCESS REQUEST' : 'TUC NEXUS'}
                 </h2>
                 <p className="text-[#F54029]/60 text-sm uppercase tracking-widest">
                     The Utility Company Ecosystem
@@ -69,6 +78,53 @@ export default function AuthForm() {
             </div>
 
             <form onSubmit={handleAuth} className="space-y-6">
+                
+                {isSignUp && (
+                    <>
+                        <div className="flex gap-4">
+                            <div className="flex-1">
+                                <label className="block text-xs font-medium text-[#F54029]/80 mb-2 uppercase tracking-wider">
+                                    First Name
+                                </label>
+                                <input
+                                    type="text"
+                                    value={firstName}
+                                    onChange={(e) => setFirstName(e.target.value)}
+                                    required={isSignUp}
+                                    className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-[#F54029]/50 focus:ring-1 focus:ring-[#F54029]/50 transition-all"
+                                    placeholder="Jane"
+                                />
+                            </div>
+                            <div className="flex-1">
+                                <label className="block text-xs font-medium text-[#F54029]/80 mb-2 uppercase tracking-wider">
+                                    Last Name
+                                </label>
+                                <input
+                                    type="text"
+                                    value={lastName}
+                                    onChange={(e) => setLastName(e.target.value)}
+                                    required={isSignUp}
+                                    className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-[#F54029]/50 focus:ring-1 focus:ring-[#F54029]/50 transition-all"
+                                    placeholder="Doe"
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block text-xs font-medium text-[#F54029]/80 mb-2 uppercase tracking-wider">
+                                LinkedIn Profile URL <span className="text-white/40 lowercase normal-case text-[10px] ml-1">(Optional)</span>
+                            </label>
+                            <input
+                                type="url"
+                                value={linkedinUrl}
+                                onChange={(e) => setLinkedinUrl(e.target.value)}
+                                className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-[#F54029]/50 focus:ring-1 focus:ring-[#F54029]/50 transition-all"
+                                placeholder="https://linkedin.com/in/janedoe"
+                            />
+                        </div>
+                    </>
+                )}
+
                 <div>
                     <label className="block text-xs font-medium text-[#F54029]/80 mb-2 uppercase tracking-wider">
                         Email Address
@@ -105,6 +161,30 @@ export default function AuthForm() {
                         </button>
                     </div>
                 </div>
+
+                {isSignUp && (
+                    <div className="bg-white/5 border border-white/10 p-4 rounded-lg space-y-3">
+                        <label className="block text-xs font-medium text-[#F54029] uppercase tracking-wider">
+                            Accreditation Questionnaire
+                        </label>
+                        <p className="text-white/60 text-xs mb-2">
+                            To comply with SEC regulations, please indicate your accreditation status to access our private data rooms.
+                        </p>
+                        <select
+                            value={accreditationType}
+                            onChange={(e) => setAccreditationType(e.target.value)}
+                            required={isSignUp}
+                            className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#F54029]/50 transition-all text-sm appearance-none"
+                        >
+                            <option value="" disabled>Select your status...</option>
+                            <option value="income">Individual Income &gt; $200k (or $300k joint)</option>
+                            <option value="net_worth">Net Worth &gt; $1M (excluding primary residence)</option>
+                            <option value="entity">Investing on behalf of an Accredited Entity</option>
+                            <option value="qualified_purchaser">Qualified Purchaser (&gt; $5M in investments)</option>
+                            <option value="none">I am not an accredited investor</option>
+                        </select>
+                    </div>
+                )}
 
                 {message && (
                     <div className={`p-4 rounded-lg text-sm ${message.includes('Check') ? 'bg-[#F54029]/20 text-[#F54029]' : 'bg-red-900/20 text-red-400'} border border-white/5`}>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Folder, File, Upload, Eye, Download, Lock, Shield, TrendingUp, Users, Clock, Plus, X, Check } from 'lucide-react'
+import { Folder, File, Upload, Eye, Download, Lock, Shield, TrendingUp, Users, Clock, Plus, X, Check, Trash } from 'lucide-react'
 import { createClient } from '@/lib/supabase'
 import DocumentUploadWizard from './DocumentUploadWizard'
 
@@ -26,7 +26,7 @@ interface DataRoomFile {
     uploadedAt: string
 }
 
-export default function DataRoomManager({ subsidiaryId }: { subsidiaryId: string }) {
+export default function DataRoomManager({ subsidiaryId, isAdmin = true }: { subsidiaryId: string; isAdmin?: boolean }) {
     const [folders, setFolders] = useState<DataRoomFolder[]>([])
     const [selectedFolder, setSelectedFolder] = useState<DataRoomFolder | null>(null)
     const [files, setFiles] = useState<DataRoomFile[]>([])
@@ -49,67 +49,41 @@ export default function DataRoomManager({ subsidiaryId }: { subsidiaryId: string
     }, [selectedFolder])
 
     async function fetchFolders() {
-        const { data, error } = await supabase
-            .from('data_room_folders')
-            .select('*')
-            .eq('subsidiary_id', subsidiaryId)
-            .is('parent_id', null)
-            .order('display_order')
+        try {
+            const res = await fetch(`/api/data-room/folders?subsidiaryId=${subsidiaryId}`)
+            const data = await res.json()
 
-        if (data) {
-            // Get file counts
-            const foldersWithCounts = await Promise.all(
-                data.map(async (folder) => {
-                    const { count } = await supabase
-                        .from('data_room_files')
-                        .select('*', { count: 'exact', head: true })
-                        .eq('folder_id', folder.id)
+            if (res.ok && data.folders) {
+                setFolders(data.folders)
 
-                    return {
-                        id: folder.id,
-                        name: folder.name,
-                        description: folder.description || '',
-                        icon: folder.icon || 'folder',
-                        accessLevel: folder.access_level,
-                        requiresNda: folder.requires_nda,
-                        fileCount: count || 0,
-                    }
-                })
-            )
-            setFolders(foldersWithCounts)
-
-            // Should we select the first folder if none is selected?
-            if (!selectedFolder && foldersWithCounts.length > 0) {
-                setSelectedFolder(foldersWithCounts[0])
-            } else if (selectedFolder) {
-                // Update the selected folder reference to keep counts fresh
-                const updated = foldersWithCounts.find(f => f.id === selectedFolder.id)
-                if (updated) setSelectedFolder(updated)
+                if (!selectedFolder && data.folders.length > 0) {
+                    setSelectedFolder(data.folders[0])
+                } else if (selectedFolder) {
+                    const updated = data.folders.find((f: any) => f.id === selectedFolder.id)
+                    if (updated) setSelectedFolder(updated)
+                }
+            } else {
+                console.error('Failed to fetch folders:', data.error)
             }
+        } catch (error) {
+            console.error('Network error fetching folders:', error)
+        } finally {
+            setLoading(false)
         }
-        setLoading(false)
     }
 
     async function fetchFiles(folderId: string) {
-        const { data } = await supabase
-            .from('data_room_files')
-            .select('*')
-            .eq('folder_id', folderId)
-            .order('created_at', { ascending: false })
+        try {
+            const res = await fetch(`/api/data-room/files?folderId=${folderId}`)
+            const data = await res.json()
 
-        if (data) {
-            setFiles(data.map(f => ({
-                id: f.id,
-                name: f.name,
-                description: f.description || '',
-                fileSize: f.file_size || 0,
-                fileType: f.file_type || 'unknown',
-                accessLevel: f.access_level,
-                viewCount: f.view_count || 0,
-                downloadCount: f.download_count || 0,
-                lastAccessedAt: f.last_accessed_at,
-                uploadedAt: f.created_at,
-            })))
+            if (res.ok && data.files) {
+                setFiles(data.files)
+            } else {
+                console.error('Failed to fetch files:', data.error)
+            }
+        } catch (error) {
+            console.error('Network error fetching files:', error)
         }
     }
 
@@ -146,20 +120,58 @@ export default function DataRoomManager({ subsidiaryId }: { subsidiaryId: string
     async function handleCreateFolder() {
         if (!newFolderData.name) return
 
-        const { error } = await supabase
-            .from('data_room_folders')
-            .insert({
-                subsidiary_id: subsidiaryId,
-                name: newFolderData.name,
-                description: newFolderData.description,
-                requires_nda: newFolderData.requiresNda,
-                access_level: 'all_investors'
+        try {
+            const res = await fetch('/api/admin/data-room/folders', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    subsidiaryId: subsidiaryId,
+                    name: newFolderData.name,
+                    description: newFolderData.description,
+                    requiresNda: newFolderData.requiresNda,
+                    accessLevel: 'all_investors'
+                })
             })
 
-        if (!error) {
+            const data = await res.json()
+
+            if (!res.ok) {
+                throw new Error(data.error || 'Failed to create folder')
+            }
+
             setCreateFolderOpen(false)
             setNewFolderData({ name: '', description: '', requiresNda: false })
             fetchFolders()
+        } catch (error: any) {
+            console.error('Error creating folder:', error)
+            alert(error.message || 'Failed to create folder. Please try again.')
+        }
+    }
+
+    async function handleDeleteFile(fileId: string) {
+        if (!confirm('Are you sure you want to delete this file? This action cannot be undone.')) return
+
+        setLoading(true)
+        try {
+            const res = await fetch('/api/admin/data-room/delete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fileId })
+            })
+
+            if (!res.ok) {
+                const data = await res.json()
+                throw new Error(data.error || 'Failed to delete file')
+            }
+
+            // Refresh everything after deletion
+            if (selectedFolder) fetchFiles(selectedFolder.id)
+            fetchFolders() // Updates file counts
+            fetchAnalytics() // Updates global counts
+        } catch (error: any) {
+            console.error('Error deleting file:', error)
+            alert(error.message || 'Failed to delete file.')
+            setLoading(false)
         }
     }
 
@@ -298,12 +310,14 @@ export default function DataRoomManager({ subsidiaryId }: { subsidiaryId: string
                 <div className="col-span-3 bg-black/40 border border-white/10 rounded-2xl p-6">
                     <div className="flex items-center justify-between mb-6">
                         <h3 className="text-white font-bold font-rajdhani text-xl">Folders</h3>
-                        <button
-                            onClick={() => setCreateFolderOpen(true)}
-                            className="p-2 bg-[#F54029]/20 hover:bg-[#F54029]/30 rounded-lg transition-colors"
-                        >
-                            <Plus className="text-[#F54029]" size={20} />
-                        </button>
+                        {isAdmin && (
+                            <button
+                                onClick={() => setCreateFolderOpen(true)}
+                                className="p-2 bg-[#F54029]/20 hover:bg-[#F54029]/30 rounded-lg transition-colors"
+                            >
+                                <Plus className="text-[#F54029]" size={20} />
+                            </button>
+                        )}
                     </div>
 
                     <div className="space-y-2">
@@ -346,13 +360,15 @@ export default function DataRoomManager({ subsidiaryId }: { subsidiaryId: string
                                     </h2>
                                     <p className="text-white/60 mt-2">{selectedFolder.description}</p>
                                 </div>
-                                <button
-                                    onClick={() => setUploadWizardOpen(true)}
-                                    className="px-6 py-3 bg-[#F54029] hover:bg-[#F54029]/90 text-white font-bold rounded-lg flex items-center gap-2 transition-colors"
-                                >
-                                    <Upload size={20} />
-                                    Upload File
-                                </button>
+                                {isAdmin && (
+                                    <button
+                                        onClick={() => setUploadWizardOpen(true)}
+                                        className="px-6 py-3 bg-[#F54029] hover:bg-[#F54029]/90 text-white font-bold rounded-lg flex items-center gap-2 transition-colors"
+                                    >
+                                        <Upload size={20} />
+                                        Upload File
+                                    </button>
+                                )}
                             </div>
 
                             {selectedFolder.requiresNda && (
@@ -411,12 +427,24 @@ export default function DataRoomManager({ subsidiaryId }: { subsidiaryId: string
                                                 </div>
 
                                                 <div className="flex gap-2">
-                                                    <button className="p-2 bg-blue-500/20 hover:bg-blue-500/30 rounded text-blue-400 transition-colors">
-                                                        <Eye size={18} />
-                                                    </button>
-                                                    <button className="p-2 bg-green-500/20 hover:bg-green-500/30 rounded text-green-400 transition-colors">
+                                                    <a 
+                                                        href={`/api/data-room/download?id=${file.id}`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="p-2 bg-blue-500/20 hover:bg-blue-500/30 rounded text-blue-400 transition-colors inline-block"
+                                                        title="View / Download"
+                                                    >
                                                         <Download size={18} />
-                                                    </button>
+                                                    </a>
+                                                    {isAdmin && (
+                                                        <button 
+                                                            onClick={() => handleDeleteFile(file.id)}
+                                                            className="p-2 bg-red-500/20 hover:bg-red-500/30 rounded text-red-400 transition-colors"
+                                                            title="Delete File"
+                                                        >
+                                                            <Trash size={18} />
+                                                        </button>
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>

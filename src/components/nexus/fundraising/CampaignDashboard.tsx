@@ -23,10 +23,20 @@ interface CampaignDashboardProps {
     onOpenWizard: () => void
 }
 
+interface Commitment {
+    id: string
+    investorName: string
+    amount: number
+    status: string
+    date: string
+}
+
 export default function CampaignDashboard({ subsidiaryId, onOpenWizard }: CampaignDashboardProps) {
     const [campaigns, setCampaigns] = useState<Campaign[]>([])
     const [activeCampaign, setActiveCampaign] = useState<Campaign | null>(null)
+    const [pendingCommitments, setPendingCommitments] = useState<Commitment[]>([])
     const [loading, setLoading] = useState(true)
+    const [processingId, setProcessingId] = useState<string | null>(null)
     const router = useRouter()
     const supabase = createClient()
 
@@ -40,6 +50,7 @@ export default function CampaignDashboard({ subsidiaryId, onOpenWizard }: Campai
             .from('fundraising_campaigns')
             .select('*')
             .eq('subsidiary_id', subsidiaryId)
+            .neq('name', 'Genesis Allocation')
             .order('created_at', { ascending: false })
 
         if (data) {
@@ -59,10 +70,73 @@ export default function CampaignDashboard({ subsidiaryId, onOpenWizard }: Campai
             }))
 
             setCampaigns(formatted)
-            setActiveCampaign(formatted.find(c => c.status === 'active') || formatted[0] || null)
-        }
+            
+            const active = formatted.find(c => c.status === 'active') || formatted[0] || null
+            setActiveCampaign(active)
 
+            if (active) {
+                fetchPendingCommitments(active.id)
+            } else {
+                setLoading(false)
+            }
+        } else {
+            setLoading(false)
+        }
+    }
+
+    async function fetchPendingCommitments(campaignId: string) {
+        const { data, error } = await supabase
+            .from('campaign_commitments')
+            .select(`
+                id,
+                commitment_amount,
+                status,
+                created_at,
+                profiles:investor_id(full_name)
+            `)
+            .eq('campaign_id', campaignId)
+            .eq('status', 'pending')
+            .order('created_at', { ascending: false })
+
+        if (data) {
+            setPendingCommitments(data.map(c => ({
+                id: c.id,
+                investorName: c.profiles?.full_name || 'Unknown Investor',
+                amount: c.commitment_amount,
+                status: c.status,
+                date: c.created_at
+            })))
+        }
         setLoading(false)
+    }
+
+    async function handleApproveCommitment(commitmentId: string) {
+        if (!activeCampaign) return
+        if (!confirm('Are you sure you want to finalize this commitment? This will update the Cap Table.')) return
+
+        setProcessingId(commitmentId)
+        try {
+            const res = await fetch('/api/admin/commit/approve', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    commitmentId,
+                    campaignId: activeCampaign.id,
+                })
+            })
+
+            if (!res.ok) {
+                const err = await res.json()
+                throw new Error(err.error || 'Failed to approve')
+            }
+
+            // Successfully approved, refresh data
+            await fetchCampaigns()
+        } catch (error: any) {
+            alert('Error approving commitment: ' + error.message)
+        } finally {
+            setProcessingId(null)
+        }
     }
 
     if (loading) {
@@ -263,6 +337,41 @@ export default function CampaignDashboard({ subsidiaryId, onOpenWizard }: Campai
                         <h3 className="text-white font-bold text-lg mb-2">View Analytics</h3>
                         <p className="text-white/60 text-sm">Deep dive into campaign performance</p>
                     </button>
+                </div>
+            )}
+
+            {/* Pending Commitments Queue */}
+            {activeCampaign && pendingCommitments.length > 0 && (
+                <div className="bg-gradient-to-r from-orange-500/10 to-transparent border border-orange-500/30 rounded-2xl p-8">
+                    <h3 className="text-xl font-bold font-rajdhani text-white mb-6 flex items-center gap-3">
+                        <AlertCircle className="text-orange-400" />
+                        Pending Wire Approvals ({pendingCommitments.length})
+                    </h3>
+                    <div className="space-y-4">
+                        {pendingCommitments.map(comm => (
+                            <div key={comm.id} className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 lg:p-6 bg-black/60 border border-white/10 rounded-xl">
+                                <div>
+                                    <p className="text-white font-bold text-lg">{comm.investorName}</p>
+                                    <p className="text-white/40 text-sm">Requested on {new Date(comm.date).toLocaleDateString()}</p>
+                                </div>
+                                <div className="text-left md:text-right">
+                                    <p className="text-2xl font-mono text-white font-bold">
+                                        ${(comm.amount / 1000).toFixed(0)}K
+                                    </p>
+                                    <p className="text-orange-400 text-xs uppercase tracking-widest">{comm.status}</p>
+                                </div>
+                                <button
+                                    onClick={() => handleApproveCommitment(comm.id)}
+                                    disabled={processingId === comm.id}
+                                    className="px-6 py-3 bg-green-500 hover:bg-green-400 text-black font-bold rounded-lg transition-colors flex items-center justify-center gap-2 whitespace-nowrap disabled:opacity-50"
+                                >
+                                    {processingId === comm.id ? 'Processing...' : (
+                                        <><CheckCircle size={18} /> Finalize Shares</>
+                                    )}
+                                </button>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             )}
 

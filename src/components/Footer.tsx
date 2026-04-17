@@ -15,6 +15,7 @@ const externalLinks = [
     { label: 'The Graine Ledger', href: 'https://thegraineledger.com' },
     { label: 'DigiBazaar', href: 'https://digibazaar.io' },
     { label: 'Osiris Protocol', href: 'https://osiris.theutilitycompany.co' },
+    { label: 'Hyperion Realty', href: 'https://hyperion.theutilitycompany.co' },
 ];
 
 const socialLinks = [

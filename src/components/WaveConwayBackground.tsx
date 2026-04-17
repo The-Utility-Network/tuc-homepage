@@ -18,6 +18,7 @@ const SUBSIDIARY_COLORS = [
     { r: 76, g: 175, b: 80 },   // LNBS - #4CAF50
     { r: 255, g: 112, b: 67 },  // Cornucopia Robotics - #FF7043
     { r: 233, g: 30, b: 99 },   // DigiBazaar - #E91E63
+    { r: 212, g: 175, b: 55 },  // Hyperion Realty - #D4AF37
 ];
 
 function lerpColor(color1: { r: number, g: number, b: number }, color2: { r: number, g: number, b: number }, t: number) {

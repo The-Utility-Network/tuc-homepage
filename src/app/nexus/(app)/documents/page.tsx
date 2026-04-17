@@ -3,17 +3,30 @@
 import { createClient } from '@/lib/supabase'
 import { useState, useEffect } from 'react'
 import { Folder, FileText, Download, Search, ChevronRight, LayoutGrid, List, Shield, Info, FolderOpen, File, PieChart } from 'lucide-react'
+import DataRoomManager from '@/components/nexus/fundraising/DataRoomManager'
 
 export default function DocumentsPage() {
     const supabase = createClient()
     const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
     const [selectedFolder, setSelectedFolder] = useState<string | null>(null)
+    const [isAdmin, setIsAdmin] = useState(false)
 
     // Dynamic Data
     const [subsidiaries, setSubsidiaries] = useState<any[]>([])
-    const [documents, setDocuments] = useState<any[]>([])
     const [recentDocs, setRecentDocs] = useState<any[]>([])
     const [loading, setLoading] = useState(false)
+
+    // Fetch user role
+    useEffect(() => {
+        const fetchRole = async () => {
+            const { data: { user } } = await supabase.auth.getUser()
+            if (user) {
+                const { data } = await supabase.from('profiles').select('role').eq('id', user.id).single()
+                setIsAdmin(data?.role === 'admin')
+            }
+        }
+        fetchRole()
+    }, [supabase])
 
     // Fetch Subsidiaries Metadata
     useEffect(() => {
@@ -30,37 +43,16 @@ export default function DocumentsPage() {
             }
         }
         fetchSubs()
-    }, [])
+    }, [supabase])
 
     // Fetch Recent Stats
     useEffect(() => {
         const fetchRecent = async () => {
-            const { data } = await supabase.from('documents').select('*').order('created_at', { ascending: false }).limit(5)
+            const { data } = await supabase.from('data_room_files').select('*').order('created_at', { ascending: false }).limit(5)
             setRecentDocs(data || [])
         }
         fetchRecent()
-    }, [])
-
-    // Fetch documents when folder selected
-    useEffect(() => {
-        if (!selectedFolder) {
-            setDocuments([])
-            return
-        }
-
-        const fetchDocs = async () => {
-            setLoading(true)
-            const { data } = await supabase
-                .from('documents')
-                .select('*')
-                .eq('subsidiary', selectedFolder)
-                .order('created_at', { ascending: false })
-
-            setDocuments(data || [])
-            setLoading(false)
-        }
-        fetchDocs()
-    }, [selectedFolder])
+    }, [supabase])
 
     const currentSubsidiary = subsidiaries.find(s => s.id === selectedFolder)
 
@@ -110,49 +102,9 @@ export default function DocumentsPage() {
 
             {/* Main Content Area */}
             {selectedFolder ? (
-                // Folder Content View 
-                <div className="flex-1 bg-black/40 border border-white/10 rounded-2xl p-8 animate-fadeInUp">
-                    <div className="flex items-center gap-4 mb-8">
-                        <div
-                            className="w-16 h-16 rounded-2xl flex items-center justify-center border transition-all"
-                            style={{
-                                backgroundColor: `${currentSubsidiary?.hex_color}10`,
-                                borderColor: `${currentSubsidiary?.hex_color}30`,
-                                boxShadow: `0 0 30px ${currentSubsidiary?.hex_color}10`
-                            }}
-                        >
-                            <img src={currentSubsidiary?.logo_url} alt={currentSubsidiary?.name} className="w-10 h-10 object-contain" />
-                        </div>
-                        <div>
-                            <h2 className="text-2xl font-bold font-rajdhani text-white">{currentSubsidiary?.name}</h2>
-                            <p className="text-white/40 text-sm">{currentSubsidiary?.description}</p>
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {loading && <p className="text-white/40 text-sm animate-pulse">Decrypting file list...</p>}
-
-                        {!loading && documents.length === 0 && (
-                            <p className="text-white/40 text-sm italic">No documents available in this secure folder.</p>
-                        )}
-
-                        {documents.map(doc => (
-                            <div key={doc.id} className="group p-4 bg-white/[0.02] border border-white/5 hover:border-[#F54029]/30 rounded-xl transition-all cursor-pointer hover:bg-white/[0.04]">
-                                <div className="flex justify-between items-start mb-4">
-                                    <FileText className="text-white/20 group-hover:text-white transition-colors" size={24} />
-                                    <a href={doc.file_url} target="_blank" className="text-white/20 hover:text-[#F54029] transition-colors"><Download size={16} /></a>
-                                </div>
-                                <p className="text-sm font-medium text-white/80 group-hover:text-white truncate">{doc.title}</p>
-                                <p className="text-[10px] text-white/30 uppercase tracking-wider mt-1">{doc.doc_type || 'PDF'}</p>
-                            </div>
-                        ))}
-                    </div>
-                    <div className="mt-12 p-4 rounded-lg bg-[#F54029]/5 border border-[#F54029]/10 flex items-center gap-3">
-                        <Info className="text-[#F54029]" size={20} />
-                        <p className="text-xs text-[#F54029]/80">
-                            All documents are confidental. Unauthorized distribution is strictly prohibited and tracked via watermark.
-                        </p>
-                    </div>
+                // Properly synced Data Room Manager component
+                <div className="bg-black/20 rounded-2xl animate-fadeInUp">
+                    <DataRoomManager subsidiaryId={selectedFolder} isAdmin={isAdmin} />
                 </div>
             ) : (
                 // Root Grid View
@@ -223,11 +175,11 @@ export default function DocumentsPage() {
                                             <FileText size={20} />
                                         </div>
                                         <div>
-                                            <p className="text-sm font-bold text-white group-hover:text-[#F54029] transition-colors">{doc.title}</p>
-                                            <p className="text-xs text-white/40">{new Date(doc.created_at).toLocaleDateString()} • {doc.doc_type}</p>
+                                            <p className="text-sm font-bold text-white group-hover:text-[#F54029] transition-colors">{doc.name}</p>
+                                            <p className="text-xs text-white/40">{new Date(doc.created_at).toLocaleDateString()} • {doc.file_type || 'Unknown'}</p>
                                         </div>
                                     </div>
-                                    <a href={doc.file_url} className="p-2 text-white/20 hover:text-white hover:bg-white/10 rounded-lg transition-colors">
+                                    <a href={`/api/data-room/download?id=${doc.id}`} target="_blank" rel="noreferrer" className="p-2 text-white/20 hover:text-white hover:bg-white/10 rounded-lg transition-colors">
                                         <Download size={18} />
                                     </a>
                                 </div>

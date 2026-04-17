@@ -2,7 +2,7 @@
 
 import { createClient } from '@/lib/supabase';
 import { useState, useEffect } from 'react';
-import { Users, Search, Check, X, Shield, ExternalLink, Filter, Download, ArrowRight } from 'lucide-react';
+import { Users, Search, Check, X, Shield, ExternalLink, Filter, Download, ArrowRight, Trash2 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import Link from 'next/link';
 
@@ -29,15 +29,38 @@ export default function InvestorCRMPage() {
 
     const handleStatusChange = async (id: string, newStatus: string, e: React.MouseEvent) => {
         e.stopPropagation();
-        const { error } = await supabase
-            .from('profiles')
-            .update({ status: newStatus })
-            .eq('id', id);
+        e.preventDefault();
 
-        if (error) {
-            alert('Error updating status');
+        const res = await fetch('/api/admin/investors', {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ investorId: id, status: newStatus }),
+        });
+
+        if (!res.ok) {
+            const data = await res.json();
+            alert(data.error || 'Error updating status');
         } else {
-            fetchUsers(); // Refresh list to reflect changes
+            fetchUsers();
+        }
+    };
+
+    const handleDelete = async (id: string, name: string, e: React.MouseEvent) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (!confirm(`PERMANENTLY DELETE ${name || 'this investor'}? This removes their profile, accreditation data, documents, and auth account. This cannot be undone.`)) return;
+
+        const res = await fetch('/api/admin/investors', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ investorId: id }),
+        });
+
+        if (!res.ok) {
+            const data = await res.json();
+            alert(data.error || 'Error deleting investor');
+        } else {
+            fetchUsers();
         }
     };
 
@@ -174,6 +197,13 @@ export default function InvestorCRMPage() {
                                                 <X size={18} />
                                             </button>
                                         )}
+                                        <button
+                                            onClick={(e) => handleDelete(user.id, user.full_name, e)}
+                                            className="p-2 hover:bg-red-900/20 text-white/20 hover:text-red-500 rounded-lg transition-colors"
+                                            title="Permanently Delete"
+                                        >
+                                            <Trash2 size={16} />
+                                        </button>
                                         <div className="w-px h-8 bg-white/10 mx-2" />
                                         <div className="text-white/20 group-hover:text-white transition-colors">
                                             <ArrowRight size={20} />

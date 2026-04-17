@@ -43,40 +43,28 @@ export default function DocumentUploadWizard({ subsidiaryId, currentFolderId, fo
 
         setLoading(true)
         try {
-            // 1. Upload file to Supabase Storage
-            // NOTE: Assuming a bucket named 'data-room' exists. If not, this might fail, 
-            // but we'll try to proceed with the DB record anyway for the UI demo.
-            const filePath = `${subsidiaryId}/${formData.folderId}/${Date.now()}_${file.name}`
+            const formDataPayload = new FormData()
+            formDataPayload.append('file', file)
+            formDataPayload.append('name', formData.name)
+            formDataPayload.append('description', formData.description)
+            formDataPayload.append('folderId', formData.folderId)
+            formDataPayload.append('subsidiaryId', subsidiaryId)
+            formDataPayload.append('accessLevel', formData.accessLevel)
 
-            // In a real scenario, we would upload here:
-            // const { error: uploadError } = await supabase.storage.from('data-room').upload(filePath, file)
-            // if (uploadError) throw uploadError
+            const res = await fetch('/api/admin/data-room/upload', {
+                method: 'POST',
+                body: formDataPayload
+            })
 
-            // For now, we'll simulate the upload success and just create the DB record
-            // to ensure the UI updates correctly without needing successful storage bucket config.
-
-            // 2. Create DB record
-            const { error: dbError } = await supabase
-                .from('data_room_files')
-                .insert({
-                    subsidiary_id: subsidiaryId,
-                    folder_id: formData.folderId,
-                    name: formData.name,
-                    description: formData.description,
-                    storage_path: filePath,
-                    file_size: file.size,
-                    file_type: file.type,
-                    access_level: formData.accessLevel,
-                    view_count: 0,
-                    download_count: 0
-                })
-
-            if (dbError) throw dbError
+            if (!res.ok) {
+                const data = await res.json()
+                throw new Error(data.error || 'Upload failed')
+            }
 
             onComplete()
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error uploading document:', error)
-            alert('Failed to upload document. Please try again.')
+            alert(error.message || 'Failed to upload document. Please try again.')
         } finally {
             setLoading(false)
         }

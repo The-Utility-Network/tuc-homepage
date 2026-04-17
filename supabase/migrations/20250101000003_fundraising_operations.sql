@@ -393,14 +393,24 @@ CREATE POLICY "Public campaigns visible to all"
     ON fundraising_campaigns FOR SELECT
     USING (visibility = 'public' OR is_super_admin());
 
+-- Function to break RLS infinite loop
+CREATE OR REPLACE FUNCTION user_has_committed_to_campaign(check_campaign_id UUID, check_user_id UUID)
+RETURNS BOOLEAN
+LANGUAGE sql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+    SELECT EXISTS (
+        SELECT 1 FROM campaign_commitments 
+        WHERE campaign_id = check_campaign_id 
+        AND investor_id = check_user_id
+    );
+$$;
+
 CREATE POLICY "Investors can view their campaigns"
     ON fundraising_campaigns FOR SELECT
     USING (
-        EXISTS (
-            SELECT 1 FROM campaign_commitments
-            WHERE campaign_id = fundraising_campaigns.id
-            AND investor_id = auth.uid()
-        )
+        user_has_committed_to_campaign(id, auth.uid())
         OR is_subsidiary_admin(auth.uid(), subsidiary_id)
     );
 

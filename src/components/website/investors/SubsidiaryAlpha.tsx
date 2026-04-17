@@ -137,6 +137,18 @@ const subsidiaries = [
         color: "#2ECC71",
         image: "https://storage.googleapis.com/tgl_cdn/images/Medallions/TLN.png",
         link: "/lochness-botanical-society"
+    },
+    {
+        name: "Hyperion Realty",
+        sector: "Tokenized Real Estate",
+        description: "Sovereign wealth-grade real estate acquisition protocol tokenizing physical commercial assets.",
+        metric: "$1.5 Trillion",
+        metricLabel: "Tokenized RE by 2030",
+        citation: "BCG & ADDX",
+        cagr: "27.1%",
+        color: "#d4af37",
+        image: "https://storage.googleapis.com/tgl_cdn/images/Medallions/HR.png",
+        link: "https://hyperion.theutilitycompany.co"
     }
 
 ]

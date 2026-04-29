@@ -35,6 +35,8 @@ export default function NexusShell({ children, role, name, company, userEmail }:
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const [sidebarExpanded, setSidebarExpanded] = useState(true)
     const pathname = usePathname()
+    
+    const isAdmin = role === 'admin' || role === 'superadmin'
 
     // check if link is active
     const isActive = (path: string) => pathname === path || pathname?.startsWith(path + '/')
@@ -100,7 +102,7 @@ export default function NexusShell({ children, role, name, company, userEmail }:
                     </nav>
                 </div>
 
-                {role === 'admin' && (
+                {isAdmin && (
                     <div className="space-y-2">
                         {sidebarExpanded && (
                             <h3 className="px-4 text-[10px] uppercase tracking-[0.2em] text-[#F54029]/80 mb-2 font-rajdhani font-semibold animate-fadeIn">
@@ -122,7 +124,7 @@ export default function NexusShell({ children, role, name, company, userEmail }:
                         </h3>
                     )}
                     <nav className="space-y-1">
-                        {role === 'admin' ? (
+                        {isAdmin ? (
                             <NavItem href="/nexus/settings" icon={Settings} label="System Config" />
                         ) : (
                             <NavItem href="/nexus/profile" icon={Settings} label="My Profile" />

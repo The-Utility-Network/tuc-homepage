@@ -62,18 +62,18 @@ export async function POST(request: NextRequest) {
                 </div>
             `;
 
-            await sendEmail({
-                toAddresses: [userEmail],
-                subject: `Action Required: Wiring Instructions for Pending Commitment`,
-                htmlBody: wireHtml
-            }).catch(e => console.error('Failed sending wire instruction email:', e))
+            await sendEmail(
+                userEmail,
+                `Action Required: Wiring Instructions for Pending Commitment`,
+                wireHtml
+            ).catch(e => console.error('Failed sending wire instruction email:', e))
         }
 
         // Admin Notification
-        await sendEmail({
-            toAddresses: ['founders@theutilitycompany.co'],
-            subject: `[Audit] New Pending Commitment Received`,
-            htmlBody: `
+        await sendEmail(
+            'founders@theutilitycompany.co',
+            `[Audit] New Pending Commitment Received`,
+            `
                 <h3>Commitment Trace</h3>
                 <ul>
                     <li><strong>Investor:</strong> ${userEmail} (${user.id})</li>
@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
                     <li><strong>Requested Shares (Optional):</strong> ${number_of_shares || 'N/A'}</li>
                 </ul>
             `
-        }).catch(e => console.error('Failed sending admin commitment alert:', e))
+        ).catch(e => console.error('Failed sending admin commitment alert:', e))
 
         return NextResponse.json({ success: true })
     } catch (error: any) {

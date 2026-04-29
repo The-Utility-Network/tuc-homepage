@@ -132,11 +132,11 @@ export async function POST(req: NextRequest) {
             
             // To respect SES rate limits natively for tiny sets, we just map over promises.
             await Promise.all(recipientEmails.map(email => 
-                sendEmail({
-                    toAddresses: [email],
-                    subject: `[Investor Update] ${title}`,
-                    htmlBody: htmlMessage
-                })
+                sendEmail(
+                    email,
+                    `[Investor Update] ${title}`,
+                    htmlMessage
+                )
             ));
         }
 

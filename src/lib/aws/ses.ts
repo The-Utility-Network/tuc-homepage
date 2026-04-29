@@ -12,7 +12,7 @@ const sesClient = new SESClient({
     ...(credentials ? { credentials } : {})
 });
 
-let FROM_ADDRESS = process.env.SES_FROM_ADDRESS || "The Utility Network <founders@theutilitycompany.co>";
+export let FROM_ADDRESS = process.env.SES_FROM_ADDRESS || "The Utility Network <founders@theutilitycompany.co>";
 if ((FROM_ADDRESS.startsWith('"') && FROM_ADDRESS.endsWith('"')) || (FROM_ADDRESS.startsWith("'") && FROM_ADDRESS.endsWith("'"))) {
     FROM_ADDRESS = FROM_ADDRESS.substring(1, FROM_ADDRESS.length - 1);
 }

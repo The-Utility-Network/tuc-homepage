@@ -91,17 +91,17 @@ export async function POST(request: Request) {
             </div>
         `;
 
-        await sendEmail({
-            toAddresses: [email],
-            subject: `Allocation Confirmation - ${subsidiaryName}`,
-            htmlBody: userHtmlMessage
-        });
+        await sendEmail(
+            email,
+            `Allocation Confirmation - ${subsidiaryName}`,
+            userHtmlMessage
+        );
 
         // Send Admin Audit Notification
-        await sendEmail({
-            toAddresses: ['founders@theutilitycompany.co'], // or FROM_ADDRESS
-            subject: `[Audit Log] Cap Table Grant Issued`,
-            htmlBody: `
+        await sendEmail(
+            'founders@theutilitycompany.co',
+            `[Audit Log] Cap Table Grant Issued`,
+            `
                 <h3>Cap Table Event</h3>
                 <p>A new allocation was issued on the Network.</p>
                 <ul>
@@ -111,7 +111,7 @@ export async function POST(request: Request) {
                     <li><strong>Initiator UUID:</strong> ${session.user.id}</li>
                 </ul>
             `
-        });
+        );
 
         return NextResponse.json({ success: true, invite: inviteRecord, auth: authData })
 

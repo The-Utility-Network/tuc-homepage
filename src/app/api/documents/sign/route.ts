@@ -81,18 +81,18 @@ export async function POST(req: Request) {
         `;
 
         if (userEmail) {
-            await sendEmail({
-                toAddresses: [userEmail],
-                subject: `ESIGN Receipt: ${type} Execution [${sig.id}]`,
-                htmlBody: esignHtml
-            }).catch(e => console.error('Failed to send ESIGN receipt:', e))
+            await sendEmail(
+                userEmail,
+                `ESIGN Receipt: ${type} Execution [${sig.id}]`,
+                esignHtml
+            ).catch(e => console.error('Failed to send ESIGN receipt:', e))
         }
 
         // Admin Notification
-        await sendEmail({
-            toAddresses: ['founders@theutilitycompany.co'], // or FROM_ADDRESS
-            subject: `[Audit] New Signature Executed`,
-            htmlBody: `
+        await sendEmail(
+            'founders@theutilitycompany.co',
+            `[Audit] New Signature Executed`,
+            `
                 <h3>Signature Trace</h3>
                 <ul>
                     <li><strong>Signer:</strong> ${userEmail} (${user.id})</li>
@@ -101,7 +101,7 @@ export async function POST(req: Request) {
                     <li><strong>IP Address:</strong> ${ip}</li>
                 </ul>
             `
-        }).catch(e => console.error('Failed to send Admin Audit:', e))
+        ).catch(e => console.error('Failed to send Admin Audit:', e))
 
         // Return the secure Audit ID (we'll use the signature row ID)
         return NextResponse.json({ success: true, auditId: sig.id, documentId: doc.id })

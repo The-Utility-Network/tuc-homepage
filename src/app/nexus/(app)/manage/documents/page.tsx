@@ -175,7 +175,7 @@ export default function DocumentManagerPage() {
                             <div key={doc.id} className="bg-black/40 border border-white/10 rounded-xl p-4 flex items-center justify-between group hover:border-[#F54029]/30 transition-colors">
                                 <div className="flex items-center gap-4">
                                     <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${doc.doc_type === 'tax' ? 'bg-orange-500/10 text-orange-400' :
-                                            doc.doc_type === 'contract' ? 'bg-blue-500/10 text-blue-400' :
+                                            doc.doc_type === 'contract' ? 'bg-red-500/10 text-red-400' :
                                                 'bg-white/5 text-white/60'
                                         }`}>
                                         <FileText size={20} />

@@ -18,8 +18,10 @@ import {
     MessageSquare,
     ChevronLeft,
     PanelLeftClose,
-    PanelLeftOpen
+    PanelLeftOpen,
+    Landmark
 } from 'lucide-react'
+import NotificationBell from './NotificationBell'
 
 interface NexusShellProps {
     children: React.ReactNode
@@ -108,6 +110,7 @@ export default function NexusShell({ children, role, name, company, userEmail }:
                         <div className="space-y-1">
                             <NavItem href="/nexus/manage/investors" icon={Users} label="Investors" />
                             <NavItem href="/nexus/manage/documents" icon={FileText} label="Doc Center" />
+                            <NavItem href="/nexus/governance" icon={Landmark} label="Governance" />
                         </div>
                     </div>
                 )}
@@ -206,10 +209,7 @@ export default function NexusShell({ children, role, name, company, userEmail }:
                     </div>
 
                     <div className="flex items-center gap-6">
-                        <button className="relative text-white/40 hover:text-white transition-colors">
-                            <Bell size={18} />
-                            <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#F54029] rounded-full border border-black" />
-                        </button>
+                        <NotificationBell userEmail={userEmail} />
                         <div className="h-6 w-px bg-white/10" />
                         <div className="px-3 py-1.5 rounded-full bg-green-500/5 border border-green-500/20 flex items-center gap-2 group cursor-help transition-colors hover:bg-green-500/10">
                             <div className="relative">

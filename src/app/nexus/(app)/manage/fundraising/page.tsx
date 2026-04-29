@@ -93,12 +93,12 @@ export default function FundraisingPage() {
                         <p className="text-4xl font-rajdhani font-bold text-white group-hover:text-green-400 transition-colors">{activeCount}</p>
                     </div>
                     <div className="bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 rounded-2xl p-6 relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-[50px] -mr-16 -mt-16 group-hover:bg-blue-500/20 transition-all duration-500" />
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/10 rounded-full blur-[50px] -mr-16 -mt-16 group-hover:bg-red-500/20 transition-all duration-500" />
                         <h3 className="text-white/40 text-xs font-bold uppercase tracking-widest mb-2 flex items-center gap-2">
-                            <Users size={14} className="text-blue-500" />
+                            <Users size={14} className="text-red-500" />
                             Total Vehicles
                         </h3>
-                        <p className="text-4xl font-rajdhani font-bold text-white group-hover:text-blue-400 transition-colors">{campaigns.length}</p>
+                        <p className="text-4xl font-rajdhani font-bold text-white group-hover:text-red-400 transition-colors">{campaigns.length}</p>
                     </div>
                 </div>
             )}

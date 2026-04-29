@@ -141,10 +141,10 @@ export default function SettingsPage() {
                     <div className="bg-black/40 border border-white/10 rounded-2xl p-8">
                         <div className="flex justify-between items-start mb-6">
                             <h2 className="text-xl font-rajdhani font-bold text-white flex items-center gap-3">
-                                <Landmark className="text-blue-400" />
+                                <Landmark className="text-red-400" />
                                 Banking & Wire Instructions
                             </h2>
-                            <div className="px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                            <div className="px-3 py-1 bg-red-500/10 text-red-400 border border-red-500/20 rounded-full text-[10px] font-bold uppercase tracking-wider">
                                 Mercury Compatible
                             </div>
                         </div>
@@ -157,23 +157,23 @@ export default function SettingsPage() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-white/5 rounded-xl border border-white/5">
                             <div className="space-y-2">
                                 <label className="text-xs uppercase tracking-widest text-white/40">Bank Name</label>
-                                <input type="text" defaultValue="Mercury / Evolve Bank & Trust" className="w-full bg-transparent border-b border-white/10 focus:border-blue-400 text-white outline-none transition-colors" />
+                                <input type="text" defaultValue="Mercury / Evolve Bank & Trust" className="w-full bg-transparent border-b border-white/10 focus:border-red-400 text-white outline-none transition-colors" />
                             </div>
                             <div className="space-y-2">
                                 <label className="text-xs uppercase tracking-widest text-white/40">Beneficiary Name</label>
-                                <input type="text" defaultValue="The Utility Company LLC" className="w-full bg-transparent border-b border-white/10 focus:border-blue-400 text-white outline-none transition-colors" />
+                                <input type="text" defaultValue="The Utility Company LLC" className="w-full bg-transparent border-b border-white/10 focus:border-red-400 text-white outline-none transition-colors" />
                             </div>
                             <div className="space-y-2">
                                 <label className="text-xs uppercase tracking-widest text-white/40">Routing Number</label>
-                                <input type="text" placeholder="021..." className="w-full bg-transparent border-b border-white/10 focus:border-blue-400 text-white outline-none transition-colors font-mono" />
+                                <input type="text" placeholder="021..." className="w-full bg-transparent border-b border-white/10 focus:border-red-400 text-white outline-none transition-colors font-mono" />
                             </div>
                             <div className="space-y-2">
                                 <label className="text-xs uppercase tracking-widest text-white/40">Account Number</label>
-                                <input type="text" placeholder="**********" className="w-full bg-transparent border-b border-white/10 focus:border-blue-400 text-white outline-none transition-colors font-mono" />
+                                <input type="text" placeholder="**********" className="w-full bg-transparent border-b border-white/10 focus:border-red-400 text-white outline-none transition-colors font-mono" />
                             </div>
                             <div className="col-span-2 space-y-2">
                                 <label className="text-xs uppercase tracking-widest text-white/40">Swift Code</label>
-                                <input type="text" placeholder="EVOLUS33" className="w-full bg-transparent border-b border-white/10 focus:border-blue-400 text-white outline-none transition-colors font-mono" />
+                                <input type="text" placeholder="EVOLUS33" className="w-full bg-transparent border-b border-white/10 focus:border-red-400 text-white outline-none transition-colors font-mono" />
                             </div>
                         </div>
                     </div>

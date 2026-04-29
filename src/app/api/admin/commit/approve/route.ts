@@ -126,11 +126,11 @@ export async function POST(request: NextRequest) {
                     </div>
                 `;
 
-                await sendEmail({
-                    toAddresses: [profile.email],
-                    subject: 'Official: Wire Received & Cap Table Shares Issued',
-                    htmlBody: confHtml
-                }).catch(e => console.error('Failed sending cap table conf email:', e))
+                await sendEmail(
+                    profile.email,
+                    'Official: Wire Received & Cap Table Shares Issued',
+                    confHtml
+                ).catch(e => console.error('Failed sending cap table conf email:', e))
             }
         }
 

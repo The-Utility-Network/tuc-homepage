@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default function BlogIndex() {
-    const hub = BLOG_POSTS.find(p => p.isHub);
+    const hubs = BLOG_POSTS.filter(p => p.isHub);
     const spokes = BLOG_POSTS.filter(p => !p.isHub);
 
     return (
@@ -39,72 +39,81 @@ export default function BlogIndex() {
                     </p>
                 </div>
 
-                {/* Hub Article — Featured */}
-                {hub && (
-                    <Link
-                        href={`/blog/${hub.slug}`}
-                        className="group block mx-6 mb-16 rounded-2xl overflow-hidden border border-white/5 hover:border-[#F54029]/30 transition-all duration-500"
-                    >
-                        <div className="relative aspect-[21/9] overflow-hidden">
-                            <div
-                                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                                style={{ backgroundImage: `url(${hub.coverImage})` }}
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
-                            <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
-                                <div className="flex items-center gap-4 mb-4">
-                                    <span className="px-3 py-1 bg-[#F54029] text-black text-[10px] font-mono tracking-wider rounded-full font-bold">
-                                        HUB ARTICLE
-                                    </span>
-                                    <span className="text-xs font-mono text-gray-400">{hub.category}</span>
-                                    <span className="text-xs font-mono text-gray-500">{hub.readTime}</span>
+                {hubs.map((hub) => {
+                    // Find spokes that are related to this hub
+                    const relatedSpokes = spokes.filter(spoke => hub.relatedSlugs.includes(spoke.slug));
+                    
+                    return (
+                        <div key={hub.slug} className="mb-24">
+                            {/* Hub Article — Featured */}
+                            <Link
+                                href={`/blog/${hub.slug}`}
+                                className="group block mx-6 mb-12 rounded-2xl overflow-hidden border border-white/5 hover:border-[#F54029]/30 transition-all duration-500"
+                            >
+                                <div className="relative aspect-[21/9] overflow-hidden">
+                                    <div
+                                        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                                        style={{ backgroundImage: `url(${hub.coverImage})` }}
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+                                    <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
+                                        <div className="flex items-center gap-4 mb-4">
+                                            <span className="px-3 py-1 bg-[#F54029] text-black text-[10px] font-mono tracking-wider rounded-full font-bold">
+                                                HUB ARTICLE
+                                            </span>
+                                            <span className="text-xs font-mono text-gray-400">{hub.category}</span>
+                                            <span className="text-xs font-mono text-gray-500">{hub.readTime}</span>
+                                        </div>
+                                        <h2 className="text-2xl md:text-4xl font-bold mb-4 group-hover:text-[#F54029] transition-colors leading-tight max-w-4xl">
+                                            {hub.title}
+                                        </h2>
+                                        <p className="text-gray-400 max-w-3xl leading-relaxed hidden md:block">
+                                            {hub.excerpt}
+                                        </p>
+                                    </div>
                                 </div>
-                                <h2 className="text-2xl md:text-4xl font-bold mb-4 group-hover:text-[#F54029] transition-colors leading-tight max-w-4xl">
-                                    {hub.title}
-                                </h2>
-                                <p className="text-gray-400 max-w-3xl leading-relaxed hidden md:block">
-                                    {hub.excerpt}
-                                </p>
-                            </div>
-                        </div>
-                    </Link>
-                )}
+                            </Link>
 
-                {/* Spoke Articles */}
-                <div className="grid md:grid-cols-2 gap-6 px-6">
-                    {spokes.map((post) => (
-                        <Link
-                            key={post.slug}
-                            href={`/blog/${post.slug}`}
-                            className="group glass-panel rounded-2xl overflow-hidden border border-white/5 hover:border-[#F54029]/30 transition-all duration-500 hover:-translate-y-1"
-                        >
-                            <div className="relative aspect-[16/9] overflow-hidden">
-                                <div
-                                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                                    style={{ backgroundImage: `url(${post.coverImage})` }}
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-                            </div>
-                            <div className="p-6">
-                                <div className="flex items-center gap-3 mb-3">
-                                    <span className="text-[10px] font-mono text-[#F54029] tracking-widest uppercase">{post.category}</span>
-                                    <span className="text-[10px] font-mono text-gray-600">•</span>
-                                    <span className="text-[10px] font-mono text-gray-500">{post.readTime}</span>
+                            {/* Spoke Articles for this Hub */}
+                            {relatedSpokes.length > 0 && (
+                                <div className="grid md:grid-cols-2 gap-6 px-6">
+                                    {relatedSpokes.map((post) => (
+                                        <Link
+                                            key={post.slug}
+                                            href={`/blog/${post.slug}`}
+                                            className="group glass-panel rounded-2xl overflow-hidden border border-white/5 hover:border-[#F54029]/30 transition-all duration-500 hover:-translate-y-1 flex flex-col"
+                                        >
+                                            <div className="relative aspect-[16/9] overflow-hidden shrink-0">
+                                                <div
+                                                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                                                    style={{ backgroundImage: `url(${post.coverImage})` }}
+                                                />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+                                            </div>
+                                            <div className="p-6 flex flex-col flex-grow">
+                                                <div className="flex items-center gap-3 mb-3">
+                                                    <span className="text-[10px] font-mono text-[#F54029] tracking-widest uppercase">{post.category}</span>
+                                                    <span className="text-[10px] font-mono text-gray-600">•</span>
+                                                    <span className="text-[10px] font-mono text-gray-500">{post.readTime}</span>
+                                                </div>
+                                                <h3 className="text-lg font-bold mb-3 group-hover:text-[#F54029] transition-colors leading-snug">
+                                                    {post.title}
+                                                </h3>
+                                                <p className="text-gray-400 text-sm leading-relaxed line-clamp-3 mb-6">
+                                                    {post.excerpt}
+                                                </p>
+                                                <div className="mt-auto pt-4 border-t border-white/5 flex items-center justify-between">
+                                                    <span className="text-xs font-mono text-gray-500">{post.author}</span>
+                                                    <span className="text-xs font-mono text-gray-600">{new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                                                </div>
+                                            </div>
+                                        </Link>
+                                    ))}
                                 </div>
-                                <h3 className="text-lg font-bold mb-3 group-hover:text-[#F54029] transition-colors leading-snug">
-                                    {post.title}
-                                </h3>
-                                <p className="text-gray-400 text-sm leading-relaxed line-clamp-3">
-                                    {post.excerpt}
-                                </p>
-                                <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-between">
-                                    <span className="text-xs font-mono text-gray-500">{post.author}</span>
-                                    <span className="text-xs font-mono text-gray-600">{new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                                </div>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
+                            )}
+                        </div>
+                    );
+                })}
             </main>
 
             <Footer />

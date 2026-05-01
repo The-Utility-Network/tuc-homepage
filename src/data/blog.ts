@@ -16,6 +16,209 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
     {
+        slug: 'the-narrow-corridor-agency-in-the-age-of-autonomous-capital',
+        title: 'The Narrow Corridor: Preserving Human Agency in the Age of Autonomous Capital',
+        excerpt: 'We are rapidly approaching a bifurcation point. AI and automation will either elevate human sovereignty or construct an inescapable corporate panopticon. Blockchain is the architecture of the escape route.',
+        category: 'Philosophy',
+        date: '2026-05-01',
+        readTime: '14 min read',
+        author: 'Krishna Patel',
+        coverImage: '/blog/agency-hub-cover.png',
+        bodyImages: ['/blog/agency-hub-body1.png', '/blog/agency-hub-body2.png', '/blog/agency-hub-body3.png'],
+        isHub: true,
+        relatedSlugs: ['the-sovereign-operator-why-your-keys-must-control-the-robots', 'escaping-the-algorithmic-panopticon-with-decentralized-compute', 'the-labor-theory-of-value-in-a-post-labor-world', 'creative-utilitarianism-philosophy-behind-tuc'],
+        metaDescription: 'Explore the narrow bandwidth of favorable outcomes where humanity retains enhanced agency over AI and automation instead of becoming subservient to corporate algorithms.',
+        content: `## The Velvet Cage of Hyper-Efficiency
+
+There is a seduction inherent in frictionless living. It begins quietly: an algorithm curates your media, a localized AI predicts your grocery needs, a fleet of autonomous logistics vehicles ensures your packages arrive before you consciously realize you desired them. This is the promised utopia of the Fourth Industrial Revolution—a world so perfectly modeled, so hyper-efficiently managed, that human effort becomes seemingly obsolete.
+
+But peer beneath the polished chrome of this frictionless existence, and the architecture of a velvet cage reveals itself. 
+
+When an intelligence vastly superior to our own is deployed exclusively to maximize shareholder value for a handful of mega-corporations, it does not act as a liberator. It acts as an optimization engine, and in the calculus of corporate AI, human agency is friction. Human unpredictability is an anomaly to be smoothed over. 
+
+We are hurtling toward a bifurcation point. The convergence of generative AI, robotics, and global supply chain automation is creating what we might call **Autonomous Capital**—wealth-generating physical and digital systems that require zero human labor to operate. 
+
+If this infrastructure remains the exclusive domain of walled-garden monopolies, the outcome is not utopia. It is a digital feudalism where humanity is relegated to the role of passive consumers, pacified by algorithms and entirely subservient to the masters of the machine swarms.
+
+## The Narrow Corridor of Sovereignty
+
+History is not deterministic. There exists a narrow bandwidth of favorable outcomes—a "narrow corridor"—where this technological convergence does not result in subjugation, but in an unprecedented expansion of human sovereignty.
+
+In this corridor, AI does not farm our attention; it amplifies our cognitive reach. Automation does not displace our economic utility; it acts as a lever for our localized intentions. 
+
+But hope is not an engineering strategy. To thread this needle, to walk this narrow corridor, requires a fundamentally different infrastructural primitive. We cannot rely on the benevolence of corporations. We must encode human agency into the base layer of the machines themselves. 
+
+This is the imperative of cryptography. This is why **blockchain** matters.
+
+## The Cryptographic Counterweight
+
+Blockchain has been relentlessly misunderstood as a casino for speculative tokens. Strip away the financial noise, and what remains is something profound: an immutable, decentralized ledger of state and permission. It is a truth machine that no CEO can alter and no server farm can unilaterally control.
+
+When we combine AI and robotics with cryptographic ownership, we change the physics of the system:
+
+1. **Permissionless Access:** You do not need an account on a corporate server to command a machine. You need a private key. Your key mathematically proves your right to act.
+2. **Immutable Provenance:** When an AI takes an action, the logic, the weights, and the authorization are cryptographically hashed. The machine cannot lie about who commanded it or why.
+3. **Distributed Capability:** Capital expenditure is fractionalized. You do not need to be a billionaire to own a robotic assembly cell; you merely need to hold the tokenized rights to its output.
+
+At The Utility Company, we call this [Industrial Automation as a Service (I3AS)](/blog/what-is-industrial-automation-as-a-service), but the philosophical implications run far deeper than manufacturing. It is about **who holds the leash**.
+
+## Engineering the Escape Route
+
+If we accept that the age of Autonomous Capital is inevitable, our task is not to halt the machines, but to distribute their ownership so widely, and so securely, that no central authority can ever consolidate them. 
+
+This requires building a new trinity of infrastructure:
+1. **The Sovereign Operator:** The human must retain cryptographic, un-revokeable command over the physical robots. [(Read: Why Your Keys Must Control The Robots)](/blog/the-sovereign-operator-why-your-keys-must-control-the-robots)
+2. **Decentralized Compute:** The AI models themselves must not live in corporate data silos, but on distributed, censorship-resistant mesh networks. [(Read: Escaping the Algorithmic Panopticon)](/blog/escaping-the-algorithmic-panopticon-with-decentralized-compute)
+3. **Tokenized Value:** The economic gains of autonomous labor must flow directly to the token-holding citizens, rewriting our understanding of labor and wealth. [(Read: The Labor Theory of Value in a Post-Labor World)](/blog/the-labor-theory-of-value-in-a-post-labor-world)
+
+The corridor is narrow, and the window to secure it is closing. The algorithms are already learning; the factories are already dimming their lights. Our mission is to ensure that when the lights finally go out on the factory floor, the power remains firmly, cryptographically, in your hands.`
+    },
+    {
+        slug: 'the-sovereign-operator-why-your-keys-must-control-the-robots',
+        title: 'The Sovereign Operator: Why Your Keys Must Control the Robots',
+        excerpt: "If a corporation can revoke your access to a machine, you don't own it. In the age of robotics, cryptographic keys are the ultimate defense against digital feudalism.",
+        category: 'Robotics',
+        date: '2026-04-30',
+        readTime: '9 min read',
+        author: 'Kerul Patel',
+        coverImage: '/blog/robotics-cover.png',
+        bodyImages: ['/blog/robotics-body1.png', '/blog/robotics-body2.png', '/blog/robotics-body3.png'],
+        isHub: false,
+        relatedSlugs: ['the-narrow-corridor-agency-in-the-age-of-autonomous-capital'],
+        metaDescription: 'Explore why cryptographic keys and self-sovereign identity are essential for maintaining human agency over autonomous robotics and AI systems.',
+        content: `## The Illusion of Ownership
+
+We have spent the last two decades being conditioned to accept the illusion of ownership. You "buy" a movie digitally, but it can be deleted from your library if licensing agreements change. You "own" a smart tractor, but the manufacturer forbids you from repairing it and can remotely disable its engine if you try. 
+
+In the realm of consumer media or agricultural equipment, this is an infuriating loss of consumer rights. In the realm of **autonomous robotics and generalized AI**, it is an existential threat to human agency.
+
+Imagine a near-future where a fleet of autonomous logistics drones and robotic fabricators handle the core infrastructure of your city. If the control layer for that physical infrastructure is managed via API keys on a centralized corporate server, the corporation is the sovereign. They can arbitrarily redefine the terms of service, geofence specific neighborhoods, or simply turn the machines off.
+
+To navigate the [narrow corridor of human agency](/blog/the-narrow-corridor-agency-in-the-age-of-autonomous-capital), we must redefine what it means to command a machine.
+
+## Enter the Sovereign Operator
+
+The Utility Company's architecture fundamentally rejects the API-key paradigm in favor of the **Sovereign Operator**.
+
+A Sovereign Operator does not log into a web portal to ask a server for permission to use a robot. Instead, the Operator holds a cryptographic private key. This key is mathematically paired to a token—a Real-World Asset (RWA)—that represents an immutable ownership stake in that physical machine.
+
+When you command a CNC mill at Vulcan Forge or an autonomous drone fleet:
+1. You sign the operational payload with your private key on your local device.
+2. The signed transaction is broadcast to the decentralized network.
+3. The machine's edge node receives the command, verifies the cryptographic signature against the ledger, and **executes the action.**
+
+There is no middleman to say "no." There is no corporate compliance department parsing your intent. The machine obeys the math.
+
+## The Architecture of Defiance
+
+This is not a trivial engineering feat. It requires building physical machines that are inherently distrustful of centralized commands. 
+
+The edge compute units we deploy on our robotic systems are designed to operate in "zero-trust" environments. They do not listen to IP addresses; they listen to signed state transitions. If a centralized server farm attempts to hijack the swarm, the edge nodes simply ignore the commands because they lack the proper cryptographic signatures of the token holders.
+
+This creates an architecture of profound defiance against monopoly control. It ensures that the robots belong to the people who hold the keys, not the entity that manufactured the chassis.
+
+## The Weight of Sovereignty
+
+With absolute cryptographic control comes absolute responsibility. If you lose your keys, you lose your robot. There is no "forgot password" button for physical infrastructure.
+
+But this is the price of genuine agency. We cannot ask to be treated as sovereign actors while demanding the safety nets of children. The future requires us to bear the weight of our own cryptographic autonomy. Only then can we ensure that as the machines grow vastly more capable, they remain our tools, rather than our masters.`
+    },
+    {
+        slug: 'escaping-the-algorithmic-panopticon-with-decentralized-compute',
+        title: 'Escaping the Algorithmic Panopticon: The Case for Decentralized Compute',
+        excerpt: 'When AI models live exclusively in corporate data centers, they become tools of surveillance and behavioral manipulation. The only escape is to shatter the data center.',
+        category: 'Infrastructure',
+        date: '2026-04-29',
+        readTime: '11 min read',
+        author: 'Milan Joshi',
+        coverImage: '/blog/compute-cover.png',
+        bodyImages: ['/blog/compute-body1.png', '/blog/compute-body2.png', '/blog/compute-body3.png'],
+        isHub: false,
+        relatedSlugs: ['the-narrow-corridor-agency-in-the-age-of-autonomous-capital', 'how-depin-is-reshaping-energy-infrastructure'],
+        metaDescription: 'Discover how decentralized compute and DePIN networks prevent the monopolization of AI, ensuring models remain sovereign and uncensorable.',
+        content: `## The Omniscient Oracle
+
+The great lie of the AI boom is the myth of the "neutral" model. 
+
+When you query a Large Language Model hosted in a hyperscaler's data center, you are not speaking to a detached, objective intellect. You are interfacing with an intelligence that has been carefully lobotomized, RLHF-aligned, and structurally biased to protect the corporate liability of its creators. 
+
+More dangerously, every prompt you write, every sentiment you express, and every problem you try to solve is ingested by the panopticon. The corporate oracle knows your anxieties, your intellectual blind spots, and your strategic intentions. It uses this asymmetric data advantage to further train the models that will subsequently be sold back to you at a premium.
+
+This is the antithesis of the [Sovereign Operator](/blog/the-sovereign-operator-why-your-keys-must-control-the-robots). You cannot have agency if your primary cognitive prosthesis is a surveillance engine owned by someone else.
+
+## Shattering the Data Center
+
+To secure the [narrow corridor of human agency](/blog/the-narrow-corridor-agency-in-the-age-of-autonomous-capital), we must decouple the intelligence from the corporate silo. We must shatter the data center and distribute its shards across the globe.
+
+This is the premise of **Decentralized Physical Infrastructure Networks (DePIN)** for compute, a core focus of our operations at BasaltHQ.
+
+Instead of renting H100 GPUs in a monolithic server farm, decentralized compute aggregates the latent processing power of tens of thousands of independent nodes—gaming PCs in Tokyo, mining rigs in Texas, underutilized enterprise servers in Berlin. 
+
+When an AI model is trained or run in inference across a decentralized mesh:
+- **It is Uncensorable:** No single CEO can decide to turn the model off or alter its weights to fit a specific political narrative.
+- **It is Private:** Techniques like Fully Homomorphic Encryption (FHE) allow nodes to process data without ever actually seeing the plaintext contents of your prompt.
+- **It is Resilient:** A localized power failure or a targeted regulatory crackdown cannot take the intelligence offline.
+
+## The Intelligence Commons
+
+We are shifting AI from a proprietary corporate asset to an **Intelligence Commons**—a shared, cryptographic utility akin to the electrical grid, but owned by the people who power it.
+
+When you run a node in a decentralized compute network, you are not just earning tokens; you are actively defending human cognitive sovereignty. You are ensuring that the ability to reason, to simulate, and to automate remains a public good rather than a private monopoly.
+
+The algorithmic panopticon only has power if we willingly walk into its walls. By building and utilizing decentralized compute, we build our own doors.`
+    },
+    {
+        slug: 'the-labor-theory-of-value-in-a-post-labor-world',
+        title: 'The Labor Theory of Value in a Post-Labor World',
+        excerpt: 'When robots and AI perform all economically viable work, how do humans generate wealth? The answer requires a radical rewrite of economic philosophy and cryptographic ownership.',
+        category: 'Economics',
+        date: '2026-04-28',
+        readTime: '12 min read',
+        author: 'Krishna Patel',
+        coverImage: '/blog/economics-cover.png',
+        bodyImages: ['/blog/economics-body1.png', '/blog/economics-body2.png', '/blog/economics-body3.png'],
+        isHub: false,
+        relatedSlugs: ['the-narrow-corridor-agency-in-the-age-of-autonomous-capital', 'what-is-industrial-automation-as-a-service'],
+        metaDescription: 'Explore the economic implications of total automation. Discover how tokenized ownership replaces human labor as the primary mechanism for wealth generation.',
+        content: `## The End of Toil
+
+For centuries, the bedrock of economic philosophy—from Adam Smith to Karl Marx—has been the Labor Theory of Value. It posits a simple equation: human time and physical exertion applied to raw materials creates value. Capital was merely crystallized labor.
+
+But what happens to the equation when the human variable drops to zero?
+
+We are rapidly approaching an economic singularity where **Autonomous Capital**—AI orchestrating robotic swarms—can perform physical and cognitive tasks faster, safer, and cheaper than any human being. When a factory can design, manufacture, and ship a product without a single human crossing its threshold, the labor theory of value collapses.
+
+If human labor is no longer the primary engine of wealth generation, how do citizens survive in a post-labor economy?
+
+## The Capital Monopoly Dystopia
+
+If we proceed on our current trajectory without cryptographic intervention, the outcome is stark. The corporations that own the autonomous systems will achieve a capital monopoly of unprecedented scale. 
+
+Because they no longer need to pay wages, the feedback loop of wealth distribution (where workers buy the products they make) breaks down. The result is a neo-feudal welfare state: massive populations subsisting on Universal Basic Income (UBI) doled out by governments funded by taxing the monolithic robot-owners. 
+
+This is not the [narrow corridor of human agency](/blog/the-narrow-corridor-agency-in-the-age-of-autonomous-capital). A population entirely dependent on a corporate-state stipend has no leverage, no sovereignty, and no capacity to shape its own destiny.
+
+## The Tokenized Ownership Imperative
+
+The only mathematically viable escape from this dystopia is the radical redistribution of **ownership**. In a post-labor world, you do not earn wealth by renting out your body or your mind; you earn wealth by owning the productive assets.
+
+This is the economic heartbeat of [Industrial Automation as a Service (I3AS)](/blog/what-is-industrial-automation-as-a-service). 
+
+By tokenizing the robots, the AI models, and the energy grids on the blockchain, we fractionalize the means of production down to the atomic level. You do not need to work a shift at the factory; you hold a cryptographic token that represents a 0.001% ownership stake in the robotic assembly cell. 
+
+As that robotic cell works 24/7, producing goods and generating value, the economic yield flows directly to your digital wallet via smart contracts. 
+
+## Value as Intention
+
+If machines do the labor, what is the role of the human? 
+
+In a tokenized, highly automated economy, human value shifts from **execution** to **intention**. Machines can optimize a supply chain perfectly, but they cannot decide *what* is worth making. They cannot appreciate beauty. They cannot define the ethical parameters of their own existence.
+
+The humans of the future will be Sovereign Operators of capital. We will allocate our tokens, direct our autonomous swarms, and shape the physical world according to our desires, philosophies, and community needs. 
+
+The labor theory of value will be replaced by the **Intention Theory of Value**. Wealth will be generated by those who can most creatively and empathetically direct the autonomous engines of production. And thanks to cryptography, that power will belong to anyone holding the keys.`
+    },
+    {
         slug: 'what-is-industrial-automation-as-a-service',
         title: 'What Is Industrial Automation as a Service (I3AS)? The Complete Guide',
         excerpt: 'How TUC is tokenizing ownership and access to industrial automation processes — giving token holders direct remote control over specific equipment and production outputs.',
@@ -79,7 +282,7 @@ The factory of the future doesn't have an owner. It has thousands of them.`
     {
         slug: 'how-depin-is-reshaping-energy-infrastructure',
         title: 'How DePIN Is Reshaping Energy Infrastructure From the Ground Up',
-        excerpt: 'Decentralized Physical Infrastructure Networks are turning homeowners into micro-utilities. Here\'s how TUC\'s subsidiary Requiem Electric is leading the charge.',
+        excerpt: "Decentralized Physical Infrastructure Networks are turning homeowners into micro-utilities. Here's how TUC's subsidiary Requiem Electric is leading the charge.",
         category: 'Infrastructure',
         date: '2026-04-08',
         readTime: '9 min read',
@@ -226,7 +429,7 @@ TUC is not waiting for this future. We are building the infrastructure that make
     {
         slug: 'future-of-autonomous-manufacturing',
         title: 'The Future of Autonomous Manufacturing: How Robotics and AI Are Merging',
-        excerpt: 'From swarm robotics to self-healing factory networks, the next generation of manufacturing doesn\'t need human operators. It needs human imagination.',
+        excerpt: "From swarm robotics to self-healing factory networks, the next generation of manufacturing doesn't need human operators. It needs human imagination.",
         category: 'Robotics',
         date: '2026-04-02',
         readTime: '8 min read',
@@ -300,7 +503,7 @@ The future of manufacturing is not human-free. It is human-focused.`
     {
         slug: 'creative-utilitarianism-philosophy-behind-tuc',
         title: 'Creative Utilitarianism: The Philosophy That Powers Everything We Build',
-        excerpt: 'Most tech companies have a mission statement. TUC has a political philosophy. Here\'s why Creative Utilitarianism isn\'t just ideology — it\'s executable code.',
+        excerpt: "Most tech companies have a mission statement. TUC has a political philosophy. Here's why Creative Utilitarianism isn't just ideology — it's executable code.",
         category: 'Philosophy',
         date: '2026-03-28',
         readTime: '11 min read',
@@ -309,7 +512,7 @@ The future of manufacturing is not human-free. It is human-focused.`
         bodyImages: ['/blog/philosophy-body1.png', '/blog/philosophy-body2.png', '/blog/philosophy-body3.png'],
         isHub: false,
         relatedSlugs: ['what-is-industrial-automation-as-a-service'],
-        metaDescription: 'Creative Utilitarianism combines Chomsky\'s anarchosyndicalism and Sen\'s Capability Approach with blockchain technology. Learn how TUC\'s philosophy drives its engineering decisions.',
+        metaDescription: "Creative Utilitarianism combines Chomsky's anarchosyndicalism and Sen's Capability Approach with blockchain technology. Learn how TUC's philosophy drives its engineering decisions.",
         content: `## Technology Is Never Neutral
 
 Every line of code embodies a set of values. Every protocol design encodes assumptions about power, access, and distribution. The question is never whether technology has politics—it always does. The question is whether those politics are **explicit and intentional**, or **implicit and accidental**.
@@ -384,7 +587,7 @@ Technology is never neutral. Ours is deliberately, verifiably, irreversibly on t
         bodyImages: ['/blog/canoe-body1.png', '/blog/canoe-body2.png', '/blog/canoe-body3.png'],
         isHub: false,
         relatedSlugs: ['what-is-industrial-automation-as-a-service', 'creative-utilitarianism-philosophy-behind-tuc'],
-        metaDescription: 'TUC\'s design principles through the lens of a futuristic canoe factory: automation that serves the family rushing to the river and the craftsman who wants to work with their hands.',
+        metaDescription: "TUC's design principles through the lens of a futuristic canoe factory: automation that serves the family rushing to the river and the craftsman who wants to work with their hands.",
         content: `## Two People Walk Into a Factory
 
 Picture a building at the edge of a river. It's Saturday morning. Two people arrive at the same door.

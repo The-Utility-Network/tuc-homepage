@@ -3,6 +3,7 @@ import { INDUSTRIES, COMPARISONS } from '@/data/seo';
 import LOCATIONS from '@/lib/data/locations.json';
 import { CODEX } from '@/data/codex';
 import { BLOG_POSTS } from '@/data/blog';
+import { NM_CITIES } from '@/lib/data/new-mexico-cities';
 
 const BASE_URL = 'https://theutilitycompany.co';
 
@@ -20,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/publications',
         '/portal',
         '/reserve',
+        '/new-mexico',
     ].map((route) => ({
         url: `${BASE_URL}${route}`,
         lastModified: new Date(),
@@ -62,6 +64,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: post.isHub ? 0.9 : 0.8,
     }));
 
+    const nmLocationRoutes = NM_CITIES.map((loc) => ({
+        url: `${BASE_URL}/new-mexico/${loc.slug}`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly' as const,
+        priority: 0.85,
+    }));
+
     return [
         ...routes,
         ...industryRoutes,
@@ -69,5 +78,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         ...comparisonRoutes,
         ...codexRoutes,
         ...blogRoutes,
+        ...nmLocationRoutes,
     ];
 }

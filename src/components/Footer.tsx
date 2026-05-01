@@ -35,7 +35,7 @@ export default function Footer() {
     return (
         <footer className="relative py-16 px-6 border-t border-white/10">
             <div className="max-w-7xl mx-auto">
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
                     {/* Brand Column */}
                     <div>
                         <div className="flex items-center gap-3 mb-6">
@@ -100,7 +100,43 @@ export default function Footer() {
                                 </li>
                             ))}
                         </ul>
-                        <h4 className="text-xs font-mono tracking-wider text-gray-500 mt-6 mb-4">CONNECT</h4>
+                    </div>
+
+                    {/* Global Hubs */}
+                    <div>
+                        <Link href="/locations">
+                            <h4 className="text-xs font-mono tracking-wider text-[#F54029] mb-4 hover:underline cursor-pointer">GLOBAL NETWORK</h4>
+                        </Link>
+                        <ul className="space-y-2">
+                            {[
+                                { name: 'New York', slug: 'new-york-us' },
+                                { name: 'London', slug: 'london-gb' },
+                                { name: 'Tokyo', slug: 'tokyo-jp' },
+                                { name: 'Dubai', slug: 'dubai-ae' },
+                                { name: 'Singapore', slug: 'singapore-sg' },
+                                { name: 'Paris', slug: 'paris-fr' }
+                            ].map((loc) => (
+                                <li key={loc.slug}>
+                                    <Link
+                                        href={`/locations/${loc.slug}`}
+                                        className="text-gray-400 text-sm hover:text-white transition-colors"
+                                    >
+                                        {loc.name}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                        <Link
+                            href="/locations"
+                            className="inline-block mt-4 text-xs font-mono text-gray-500 hover:text-white transition-colors"
+                        >
+                            VIEW ALL 600+ HUBS →
+                        </Link>
+                    </div>
+
+                    {/* Connect */}
+                    <div>
+                        <h4 className="text-xs font-mono tracking-wider text-gray-500 mb-4">CONNECT</h4>
                         <ul className="space-y-2">
                             {socialLinks.map((link) => (
                                 <li key={link.label}>

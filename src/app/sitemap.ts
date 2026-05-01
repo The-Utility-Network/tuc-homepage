@@ -1,5 +1,6 @@
 import { Metadata, MetadataRoute } from 'next';
-import { INDUSTRIES, LOCATIONS, COMPARISONS } from '@/data/seo';
+import { INDUSTRIES, COMPARISONS } from '@/data/seo';
+import LOCATIONS from '@/lib/data/locations.json';
 import { CODEX } from '@/data/codex';
 import { BLOG_POSTS } from '@/data/blog';
 
@@ -33,7 +34,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.9,
     }));
 
-    const locationRoutes = LOCATIONS.map((loc) => ({
+    const locationRoutes = LOCATIONS.map((loc: any) => ({
         url: `${BASE_URL}/locations/${loc.slug}`,
         lastModified: new Date(),
         changeFrequency: 'weekly' as const,

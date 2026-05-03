@@ -41,14 +41,16 @@ export default function FinancialWizard({ subsidiaryId, onClose, onComplete }: F
         const ltv = parseFloat(formData.ltv) || 0
 
         const arr = mrr * 12
+        // Burn rate = net cash outflow (standard: expenses minus revenue)
         const burnRate = Math.max(0, expenses - rev)
-        const runway = burnRate > 0 ? cash / burnRate : 99 // 99 for infinite/profitable
+        // Runway based on net burn: if profitable, effectively infinite
+        const runway = burnRate > 0 ? cash / burnRate : (expenses > 0 ? 999 : 0)
+        // Runway based on gross expenses: worst-case if all revenue stops
+        const expenseRunway = expenses > 0 ? cash / expenses : 0
 
         // Simple Rule of 40 approximation: Profit Margin + Revenue Growth
-        // Since we don't have historical data here easily, we'll use a simplified margin calculation
         const profitMargin = rev > 0 ? ((rev - expenses) / rev) * 100 : 0
-        // We'll assume 0 growth for initial snapshot or let user input it later if we want complexity
-        const ruleOf40 = profitMargin // partial calculation
+        const ruleOf40 = profitMargin
 
         const ltvCac = cac > 0 ? ltv / cac : 0
 
@@ -56,6 +58,7 @@ export default function FinancialWizard({ subsidiaryId, onClose, onComplete }: F
             arr,
             monthly_burn_rate: burnRate,
             runway_months: runway,
+            expense_runway_months: expenseRunway,
             rule_of_40: ruleOf40,
             ltv_cac_ratio: ltvCac
         }
@@ -79,6 +82,7 @@ export default function FinancialWizard({ subsidiaryId, onClose, onComplete }: F
                     cash_balance: parseFloat(formData.cashBalance) || 0,
                     monthly_burn_rate: metrics.monthly_burn_rate,
                     runway_months: metrics.runway_months,
+                    expense_runway_months: metrics.expense_runway_months,
                     total_users: parseInt(formData.totalUsers) || 0,
                     paying_customers: parseInt(formData.payingCustomers) || 0,
                     cac: parseFloat(formData.cac) || 0,
@@ -300,16 +304,46 @@ export default function FinancialWizard({ subsidiaryId, onClose, onComplete }: F
                                             </span>
                                         </div>
                                         <div className="flex justify-between items-center py-2 border-b border-white/5">
-                                            <span className="text-white/60">Estimated Monthly Burn</span>
-                                            <span className="text-white font-bold text-lg text-red-400">
-                                                ${Math.max(0, (parseFloat(formData.totalExpenses) || 0) - (parseFloat(formData.totalRevenue) || 0)).toLocaleString()}
-                                            </span>
+                                            <span className="text-white/60">Burn Rate</span>
+                                            {(() => {
+                                                const burnRate = Math.max(0, (parseFloat(formData.totalExpenses) || 0) - (parseFloat(formData.totalRevenue) || 0))
+                                                return (
+                                                    <span className={`font-bold text-lg ${burnRate > 0 ? 'text-red-400' : 'text-green-400'}`}>
+                                                        {burnRate > 0 ? `$${burnRate.toLocaleString()}/mo` : '$0 (Profitable)'}
+                                                    </span>
+                                                )
+                                            })()}
                                         </div>
                                         <div className="flex justify-between items-center py-2 border-b border-white/5">
-                                            <span className="text-white/60">Estimated Runway</span>
-                                            <span className={`font-bold text-lg ${(parseFloat(formData.cashBalance) || 0) / Math.max(1, (parseFloat(formData.totalExpenses) || 0) - (parseFloat(formData.totalRevenue) || 0)) < 6 ? 'text-red-400' : 'text-green-400'}`}>
-                                                {((parseFloat(formData.cashBalance) || 0) / Math.max(1, (parseFloat(formData.totalExpenses) || 0) - (parseFloat(formData.totalRevenue) || 0))).toFixed(1)} months
-                                            </span>
+                                            <span className="text-white/60">Runway (Net Burn)</span>
+                                            {(() => {
+                                                const expenses = parseFloat(formData.totalExpenses) || 0
+                                                const rev = parseFloat(formData.totalRevenue) || 0
+                                                const cash = parseFloat(formData.cashBalance) || 0
+                                                const burnRate = Math.max(0, expenses - rev)
+                                                if (burnRate <= 0 && expenses > 0) {
+                                                    return <span className="font-bold text-lg text-green-400">∞ (Cash-flow positive)</span>
+                                                }
+                                                const runway = burnRate > 0 ? cash / burnRate : 0
+                                                return (
+                                                    <span className={`font-bold text-lg ${runway < 6 ? 'text-red-400' : runway < 12 ? 'text-amber-400' : 'text-green-400'}`}>
+                                                        {runway.toFixed(1)} months
+                                                    </span>
+                                                )
+                                            })()}
+                                        </div>
+                                        <div className="flex justify-between items-center py-2 border-b border-white/5">
+                                            <span className="text-white/60">Runway (If Revenue Stops)</span>
+                                            {(() => {
+                                                const expenses = parseFloat(formData.totalExpenses) || 0
+                                                const cash = parseFloat(formData.cashBalance) || 0
+                                                const runway = expenses > 0 ? cash / expenses : 0
+                                                return (
+                                                    <span className={`font-bold text-lg ${runway < 3 ? 'text-red-400' : runway < 6 ? 'text-amber-400' : 'text-green-400'}`}>
+                                                        {runway.toFixed(1)} months
+                                                    </span>
+                                                )
+                                            })()}
                                         </div>
                                         <div className="flex justify-between items-center py-2">
                                             <span className="text-white/60">Customer Count</span>

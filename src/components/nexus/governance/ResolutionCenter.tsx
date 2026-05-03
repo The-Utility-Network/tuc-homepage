@@ -407,12 +407,14 @@ export default function ResolutionCenter({ isAdmin = false, userEmail, userName,
                                             <p className="text-xs text-white/30 uppercase tracking-widest mb-2">Vote Ledger</p>
                                             <div className="space-y-1.5">
                                                 {r.votes.map((v, i) => (
-                                                    <div key={i} className="flex items-center gap-3 p-2.5 bg-white/[0.02] border border-white/5 rounded-lg">
-                                                        <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${v.vote === 'for' ? 'bg-emerald-400' : v.vote === 'against' ? 'bg-red-400' : 'bg-white/20'}`} />
-                                                        <span className="text-sm text-white/60 flex-1">{v.member_name}</span>
-                                                        <span className={`text-[10px] font-bold uppercase tracking-wider ${v.vote === 'for' ? 'text-emerald-400' : v.vote === 'against' ? 'text-red-400' : 'text-white/30'}`}>{v.vote}</span>
-                                                        {v.notes && <span className="text-[9px] text-white/20 max-w-[150px] truncate">"{v.notes}"</span>}
-                                                        <span className="text-[9px] text-white/15 font-mono">{new Date(v.voted_at).toLocaleDateString()}</span>
+                                                    <div key={i} className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 p-3 bg-white/[0.02] border border-white/5 rounded-lg">
+                                                        <div className="flex items-center gap-3 sm:w-1/3 shrink-0">
+                                                            <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${v.vote === 'for' ? 'bg-emerald-400' : v.vote === 'against' ? 'bg-red-400' : 'bg-white/20'}`} />
+                                                            <span className="text-sm text-white/60 flex-1 truncate">{v.member_name}</span>
+                                                            <span className={`text-[10px] font-bold uppercase tracking-wider ${v.vote === 'for' ? 'text-emerald-400' : v.vote === 'against' ? 'text-red-400' : 'text-white/30'}`}>{v.vote}</span>
+                                                        </div>
+                                                        {v.notes && <span className="text-[11px] text-white/40 italic flex-1 break-words leading-relaxed border-l border-white/5 pl-3">"{v.notes}"</span>}
+                                                        <span className="text-[9px] text-white/15 font-mono shrink-0 sm:ml-auto">{new Date(v.voted_at).toLocaleDateString()}</span>
                                                     </div>
                                                 ))}
                                             </div>

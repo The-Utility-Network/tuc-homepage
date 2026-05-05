@@ -7,12 +7,12 @@ import Footer from '@/components/Footer';
 import ContactForm from '@/components/ContactForm';
 
 export const metadata = {
-    title: 'New Mexico Industrial Automation & Agentic AI Consulting | The Utility Company',
-    description: 'The Utility Company provides enterprise-grade industrial automation, Agentic AI architectures, SCADA integration, and digital twin engineering across New Mexico. Serving the Permian Basin, Albuquerque manufacturing, and Los Alamos R&D hubs.',
-    keywords: 'New Mexico Industrial Automation, AI Consulting New Mexico, SCADA integration Albuquerque, Digital Twin Permian Basin, Business Automation NM, Agentic AI Los Alamos, IoT sensing Carlsbad, Energy Grid automation Farmington',
+    title: 'New Mexico AI Consulting, Automation & Agentic Workflows | The Utility Company',
+    description: 'The Utility Company provides enterprise-grade AI consulting, cognitive workflows, industrial automation, and digital twin engineering across New Mexico. Serving enterprise operations, Permian Basin, Albuquerque manufacturing, and Los Alamos R&D hubs.',
+    keywords: 'AI Consulting New Mexico, Enterprise AI Strategy, Business Process Automation NM, New Mexico Industrial Automation, SCADA integration Albuquerque, Agentic Workflows, Digital Twin Permian Basin, Business Automation NM, Agentic AI Los Alamos, IoT sensing Carlsbad, Energy Grid automation Farmington',
     openGraph: {
-        title: 'New Mexico Industrial Automation & AI Consulting | TUC',
-        description: 'New Mexico\'s premier engineering firm for industrial automation, Agentic AI, and SCADA integration.',
+        title: 'New Mexico Enterprise AI Consulting & Automation | TUC',
+        description: 'New Mexico\'s premier engineering firm for Enterprise AI Consulting, Agentic Workflows, and SCADA integration.',
         url: 'https://theutilitycompany.com/new-mexico',
         images: [{ url: 'https://storage.googleapis.com/tgl_cdn/images/Medallions/Symbol.png' }],
     }
@@ -41,7 +41,7 @@ export default function NewMexicoHubPage() {
                     </h1>
                     
                     <p className="text-xl md:text-2xl text-white/70 max-w-4xl font-light leading-relaxed mb-12">
-                        The Utility Company is the premier industrial automation and Agentic AI engineering firm serving the state of New Mexico. We specialize in transforming legacy heavy-industry, energy extraction, and aerospace manufacturing into highly optimized, autonomous digital ecosystems.
+                        The Utility Company is the premier Enterprise AI consulting and automation engineering firm serving the state of New Mexico. We specialize in transforming business operations, legacy heavy-industry, and aerospace manufacturing into highly optimized, autonomous digital ecosystems.
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 mb-16">
@@ -180,6 +180,37 @@ export default function NewMexicoHubPage() {
                             </ul>
                         </div>
                     </div>
+
+                    {/* Enterprise AI & Operations */}
+                    <div className="grid lg:grid-cols-2 gap-16 items-center">
+                        <div className="order-2 lg:order-1">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 font-mono text-xs mb-6 border border-purple-500/20">
+                                ENTERPRISE & COGNITIVE WORKFLOWS
+                            </div>
+                            <h3 className="text-3xl md:text-5xl font-rajdhani font-bold mb-6 leading-tight">Agentic Operations for Business</h3>
+                            <p className="text-lg text-white/60 leading-relaxed mb-6">
+                                Beyond the physical hardware, we architect advanced cognitive swarms for New Mexico's enterprise, healthcare, and financial sectors.
+                            </p>
+                            <p className="text-lg text-white/60 leading-relaxed mb-8">
+                                Instead of standard "chatbots," we deploy multi-agent systems capable of autonomous customer triage, intelligent document ingestion, predictive yield modeling, and fully air-gapped internal RPA (Robotic Process Automation) to eliminate back-office friction.
+                            </p>
+                            <ul className="space-y-4">
+                                <li className="flex gap-4 items-center text-white/80 font-mono text-sm"><span className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-purple-400 font-bold">1</span> Autonomous Support Swarms</li>
+                                <li className="flex gap-4 items-center text-white/80 font-mono text-sm"><span className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-purple-400 font-bold">2</span> Intelligent Document Extraction</li>
+                                <li className="flex gap-4 items-center text-white/80 font-mono text-sm"><span className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-purple-400 font-bold">3</span> Predictive Financial Modeling</li>
+                            </ul>
+                        </div>
+                        <div className="order-1 lg:order-2 relative aspect-video rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_50px_rgba(168,85,247,0.15)]">
+                            <Image 
+                                src="/images/new-mexico/nm_enterprise_ai.png" 
+                                alt="Enterprise cognitive workflow visualization"
+                                fill
+                                className="object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                            <div className="absolute bottom-4 left-4 font-mono text-xs text-purple-400 tracking-widest">STATEWIDE OPERATIONS</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -263,10 +294,16 @@ export default function NewMexicoHubPage() {
                         </p>
                     </div>
 
-                    <div className="grid md:grid-cols-4 gap-8">
+                    <div className="grid lg:grid-cols-5 gap-6">
                         <div className="bg-white/[0.02] border border-white/10 rounded-3xl p-8 relative overflow-hidden group hover:border-[#F54029]/50 transition-colors">
                             <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-bl-[100px] transition-colors group-hover:bg-[#F54029]/10" />
-                            <div className="text-4xl font-mono text-white/20 font-bold mb-4">W1-2</div>
+                            <div className="text-4xl font-mono text-white/20 font-bold mb-4">W1</div>
+                            <h4 className="text-2xl font-rajdhani font-bold mb-4">AI Readiness Audit</h4>
+                            <p className="text-white/50 leading-relaxed text-sm">Strategic assessment of current workflows, identifying automation opportunities and enterprise AI roadmap.</p>
+                        </div>
+                        <div className="bg-white/[0.02] border border-white/10 rounded-3xl p-8 relative overflow-hidden group hover:border-[#F54029]/50 transition-colors">
+                            <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-bl-[100px] transition-colors group-hover:bg-[#F54029]/10" />
+                            <div className="text-4xl font-mono text-white/20 font-bold mb-4">W2-3</div>
                             <h4 className="text-2xl font-rajdhani font-bold mb-4">Audit & Ingestion</h4>
                             <p className="text-white/50 leading-relaxed">Complete hardware audit of all legacy systems, sensor mapping, and initial API bridging to establish data flow.</p>
                         </div>

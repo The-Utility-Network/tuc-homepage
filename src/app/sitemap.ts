@@ -22,6 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/portal',
         '/reserve',
         '/new-mexico',
+        '/pitch-deck',
     ].map((route) => ({
         url: `${BASE_URL}${route}`,
         lastModified: new Date(),

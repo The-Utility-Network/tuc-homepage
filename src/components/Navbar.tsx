@@ -16,6 +16,7 @@ const navLinks = [
 
 const externalLinks: { label: string; href: string; internal?: boolean }[] = [
     { label: 'OUR MODEL', href: '/our-model', internal: true },
+    { label: 'PITCH DECK', href: '/pitch-deck', internal: true },
     { label: 'SHOP', href: 'https://shop.theutilitycompany.co' },
     { label: 'PODCASTS', href: '/podcasts', internal: true },
 ];

@@ -1,6 +1,30 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        source: '/industries/Governance',
+        destination: '/industries/politics',
+        permanent: true,
+      },
+      {
+        source: '/industries/governance',
+        destination: '/industries/politics',
+        permanent: true,
+      },
+      {
+        source: '/industries/GovTech',
+        destination: '/industries/politics',
+        permanent: true,
+      },
+      {
+        source: '/industries/govtech',
+        destination: '/industries/politics',
+        permanent: true,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {

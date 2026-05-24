@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
-import { Landmark, Users, Plus, Trash2, Edit2, Shield, Calendar, Award, Briefcase, X, Check, Activity, FileText } from 'lucide-react'
+import { Landmark, Users, Plus, Trash2, Edit2, Shield, Calendar, Award, Briefcase, X, Check, Activity, FileText, Mail } from 'lucide-react'
 
 interface BoardMember {
     id: string
@@ -62,7 +62,8 @@ export default function PersonnelManager({ subsidiaryId, themeColor = '#F54029' 
         committees: [] as string[],
         bio: '',
         term_start: '',
-        term_end: ''
+        term_end: '',
+        sendInvite: false
     })
 
     // Officer Form Fields
@@ -72,7 +73,8 @@ export default function PersonnelManager({ subsidiaryId, themeColor = '#F54029' 
         title: '',
         department: '',
         appointment_date: new Date().toISOString().split('T')[0],
-        responsibilities: ''
+        responsibilities: '',
+        sendInvite: false
     })
 
     // Committee input tag state
@@ -112,6 +114,28 @@ export default function PersonnelManager({ subsidiaryId, themeColor = '#F54029' 
         }
     }
 
+    // Direct Invite Dispatcher
+    async function handleSendInviteDirect(email: string, roleTitle: string) {
+        if (!email) return
+        try {
+            const res = await fetch('/api/ventures/invite', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email,
+                    subsidiaryId,
+                    shares: 0,
+                    role: roleTitle
+                })
+            })
+            if (!res.ok) throw new Error(await res.text())
+            alert(`Nexus invite successfully dispatched to ${email}`);
+        } catch (error: any) {
+            console.error('Invite dispatch failed:', error)
+            alert('Failed to send invite: ' + error.message)
+        }
+    }
+
     // Save Director
     async function handleSaveDirector(e: React.FormEvent) {
         e.preventDefault()
@@ -146,6 +170,10 @@ export default function PersonnelManager({ subsidiaryId, themeColor = '#F54029' 
                     .insert([payload])
 
                 if (error) throw error
+            }
+
+            if (directorForm.sendInvite && directorForm.email) {
+                await handleSendInviteDirect(directorForm.email, directorForm.title || 'Director')
             }
 
             setDirectorModalOpen(false)
@@ -188,6 +216,10 @@ export default function PersonnelManager({ subsidiaryId, themeColor = '#F54029' 
                     .insert([payload])
 
                 if (error) throw error
+            }
+
+            if (officerForm.sendInvite && officerForm.email) {
+                await handleSendInviteDirect(officerForm.email, officerForm.title || 'Officer')
             }
 
             setOfficerModalOpen(false)
@@ -245,7 +277,8 @@ export default function PersonnelManager({ subsidiaryId, themeColor = '#F54029' 
             committees: [],
             bio: '',
             term_start: '',
-            term_end: ''
+            term_end: '',
+            sendInvite: false
         })
         setCommitteeInput('')
     }
@@ -257,7 +290,8 @@ export default function PersonnelManager({ subsidiaryId, themeColor = '#F54029' 
             title: '',
             department: '',
             appointment_date: new Date().toISOString().split('T')[0],
-            responsibilities: ''
+            responsibilities: '',
+            sendInvite: false
         })
     }
 
@@ -273,7 +307,8 @@ export default function PersonnelManager({ subsidiaryId, themeColor = '#F54029' 
             committees: d.committees || [],
             bio: d.bio || '',
             term_start: d.term_start ? d.term_start.split('T')[0] : '',
-            term_end: d.term_end ? d.term_end.split('T')[0] : ''
+            term_end: d.term_end ? d.term_end.split('T')[0] : '',
+            sendInvite: false
         })
         setDirectorModalOpen(true)
     }
@@ -286,7 +321,8 @@ export default function PersonnelManager({ subsidiaryId, themeColor = '#F54029' 
             title: o.title,
             department: o.department || '',
             appointment_date: o.appointment_date ? o.appointment_date.split('T')[0] : '',
-            responsibilities: o.responsibilities || ''
+            responsibilities: o.responsibilities || '',
+            sendInvite: false
         })
         setOfficerModalOpen(true)
     }
@@ -395,6 +431,15 @@ export default function PersonnelManager({ subsidiaryId, themeColor = '#F54029' 
                                         <p className="text-xs text-white/40 mt-1">{dir.title || 'Director'}</p>
                                     </div>
                                     <div className="flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        {dir.email && (
+                                            <button 
+                                                onClick={() => handleSendInviteDirect(dir.email!, dir.title || 'Director')}
+                                                className="p-1.5 hover:bg-white/10 rounded text-white/60 hover:text-white transition-colors"
+                                                title="Send Nexus Invite"
+                                            >
+                                                <Mail size={13} />
+                                            </button>
+                                        )}
                                         <button 
                                             onClick={() => openEditDirector(dir)}
                                             className="p-1.5 hover:bg-white/10 rounded text-white/60 hover:text-white transition-colors"
@@ -494,6 +539,15 @@ export default function PersonnelManager({ subsidiaryId, themeColor = '#F54029' 
                                         <p className="text-xs font-semibold mt-1" style={{ color: themeColor }}>{off.title}</p>
                                     </div>
                                     <div className="flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        {off.email && (
+                                            <button 
+                                                onClick={() => handleSendInviteDirect(off.email!, off.title || 'Officer')}
+                                                className="p-1.5 hover:bg-white/10 rounded text-white/60 hover:text-white transition-colors"
+                                                title="Send Nexus Invite"
+                                            >
+                                                <Mail size={13} />
+                                            </button>
+                                        )}
                                         <button 
                                             onClick={() => openEditOfficer(off)}
                                             className="p-1.5 hover:bg-white/10 rounded text-white/60 hover:text-white transition-colors"
@@ -637,6 +691,21 @@ export default function PersonnelManager({ subsidiaryId, themeColor = '#F54029' 
                                     Grant Voting Rights on Resolutions
                                 </label>
                             </div>
+
+                            {directorForm.email && (
+                                <div className="flex items-center gap-3 p-4 bg-white/5 border border-white/5 rounded-xl animate-fadeIn">
+                                    <input
+                                        type="checkbox"
+                                        id="send_invite_dir"
+                                        checked={directorForm.sendInvite}
+                                        onChange={e => setDirectorForm({ ...directorForm, sendInvite: e.target.checked })}
+                                        className="w-5 h-5 rounded border-white/20 bg-black/40 text-blue-500 outline-none"
+                                    />
+                                    <label htmlFor="send_invite_dir" className="text-white text-sm font-semibold select-none cursor-pointer">
+                                        Send email invitation to join Nexus
+                                    </label>
+                                </div>
+                            )}
 
                             {/* Committees Input */}
                             <div>
@@ -812,6 +881,21 @@ export default function PersonnelManager({ subsidiaryId, themeColor = '#F54029' 
                                     placeholder="Outline corporate officer responsibilities and mandates..."
                                 />
                             </div>
+
+                            {officerForm.email && (
+                                <div className="flex items-center gap-3 p-4 bg-white/5 border border-white/5 rounded-xl animate-fadeIn">
+                                    <input
+                                        type="checkbox"
+                                        id="send_invite_off"
+                                        checked={officerForm.sendInvite}
+                                        onChange={e => setOfficerForm({ ...officerForm, sendInvite: e.target.checked })}
+                                        className="w-5 h-5 rounded border-white/20 bg-black/40 text-blue-500 outline-none"
+                                    />
+                                    <label htmlFor="send_invite_off" className="text-white text-sm font-semibold select-none cursor-pointer">
+                                        Send email invitation to join Nexus
+                                    </label>
+                                </div>
+                            )}
 
                             {/* Submit */}
                             <button

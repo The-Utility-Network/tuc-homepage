@@ -13,6 +13,7 @@ import DataRoomManager from '@/components/nexus/fundraising/DataRoomManager'
 import ComplianceCalendar from '@/components/nexus/fundraising/ComplianceCalendar'
 import ActivityDashboard from '@/components/nexus/admin/ActivityDashboard'
 import CompanySettings from '@/components/nexus/ventures/CompanySettings'
+import PersonnelManager from '@/components/nexus/ventures/PersonnelManager'
 import SignaturePad from '@/components/nexus/ventures/SignaturePad'
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
@@ -33,7 +34,7 @@ export default function VenturesPage() {
 
     // UI State
     const [activeTab, setActiveTab] = useState<string>('network')
-    const [viewMode, setViewMode] = useState<'overview' | 'invest' | 'captable' | 'fundraising' | 'metrics' | 'dataroom' | 'compliance' | 'settings'>('overview')
+    const [viewMode, setViewMode] = useState<'overview' | 'invest' | 'captable' | 'fundraising' | 'metrics' | 'dataroom' | 'compliance' | 'settings' | 'governance'>('overview')
     const [createWizardOpen, setCreateWizardOpen] = useState(false)
 
     // Mobile Sidebar Toggle
@@ -306,6 +307,7 @@ export default function VenturesPage() {
                                 {[
                                     { id: 'overview', icon: LayoutGrid, label: 'Overview' },
                                     { id: 'captable', icon: PieChart, label: 'Cap Table' },
+                                    ...(role === 'admin' ? [{ id: 'governance', icon: Landmark, label: 'Governance' }] : []),
                                     { id: 'invest', icon: Briefcase, label: 'Invest' }, // Renamed from Rounds
                                     // Fundraising only visible for admin? Or everyone? Let's show for all but maybe empty for investors if no permission
                                     ...(role === 'admin' ? [{ id: 'fundraising', icon: DollarSign, label: 'Fundraising' }] : []),
@@ -468,6 +470,13 @@ export default function VenturesPage() {
                         {viewMode === 'compliance' && (
                             <div className="animate-fadeIn">
                                 <ComplianceCalendar subsidiaryId={currentEntity.id} />
+                            </div>
+                        )}
+
+                        {/* VIEW: GOVERNANCE (Admin Only) */}
+                        {viewMode === 'governance' && (
+                            <div className="animate-fadeIn">
+                                <PersonnelManager subsidiaryId={currentEntity.id} themeColor={currentEntity.hex_color} />
                             </div>
                         )}
 

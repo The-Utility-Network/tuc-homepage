@@ -32,6 +32,7 @@ interface UnlinkedRole {
     email: string
     title: string
     seat_type?: string
+    subsidiary_id?: string
 }
 
 const ROLE_LABELS: Record<string, string> = {

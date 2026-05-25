@@ -207,6 +207,92 @@ export default function TeamManagement({ isAdmin }: { isAdmin: boolean }) {
         }
     }
 
+    const [editProfileForm, setEditProfileForm] = useState<Record<string, {
+        full_name: string
+        phone: string
+        linkedin: string
+        bio: string
+        company_name: string
+    }>>({})
+
+    const handleExpandCard = (p: TeamProfile) => {
+        if (expandedId === p.id) {
+            setExpandedId(null)
+        } else {
+            setExpandedId(p.id)
+            setEditProfileForm(prev => ({
+                ...prev,
+                [p.id]: {
+                    full_name: p.full_name || '',
+                    phone: (p as any).phone || '',
+                    linkedin: (p as any).linkedin || '',
+                    bio: (p as any).bio || '',
+                    company_name: (p as any).company_name || ''
+                }
+            }))
+        }
+    }
+
+    async function handleUpdateProfileInfo(profileId: string) {
+        const form = editProfileForm[profileId]
+        if (!form) return
+        try {
+            const res = await fetch('/api/nexus/team', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'update_info',
+                    profile_id: profileId,
+                    full_name: form.full_name,
+                    phone: form.phone,
+                    linkedin: form.linkedin,
+                    bio: form.bio,
+                    company_name: form.company_name
+                })
+            })
+            if (!res.ok) throw new Error(await res.text())
+            alert('Member details updated successfully')
+            fetchTeam()
+        } catch (e: any) {
+            console.error(e)
+            alert('Failed to update details: ' + e.message)
+        }
+    }
+
+    async function handleResendInvite(email: string, title: string, subsidiaryId: string) {
+        try {
+            const res = await fetch('/api/ventures/invite', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email,
+                    subsidiaryId,
+                    shares: 0,
+                    role: title
+                })
+            })
+            if (!res.ok) throw new Error(await res.text())
+            alert(`Nexus invitation email successfully re-dispatched to ${email}`)
+        } catch (e: any) {
+            console.error(e)
+            alert('Failed to resend invite: ' + e.message)
+        }
+    }
+
+    async function handleRemoveUnlinkedRole(id: string, type: 'director' | 'officer', name: string) {
+        if (!confirm(`Are you sure you want to remove the governance seat for ${name}?`)) return
+        const supabase = createClient()
+        try {
+            const table = type === 'director' ? 'board_members' : 'officers'
+            const { error } = await supabase.from(table).delete().eq('id', id)
+            if (error) throw error
+            fetchTeam()
+        } catch (e: any) {
+            console.error(e)
+            alert('Failed to remove seat: ' + e.message)
+        }
+    }
+
     async function handleApprove(profileId: string) {
         const role = approveRole[profileId]
         const links = approveLinks[profileId]
@@ -405,7 +491,7 @@ export default function TeamManagement({ isAdmin }: { isAdmin: boolean }) {
                         const roleColor = ROLE_COLORS[p.role] || ROLE_COLORS.investor
                         return (
                             <div key={p.id} className={`p-4 bg-white/[0.02] border rounded-xl transition-all ${isExpanded ? 'border-[#F54029]/30 bg-[#F54029]/5' : 'border-white/5 hover:border-white/10'}`}>
-                                <div className="flex items-center justify-between cursor-pointer" onClick={() => setExpandedId(isExpanded ? null : p.id)}>
+                                <div className="flex items-center justify-between cursor-pointer" onClick={() => handleExpandCard(p)}>
                                     <div className="flex items-center gap-3 flex-1 min-w-0">
                                         <div className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-xs font-bold text-white/30">
                                             {(p.full_name || p.email)?.[0]?.toUpperCase()}
@@ -480,6 +566,86 @@ export default function TeamManagement({ isAdmin }: { isAdmin: boolean }) {
                                             </div>
                                         )}
 
+                                        {/* Profile Details Edit Form */}
+                                        <div className="border-t border-white/5 pt-4 space-y-3">
+                                            <h5 className="text-[10px] font-bold text-[#F54029] uppercase tracking-widest">Edit Member Profile Information</h5>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <label className="text-[9px] text-white/30 uppercase tracking-widest block mb-1">Full Name</label>
+                                                    <input
+                                                        type="text"
+                                                        value={editProfileForm[p.id]?.full_name || ''}
+                                                        onChange={e => setEditProfileForm(prev => ({
+                                                            ...prev,
+                                                            [p.id]: { ...prev[p.id], full_name: e.target.value }
+                                                        }))}
+                                                        className="w-full bg-[#111] border border-white/10 rounded-lg px-3 py-2 text-white text-xs outline-none focus:border-[#F54029]"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="text-[9px] text-white/30 uppercase tracking-widest block mb-1">Company Name</label>
+                                                    <input
+                                                        type="text"
+                                                        value={editProfileForm[p.id]?.company_name || ''}
+                                                        onChange={e => setEditProfileForm(prev => ({
+                                                            ...prev,
+                                                            [p.id]: { ...prev[p.id], company_name: e.target.value }
+                                                        }))}
+                                                        className="w-full bg-[#111] border border-white/10 rounded-lg px-3 py-2 text-white text-xs outline-none focus:border-[#F54029]"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <label className="text-[9px] text-white/30 uppercase tracking-widest block mb-1">Phone Number</label>
+                                                    <input
+                                                        type="tel"
+                                                        value={editProfileForm[p.id]?.phone || ''}
+                                                        onChange={e => setEditProfileForm(prev => ({
+                                                            ...prev,
+                                                            [p.id]: { ...prev[p.id], phone: e.target.value }
+                                                        }))}
+                                                        className="w-full bg-[#111] border border-white/10 rounded-lg px-3 py-2 text-white text-xs outline-none focus:border-[#F54029]"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="text-[9px] text-white/30 uppercase tracking-widest block mb-1">LinkedIn Profile URL</label>
+                                                    <input
+                                                        type="url"
+                                                        value={editProfileForm[p.id]?.linkedin || ''}
+                                                        onChange={e => setEditProfileForm(prev => ({
+                                                            ...prev,
+                                                            [p.id]: { ...prev[p.id], linkedin: e.target.value }
+                                                        }))}
+                                                        className="w-full bg-[#111] border border-white/10 rounded-lg px-3 py-2 text-white text-xs outline-none focus:border-[#F54029]"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <label className="text-[9px] text-white/30 uppercase tracking-widest block mb-1">Professional Biography</label>
+                                                <textarea
+                                                    value={editProfileForm[p.id]?.bio || ''}
+                                                    onChange={e => setEditProfileForm(prev => ({
+                                                        ...prev,
+                                                        [p.id]: { ...prev[p.id], bio: e.target.value }
+                                                    }))}
+                                                    rows={2}
+                                                    className="w-full bg-[#111] border border-white/10 rounded-lg px-3 py-2 text-white text-xs outline-none focus:border-[#F54029] resize-none"
+                                                />
+                                            </div>
+
+                                            <div className="flex justify-end">
+                                                <button
+                                                    onClick={() => handleUpdateProfileInfo(p.id)}
+                                                    className="px-3.5 py-1.5 bg-[#F54029] hover:bg-[#F54029]/80 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer shadow-[0_2px_8px_rgba(245,64,41,0.1)]"
+                                                >
+                                                    Save Details
+                                                </button>
+                                            </div>
+                                        </div>
+
                                         {/* Actions */}
                                         <div className="flex gap-2 pt-2 border-t border-white/5 w-full">
                                             <button onClick={() => handleSuspend(p.id)}
@@ -522,9 +688,24 @@ export default function TeamManagement({ isAdmin }: { isAdmin: boolean }) {
                                         )}
                                     </div>
                                 </div>
-                                <span className="px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-white/15 bg-white/[0.03] border border-white/5 rounded">
-                                    Not Registered
-                                </span>
+                                <div className="flex gap-2 shrink-0">
+                                    {r.email && r.subsidiary_id && (
+                                        <button 
+                                            onClick={() => handleResendInvite(r.email, r.title, r.subsidiary_id!)}
+                                            className="px-2.5 py-1.5 bg-[#F54029]/10 border border-[#F54029]/20 text-[#F54029] hover:bg-[#F54029]/20 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all flex items-center gap-1 cursor-pointer animate-fadeIn"
+                                            title="Resend Access Invite Email"
+                                        >
+                                            <Mail size={11} /> Resend
+                                        </button>
+                                    )}
+                                    <button 
+                                        onClick={() => handleRemoveUnlinkedRole(r.id, r.type, r.name)}
+                                        className="px-2.5 py-1.5 bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all flex items-center gap-1 cursor-pointer animate-fadeIn"
+                                        title="Remove Governance Seat"
+                                    >
+                                        <Trash2 size={11} /> Remove
+                                    </button>
+                                </div>
                             </div>
                         ))}
                     </div>

@@ -60,7 +60,8 @@ export async function GET() {
             name: d.name,
             email: d.email,
             title: d.title || 'Director',
-            seat_type: d.seat_type
+            seat_type: d.seat_type,
+            subsidiary_id: d.subsidiary_id
         }))
 
         const unlinkedOfficers = (officers || []).filter((o: any) =>
@@ -70,7 +71,8 @@ export async function GET() {
             type: 'officer',
             name: o.name,
             email: o.email,
-            title: o.title
+            title: o.title,
+            subsidiary_id: o.subsidiary_id
         }))
 
         return NextResponse.json({
@@ -159,7 +161,42 @@ export async function PATCH(req: NextRequest) {
 
         if (action === 'update_role') {
             const { role } = body
+            
+            // 1. Update public profile
             await adminClient.from('profiles').update({ role, updated_at: new Date() }).eq('id', profile_id)
+            
+            // 2. Also update auth user metadata so the JWT and auth session get the new role immediately!
+            const { error: authErr } = await adminClient.auth.admin.updateUserById(profile_id, {
+                user_metadata: { role }
+            })
+            if (authErr) {
+                console.error('Error updating auth metadata role:', authErr.message)
+            }
+            
+            return NextResponse.json({ success: true })
+        }
+
+        if (action === 'update_info') {
+            const { full_name, phone, linkedin, bio, company_name } = body
+            
+            // 1. Update public profile
+            await adminClient.from('profiles').update({
+                full_name,
+                phone,
+                linkedin,
+                bio,
+                company_name,
+                updated_at: new Date()
+            }).eq('id', profile_id)
+            
+            // 2. Also update full_name in auth user metadata for consistency
+            const { error: authErr } = await adminClient.auth.admin.updateUserById(profile_id, {
+                user_metadata: { full_name }
+            })
+            if (authErr) {
+                console.error('Error updating name in auth:', authErr.message)
+            }
+            
             return NextResponse.json({ success: true })
         }
 

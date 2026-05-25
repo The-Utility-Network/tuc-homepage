@@ -133,45 +133,19 @@ export async function POST(request: Request) {
         const siteUrl = 'https://theutilitycompany.co'
         const logoUrl = `${siteUrl}${logoPath}`
         
-        let actionLink = `${siteUrl}/nexus/register`
+        let actionLink = `${siteUrl}/nexus/register?email=${encodeURIComponent(email)}&sub=${encodeURIComponent(subsidiaryId)}&role=${encodeURIComponent(platformRole)}`
         let isNewUser = true
-        let authData: any = null
 
-        try {
-            // First check if user already exists in public profiles
-            const { data: profileSearch } = await supabase
-                .from('profiles')
-                .select('id')
-                .eq('email', email)
-                .maybeSingle()
-            
-            if (profileSearch) {
-                isNewUser = false
-                actionLink = `${siteUrl}/nexus/login`
-            } else {
-                const { data: linkData, error: linkError } = await supabaseAdmin.auth.admin.generateLink({
-                    type: 'invite',
-                    email: email,
-                    options: {
-                        data: {
-                            role: platformRole,
-                            invited_to_subsidiary: subsidiaryId
-                        },
-                        redirectTo: `${siteUrl}/nexus/register`
-                    }
-                })
-
-                if (linkError) {
-                    throw linkError
-                } else if (linkData?.properties?.action_link) {
-                    actionLink = linkData.properties.action_link
-                    authData = linkData
-                }
-            }
-        } catch (authErr: any) {
-            console.error('Auth Invite Link Generation Failed:', authErr)
-            // If all else fails, use a direct registration URL with parameters
-            actionLink = `${siteUrl}/nexus/register?email=${encodeURIComponent(email)}&sub=${encodeURIComponent(subsidiaryId)}`
+        // Check if user already exists in public profiles
+        const { data: profileSearch } = await supabase
+            .from('profiles')
+            .select('id')
+            .eq('email', email)
+            .maybeSingle()
+        
+        if (profileSearch) {
+            isNewUser = false
+            actionLink = `${siteUrl}/nexus/login`
         }
 
         // Clean any local development hosts (localhost/127.0.0.1) from the generated activation link
@@ -276,7 +250,7 @@ export async function POST(request: Request) {
             `
         );
 
-        return NextResponse.json({ success: true, invite: inviteRecord, auth: authData })
+        return NextResponse.json({ success: true, invite: inviteRecord, auth: null })
 
     } catch (error: any) {
         console.error('Invite Error:', error)

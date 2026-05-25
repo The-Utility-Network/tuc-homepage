@@ -30,12 +30,20 @@ export default function InvestorRegistrationForm() {
         async function checkSession() {
             const { data: { session: currentSession } } = await supabase.auth.getSession()
             setSession(currentSession)
+            
+            const params = new URLSearchParams(window.location.search)
+            const queryEmail = params.get('email')
+            const queryRole = params.get('role')
+
             if (currentSession) {
                 // If they are logged in via invite, pre-fill details from metadata
                 const meta = currentSession.user?.user_metadata || {}
                 setEmail(currentSession.user?.email || '')
                 setFullName(meta.full_name || '')
                 setRequestedRole(meta.role || 'team')
+            } else {
+                if (queryEmail) setEmail(queryEmail)
+                if (queryRole) setRequestedRole(queryRole)
             }
             setLoading(false)
         }
@@ -134,16 +142,24 @@ export default function InvestorRegistrationForm() {
     async function handleRequestAccessSubmit(e: React.FormEvent) {
         e.preventDefault()
         setErrorMsg('')
+
+        if (password !== confirmPassword) {
+            setErrorMsg('Passwords do not match')
+            return
+        }
+
+        if (password.length < 8) {
+            setErrorMsg('Password must be at least 8 characters')
+            return
+        }
+
         setSubmitting(true)
 
         try {
             // Standard email/password signup with approval status metadata
-            // Generate a random temporary password for request access flow
-            const tempPassword = Math.random().toString(36).slice(-10) + 'A1!'
-            
             const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
                 email,
-                password: tempPassword,
+                password,
                 options: {
                     data: {
                         full_name: fullName,
@@ -361,6 +377,31 @@ export default function InvestorRegistrationForm() {
                                 placeholder="bob@vance.com"
                                 value={email}
                                 onChange={e => setEmail(e.target.value)}
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-[#F54029]/30 transition-colors"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className="text-white/60 text-xs font-semibold block mb-2 uppercase tracking-wide">Choose Password</label>
+                            <input
+                                type="password"
+                                required
+                                minLength={8}
+                                placeholder="Min. 8 characters"
+                                value={password}
+                                onChange={e => setPassword(e.target.value)}
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-[#F54029]/30 transition-colors"
+                            />
+                        </div>
+                        <div>
+                            <label className="text-white/60 text-xs font-semibold block mb-2 uppercase tracking-wide">Confirm Password</label>
+                            <input
+                                type="password"
+                                required
+                                value={confirmPassword}
+                                onChange={e => setConfirmPassword(e.target.value)}
                                 className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-[#F54029]/30 transition-colors"
                             />
                         </div>

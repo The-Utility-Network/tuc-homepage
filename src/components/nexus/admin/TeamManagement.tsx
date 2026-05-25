@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Users, Shield, CheckCircle, Clock, XCircle, UserPlus, Link2, Unlink, ChevronDown, AlertTriangle, Mail, Calendar } from 'lucide-react'
+import { createClient } from '@/lib/supabase'
+import { Users, Shield, CheckCircle, Clock, XCircle, UserPlus, Link2, Unlink, ChevronDown, AlertTriangle, Mail, Calendar, Plus, Trash2, X } from 'lucide-react'
 
 interface GovernanceRole {
     id: string
@@ -53,6 +54,12 @@ const ROLE_COLORS: Record<string, string> = {
     pending: 'text-white/20 bg-white/5 border-white/5',
 }
 
+const ROLE_PRESETS: Record<string, string[]> = {
+    director: ['Founder Director', 'Independent Director', 'Board Observer', 'Chairman of the Board', 'At-Large Director', 'Custom...'],
+    officer: ['Chief Executive Officer (CEO)', 'Chief Technology Officer (CTO)', 'Chief Financial Officer (CFO)', 'Corporate Secretary', 'Treasurer', 'Custom...'],
+    team: ['Corporate Counsel', 'General Partner', 'Executive Assistant', 'Operations Manager', 'Custom...']
+}
+
 export default function TeamManagement({ isAdmin }: { isAdmin: boolean }) {
     const [profiles, setProfiles] = useState<TeamProfile[]>([])
     const [unlinkedRoles, setUnlinkedRoles] = useState<UnlinkedRole[]>([])
@@ -61,7 +68,45 @@ export default function TeamManagement({ isAdmin }: { isAdmin: boolean }) {
     const [approveRole, setApproveRole] = useState<Record<string, string>>({})
     const [approveLinks, setApproveLinks] = useState<Record<string, Set<string>>>({})
 
-    useEffect(() => { fetchTeam() }, [])
+    // Invite Modal & Subsidiaries State
+    const [inviteModalOpen, setInviteModalOpen] = useState(false)
+    const [subsidiaries, setSubsidiaries] = useState<any[]>([])
+    const [inviteForm, setInviteForm] = useState({
+        name: '',
+        email: '',
+        role: 'director' as 'director' | 'officer' | 'team',
+        title: 'Founder Director',
+        subsidiaryId: '',
+        seatType: 'at_large',
+        department: ''
+    })
+
+    const [selectedPreset, setSelectedPreset] = useState<string>('Founder Director')
+    const [customTitle, setCustomTitle] = useState<string>('')
+
+    useEffect(() => { 
+        fetchTeam() 
+        fetchSubsidiaries()
+    }, [])
+
+    useEffect(() => {
+        const presets = ROLE_PRESETS[inviteForm.role] || []
+        if (presets.length > 0) {
+            setSelectedPreset(presets[0])
+            setInviteForm(prev => ({ ...prev, title: presets[0] }))
+        }
+    }, [inviteForm.role])
+
+    async function fetchSubsidiaries() {
+        const supabase = createClient()
+        const { data } = await supabase.from('subsidiaries').select('*').order('name')
+        if (data) {
+            setSubsidiaries(data)
+            if (data.length > 0) {
+                setInviteForm(prev => ({ ...prev, subsidiaryId: data[0].id }))
+            }
+        }
+    }
 
     async function fetchTeam() {
         try {
@@ -71,6 +116,95 @@ export default function TeamManagement({ isAdmin }: { isAdmin: boolean }) {
             setUnlinkedRoles(data.unlinked_roles || [])
         } catch (e) { console.error(e) }
         setLoading(false)
+    }
+
+    async function handleInviteSubmit(e: React.FormEvent) {
+        e.preventDefault()
+        if (!inviteForm.name || !inviteForm.email || !inviteForm.subsidiaryId) return
+
+        const supabase = createClient()
+        setLoading(true)
+
+        try {
+            // 1. If director, insert into board_members
+            if (inviteForm.role === 'director') {
+                const { error: dbError } = await supabase
+                    .from('board_members')
+                    .insert([{
+                        subsidiary_id: inviteForm.subsidiaryId,
+                        name: inviteForm.name,
+                        email: inviteForm.email,
+                        title: inviteForm.title,
+                        seat_type: inviteForm.seatType || 'at_large',
+                        is_active: true
+                    }])
+                if (dbError) throw dbError
+            } 
+            // 2. If officer, insert into officers
+            else if (inviteForm.role === 'officer') {
+                const { error: dbError } = await supabase
+                    .from('officers')
+                    .insert([{
+                        subsidiary_id: inviteForm.subsidiaryId,
+                        name: inviteForm.name,
+                        email: inviteForm.email,
+                        title: inviteForm.title,
+                        department: inviteForm.department || null,
+                        appointment_date: new Date().toISOString(),
+                        is_active: true
+                    }])
+                if (dbError) throw dbError
+            }
+
+            // 3. Call invite API
+            const res = await fetch('/api/ventures/invite', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: inviteForm.email,
+                    subsidiaryId: inviteForm.subsidiaryId,
+                    shares: 0,
+                    role: inviteForm.title
+                })
+            })
+            
+            if (!res.ok) throw new Error(await res.text())
+
+            alert(`Nexus invite successfully dispatched to ${inviteForm.email}`)
+            setInviteModalOpen(false)
+            setInviteForm(prev => ({
+                name: '',
+                email: '',
+                role: 'director',
+                title: 'Founder Director',
+                subsidiaryId: subsidiaries[0]?.id || prev.subsidiaryId,
+                seatType: 'at_large',
+                department: ''
+            }))
+            setCustomTitle('')
+            fetchTeam()
+        } catch (error: any) {
+            console.error('Invite Error:', error)
+            alert('Failed to send invite: ' + error.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    async function handleRemoveMember(profileId: string, name: string) {
+        if (!confirm(`Are you sure you want to completely remove ${name}? This will unlink all their governance roles and delete their account. This action is irreversible.`)) return
+        try {
+            const res = await fetch('/api/nexus/team', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ profile_id: profileId })
+            })
+            if (!res.ok) throw new Error(await res.text())
+            fetchTeam()
+        } catch (e: any) {
+            console.error(e)
+            alert('Failed to remove member: ' + e.message)
+        }
     }
 
     async function handleApprove(profileId: string) {
@@ -153,9 +287,21 @@ export default function TeamManagement({ isAdmin }: { isAdmin: boolean }) {
 
     return (
         <div className="space-y-10">
-            <div>
-                <h2 className="text-2xl font-bold font-rajdhani text-white tracking-wide">Team Management</h2>
-                <p className="text-sm text-white/40 mt-1">Approve registrations, link governance roles, and manage platform access</p>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white/[0.01] border border-white/5 p-6 rounded-2xl">
+                <div>
+                    <h2 className="text-2xl font-bold font-rajdhani text-white uppercase tracking-wider flex items-center gap-2">
+                        <Users className="text-[#F54029]" size={24} /> Team Management
+                    </h2>
+                    <p className="text-sm text-white/40 mt-1">
+                        Approve registrations, link governance roles, and manage platform access.
+                    </p>
+                </div>
+                <button
+                    onClick={() => setInviteModalOpen(true)}
+                    className="px-4 py-2.5 bg-[#F54029] text-white hover:bg-[#F54029]/80 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer shadow-[0_4px_12px_rgba(245,64,41,0.2)]"
+                >
+                    <UserPlus size={14} /> Invite Member
+                </button>
             </div>
 
             {/* Pending Approvals */}
@@ -335,10 +481,14 @@ export default function TeamManagement({ isAdmin }: { isAdmin: boolean }) {
                                         )}
 
                                         {/* Actions */}
-                                        <div className="flex gap-2 pt-2 border-t border-white/5">
+                                        <div className="flex gap-2 pt-2 border-t border-white/5 w-full">
                                             <button onClick={() => handleSuspend(p.id)}
-                                                className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-red-400/40 hover:text-red-400 transition-all flex items-center gap-1">
+                                                className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-red-400/40 hover:text-red-400 transition-all flex items-center gap-1 hover:bg-white/5 rounded-lg">
                                                 <XCircle size={10} /> Suspend
+                                            </button>
+                                            <button onClick={() => handleRemoveMember(p.id, p.full_name || p.email)}
+                                                className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-red-500/60 hover:text-red-400 transition-all flex items-center gap-1 hover:bg-red-500/10 rounded-lg ml-auto">
+                                                <Trash2 size={10} /> Remove Member
                                             </button>
                                         </div>
                                     </div>
@@ -410,5 +560,169 @@ export default function TeamManagement({ isAdmin }: { isAdmin: boolean }) {
                 </div>
             )}
         </div>
+
+        {/* MODAL: INVITE MEMBER */}
+        {inviteModalOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-md p-4 animate-fadeIn">
+                <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+                    {/* Header */}
+                    <div className="flex items-center justify-between p-6 border-b border-white/10">
+                        <div>
+                            <h4 className="text-xl font-bold text-white font-rajdhani flex items-center gap-2">
+                                <UserPlus className="text-[#F54029]" size={20} /> Invite Team Member
+                            </h4>
+                            <p className="text-white/40 text-xs mt-1">Configure subsidiary role, presets, and access details</p>
+                        </div>
+                        <button 
+                            onClick={() => setInviteModalOpen(false)}
+                            className="p-2 hover:bg-white/10 rounded-lg text-white/60 hover:text-white transition-colors"
+                        >
+                            <X size={20} />
+                        </button>
+                    </div>
+
+                    {/* Form */}
+                    <form onSubmit={handleInviteSubmit} className="flex-1 overflow-y-auto p-6 space-y-4">
+                        <div>
+                            <label className="text-white/80 text-xs font-semibold block mb-2 uppercase tracking-wide">Full Name</label>
+                            <input
+                                type="text"
+                                required
+                                value={inviteForm.name}
+                                onChange={e => setInviteForm({ ...inviteForm, name: e.target.value })}
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-white/30 transition-colors"
+                                placeholder="e.g. Alice Cooper"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="text-white/80 text-xs font-semibold block mb-2 uppercase tracking-wide">Email Address</label>
+                            <input
+                                type="email"
+                                required
+                                value={inviteForm.email}
+                                onChange={e => setInviteForm({ ...inviteForm, email: e.target.value })}
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-white/30 transition-colors"
+                                placeholder="alice@subsidiary.com"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="text-white/80 text-xs font-semibold block mb-2 uppercase tracking-wide">Subsidiary Entity</label>
+                            <select
+                                required
+                                value={inviteForm.subsidiaryId}
+                                onChange={e => setInviteForm({ ...inviteForm, subsidiaryId: e.target.value })}
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-white/30 transition-colors"
+                                style={{ colorScheme: 'dark' }}
+                            >
+                                {subsidiaries.map(sub => (
+                                    <option key={sub.id} value={sub.id}>
+                                        {sub.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <label className="text-white/80 text-xs font-semibold block mb-2 uppercase tracking-wide">Role Type</label>
+                                <select
+                                    value={inviteForm.role}
+                                    onChange={e => setInviteForm({ ...inviteForm, role: e.target.value as any })}
+                                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-white/30 transition-colors"
+                                    style={{ colorScheme: 'dark' }}
+                                >
+                                    <option value="director">Board Director</option>
+                                    <option value="officer">Corporate Officer</option>
+                                    <option value="team">Team Member</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="text-white/80 text-xs font-semibold block mb-2 uppercase tracking-wide">Role Preset</label>
+                                <select
+                                    value={selectedPreset}
+                                    onChange={e => {
+                                        const val = e.target.value
+                                        setSelectedPreset(val)
+                                        if (val === 'Custom...') {
+                                            setInviteForm(prev => ({ ...prev, title: customTitle || '' }))
+                                        } else {
+                                            setInviteForm(prev => ({ ...prev, title: val }))
+                                        }
+                                    }}
+                                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-white/30 transition-colors"
+                                    style={{ colorScheme: 'dark' }}
+                                >
+                                    {(ROLE_PRESETS[inviteForm.role] || []).map(preset => (
+                                        <option key={preset} value={preset}>
+                                            {preset}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+
+                        {(selectedPreset === 'Custom...' || !selectedPreset) && (
+                            <div className="animate-fadeIn">
+                                <label className="text-white/80 text-xs font-semibold block mb-2 uppercase tracking-wide">Custom Role Title</label>
+                                <input
+                                    type="text"
+                                    required
+                                    value={customTitle}
+                                    onChange={e => {
+                                        const val = e.target.value
+                                        setCustomTitle(val)
+                                        setInviteForm(prev => ({ ...prev, title: val }))
+                                    }}
+                                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-white/30 transition-colors"
+                                    placeholder="e.g. Chairman of Governance Committee, VP of Growth"
+                                />
+                            </div>
+                        )}
+
+                        {inviteForm.role === 'director' && (
+                            <div className="grid grid-cols-1 gap-4 p-4 bg-white/5 border border-white/5 rounded-xl animate-fadeIn">
+                                <label className="text-white/80 text-xs font-semibold block mb-1 uppercase tracking-wide">Director Seat Type</label>
+                                <select
+                                    value={inviteForm.seatType}
+                                    onChange={e => setInviteForm({ ...inviteForm, seatType: e.target.value })}
+                                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-white/30 transition-colors"
+                                    style={{ colorScheme: 'dark' }}
+                                >
+                                    <option value="founder">Founder Director</option>
+                                    <option value="independent">Independent Director</option>
+                                    <option value="observer">Board Observer</option>
+                                    <option value="at_large">At-Large Director</option>
+                                </select>
+                            </div>
+                        )}
+
+                        {inviteForm.role === 'officer' && (
+                            <div className="grid grid-cols-1 gap-4 p-4 bg-white/5 border border-white/5 rounded-xl animate-fadeIn">
+                                <div>
+                                    <label className="text-white/80 text-xs font-semibold block mb-2 uppercase tracking-wide">Department</label>
+                                    <input
+                                        type="text"
+                                        value={inviteForm.department}
+                                        onChange={e => setInviteForm({ ...inviteForm, department: e.target.value })}
+                                        className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-white/30 transition-colors"
+                                        placeholder="e.g. Executive, Engineering, Corporate"
+                                    />
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Submit */}
+                        <button
+                            type="submit"
+                            className="w-full py-4 bg-[#F54029] hover:bg-[#F54029]/80 text-white font-bold rounded-xl uppercase tracking-widest text-xs transition-all shadow-[0_4px_12px_rgba(245,64,41,0.2)] mt-6"
+                        >
+                            Send Registration Invitation
+                        </button>
+                    </form>
+                </div>
+            </div>
+        )}
     )
 }

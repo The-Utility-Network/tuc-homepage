@@ -372,6 +372,18 @@ BEGIN
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'profiles' AND column_name = 'requested_role') THEN
         ALTER TABLE profiles ADD COLUMN requested_role TEXT;
     END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'profiles' AND column_name = 'phone') THEN
+        ALTER TABLE profiles ADD COLUMN phone TEXT;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'profiles' AND column_name = 'linkedin') THEN
+        ALTER TABLE profiles ADD COLUMN linkedin TEXT;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'profiles' AND column_name = 'bio') THEN
+        ALTER TABLE profiles ADD COLUMN bio TEXT;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'profiles' AND column_name = 'title') THEN
+        ALTER TABLE profiles ADD COLUMN title TEXT;
+    END IF;
 END $$;
 
 -- 15. Financial Snapshots (may already exist, use IF NOT EXISTS)

@@ -6,3 +6,9 @@ ADD COLUMN IF NOT EXISTS subsidiary_id TEXT REFERENCES subsidiaries(id) ON DELET
 
 ALTER TABLE officers 
 ADD COLUMN IF NOT EXISTS subsidiary_id TEXT REFERENCES subsidiaries(id) ON DELETE CASCADE;
+
+-- Add pertinent user details columns to profiles table
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS phone TEXT;
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS linkedin TEXT;
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS bio TEXT;
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS title TEXT;

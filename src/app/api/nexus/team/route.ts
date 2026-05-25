@@ -169,3 +169,33 @@ export async function PATCH(req: NextRequest) {
         return NextResponse.json({ error: 'Failed to update team member' }, { status: 500 })
     }
 }
+
+export async function DELETE(req: NextRequest) {
+    try {
+        const adminClient = createAdminClient()
+        const { profile_id } = await req.json()
+
+        if (!profile_id) {
+            return NextResponse.json({ error: 'Profile ID required' }, { status: 400 })
+        }
+
+        // 1. Unlink governance seats to prevent foreign key errors
+        await adminClient.from('board_members').update({ user_id: null }).eq('user_id', profile_id)
+        await adminClient.from('officers').update({ user_id: null }).eq('user_id', profile_id)
+
+        // 2. Delete the profile
+        const { error: profileDeleteErr } = await adminClient.from('profiles').delete().eq('id', profile_id)
+        if (profileDeleteErr) throw profileDeleteErr
+
+        // 3. Delete from auth.users
+        const { error: authDeleteErr } = await adminClient.auth.admin.deleteUser(profile_id)
+        if (authDeleteErr) {
+            console.log('Error deleting auth user:', authDeleteErr.message)
+        }
+
+        return NextResponse.json({ success: true })
+    } catch (error: any) {
+        console.error('Team DELETE error:', error)
+        return NextResponse.json({ error: error.message }, { status: 500 })
+    }
+}

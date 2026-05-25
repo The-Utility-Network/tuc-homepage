@@ -46,7 +46,7 @@ CREATE POLICY "Admins can manage invites"
 CREATE POLICY "Users can view their own invites"
     ON cap_table_invites FOR SELECT
     USING (
-        email = (SELECT email FROM auth.users WHERE id = auth.uid())
+        email = (auth.jwt() ->> 'email')
     );
 
 -- Helper function to accept invite
@@ -64,7 +64,7 @@ BEGIN
     END IF;
     
     -- Get user email
-    SELECT email INTO v_user_email FROM auth.users WHERE id = v_user_id;
+    v_user_email := auth.jwt() ->> 'email';
     
     -- Find invite
     SELECT * INTO v_invite FROM cap_table_invites 

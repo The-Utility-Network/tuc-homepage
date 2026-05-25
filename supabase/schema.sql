@@ -24,9 +24,28 @@ create policy "Users can update own profile." on profiles
 -- Function to handle new user signup
 create or replace function public.handle_new_user()
 returns trigger as $$
+declare
+  v_role text;
+  v_status text;
+  v_requested_role text;
 begin
-  insert into public.profiles (id, email, full_name)
-  values (new.id, new.email, new.raw_user_meta_data->>'full_name');
+  v_role := coalesce(new.raw_user_meta_data->>'role', 'investor');
+  v_status := coalesce(new.raw_user_meta_data->>'status', 'pending_approval');
+  v_requested_role := new.raw_user_meta_data->>'requested_role';
+
+  if v_role in ('admin', 'superadmin', 'director', 'officer', 'team') then
+    v_status := 'approved';
+  end if;
+
+  insert into public.profiles (id, email, full_name, role, status, requested_role)
+  values (
+    new.id, 
+    new.email, 
+    coalesce(new.raw_user_meta_data->>'full_name', new.email),
+    v_role,
+    v_status,
+    v_requested_role
+  );
   return new;
 end;
 $$ language plpgsql security definer;

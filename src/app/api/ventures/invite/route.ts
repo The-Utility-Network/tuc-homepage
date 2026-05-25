@@ -57,11 +57,24 @@ export async function POST(request: Request) {
 
         if (dbError) throw dbError
 
-        // 3. Send Supabase Auth Invite
+        // 3. Map the seat/grant title to a standard platform role
+        let platformRole = 'investor';
+        if (role) {
+            const normalized = role.toLowerCase();
+            if (normalized.includes('director') || normalized.includes('chairman') || normalized.includes('board')) {
+                platformRole = 'director';
+            } else if (normalized.includes('officer') || normalized.includes('ceo') || normalized.includes('cto') || normalized.includes('cfo') || normalized.includes('secretary') || normalized.includes('treasurer')) {
+                platformRole = 'officer';
+            } else if (normalized === 'team' || normalized === 'employee' || normalized === 'partner') {
+                platformRole = 'team';
+            }
+        }
+
+        // 4. Send Supabase Auth Invite
         // This sends the standard Supabase "Invite User" email template
         const { data: authData, error: authError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
             data: {
-                role: 'investor', // Default role for new users
+                role: platformRole, // Set platform role dynamically
                 invited_to_subsidiary: subsidiaryId // Metadata
             },
             // redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/nexus/onboarding` // Optional: redirect to onboarding

@@ -559,7 +559,6 @@ export default function TeamManagement({ isAdmin }: { isAdmin: boolean }) {
                     </div>
                 </div>
             )}
-        </div>
 
         {/* MODAL: INVITE MEMBER */}
         {inviteModalOpen && (
@@ -724,5 +723,6 @@ export default function TeamManagement({ isAdmin }: { isAdmin: boolean }) {
                 </div>
             </div>
         )}
+        </div>
     )
 }

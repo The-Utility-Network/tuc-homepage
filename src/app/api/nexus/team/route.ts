@@ -120,6 +120,11 @@ export async function PATCH(req: NextRequest) {
                 }
             }
 
+            // Confirm their email address in Supabase Auth to guarantee they can login immediately
+            await adminClient.auth.admin.updateUserById(profile_id, {
+                email_confirm: true
+            }).catch(err => console.error('Error confirming email on approval:', err.message))
+
             // SES: notify the user they've been approved
             if (profile.email) {
                 sendApplicationApprovedEmail(profile.email, profile.full_name || profile.email, updatePayload.role).catch(err => console.error('[SES] Approval email failed:', err))

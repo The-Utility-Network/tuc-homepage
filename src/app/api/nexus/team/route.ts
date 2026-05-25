@@ -163,7 +163,11 @@ export async function PATCH(req: NextRequest) {
             const { role } = body
             
             // 1. Update public profile
-            await adminClient.from('profiles').update({ role, updated_at: new Date() }).eq('id', profile_id)
+            const { error: profileError } = await adminClient.from('profiles').update({ role, updated_at: new Date() }).eq('id', profile_id)
+            if (profileError) {
+                console.error('Database update failed:', profileError)
+                return NextResponse.json({ error: profileError.message }, { status: 500 })
+            }
             
             // 2. Also update auth user metadata so the JWT and auth session get the new role immediately!
             const { error: authErr } = await adminClient.auth.admin.updateUserById(profile_id, {
@@ -180,7 +184,7 @@ export async function PATCH(req: NextRequest) {
             const { full_name, phone, linkedin, bio, company_name } = body
             
             // 1. Update public profile
-            await adminClient.from('profiles').update({
+            const { error: profileError } = await adminClient.from('profiles').update({
                 full_name,
                 phone,
                 linkedin,
@@ -188,6 +192,11 @@ export async function PATCH(req: NextRequest) {
                 company_name,
                 updated_at: new Date()
             }).eq('id', profile_id)
+            
+            if (profileError) {
+                console.error('Database update failed:', profileError)
+                return NextResponse.json({ error: profileError.message }, { status: 500 })
+            }
             
             // 2. Also update full_name in auth user metadata for consistency
             const { error: authErr } = await adminClient.auth.admin.updateUserById(profile_id, {

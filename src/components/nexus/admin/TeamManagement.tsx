@@ -85,6 +85,30 @@ export default function TeamManagement({ isAdmin }: { isAdmin: boolean }) {
     const [selectedPreset, setSelectedPreset] = useState<string>('Founder Director')
     const [customTitle, setCustomTitle] = useState<string>('')
 
+    // Custom Notification Modal State
+    const [alertConfig, setAlertConfig] = useState<{
+        open: boolean
+        title: string
+        message: string
+        type: 'success' | 'error' | 'info'
+    }>({ open: false, title: '', message: '', type: 'info' })
+
+    // Custom Confirmation Dialog State
+    const [confirmConfig, setConfirmConfig] = useState<{
+        open: boolean
+        title: string
+        message: string
+        onConfirm: () => void
+    }>({ open: false, title: '', message: '', onConfirm: () => {} })
+
+    const showAlert = (title: string, message: string, type: 'success' | 'error' | 'info' = 'info') => {
+        setAlertConfig({ open: true, title, message, type })
+    }
+
+    const showConfirm = (title: string, message: string, onConfirm: () => void) => {
+        setConfirmConfig({ open: true, title, message, onConfirm })
+    }
+
     useEffect(() => { 
         fetchTeam() 
         fetchSubsidiaries()
@@ -171,7 +195,7 @@ export default function TeamManagement({ isAdmin }: { isAdmin: boolean }) {
             
             if (!res.ok) throw new Error(await res.text())
 
-            alert(`Nexus invite successfully dispatched to ${inviteForm.email}`)
+            showAlert('Success', `Nexus invite successfully dispatched to ${inviteForm.email}`, 'success')
             setInviteModalOpen(false)
             setInviteForm(prev => ({
                 name: '',
@@ -186,26 +210,32 @@ export default function TeamManagement({ isAdmin }: { isAdmin: boolean }) {
             fetchTeam()
         } catch (error: any) {
             console.error('Invite Error:', error)
-            alert('Failed to send invite: ' + error.message)
+            showAlert('Invite Failed', error.message || 'Failed to dispatch invite.', 'error')
         } finally {
             setLoading(false)
         }
     }
 
     async function handleRemoveMember(profileId: string, name: string) {
-        if (!confirm(`Are you sure you want to completely remove ${name}? This will unlink all their governance roles and delete their account. This action is irreversible.`)) return
-        try {
-            const res = await fetch('/api/nexus/team', {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ profile_id: profileId })
-            })
-            if (!res.ok) throw new Error(await res.text())
-            fetchTeam()
-        } catch (e: any) {
-            console.error(e)
-            alert('Failed to remove member: ' + e.message)
-        }
+        showConfirm(
+            'Confirm Account Deletion',
+            `Are you sure you want to completely remove ${name}? This will unlink all their governance roles and delete their account. This action is irreversible.`,
+            async () => {
+                try {
+                    const res = await fetch('/api/nexus/team', {
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ profile_id: profileId })
+                    })
+                    if (!res.ok) throw new Error(await res.text())
+                    showAlert('Success', `${name} has been successfully removed from the ecosystem.`, 'success')
+                    fetchTeam()
+                } catch (e: any) {
+                    console.error(e)
+                    showAlert('Remove Failed', e.message || 'Failed to remove member.', 'error')
+                }
+            }
+        )
     }
 
     const [editProfileForm, setEditProfileForm] = useState<Record<string, {
@@ -252,11 +282,11 @@ export default function TeamManagement({ isAdmin }: { isAdmin: boolean }) {
                 })
             })
             if (!res.ok) throw new Error(await res.text())
-            alert('Member details updated successfully')
+            showAlert('Success', 'Member profile details updated successfully.', 'success')
             fetchTeam()
         } catch (e: any) {
             console.error(e)
-            alert('Failed to update details: ' + e.message)
+            showAlert('Update Failed', e.message || 'Failed to update details.', 'error')
         }
     }
 
@@ -273,25 +303,31 @@ export default function TeamManagement({ isAdmin }: { isAdmin: boolean }) {
                 })
             })
             if (!res.ok) throw new Error(await res.text())
-            alert(`Nexus invitation email successfully re-dispatched to ${email}`)
+            showAlert('Success', `Nexus invitation email successfully re-dispatched to ${email}`, 'success')
         } catch (e: any) {
             console.error(e)
-            alert('Failed to resend invite: ' + e.message)
+            showAlert('Resend Failed', e.message || 'Failed to resend invite.', 'error')
         }
     }
 
     async function handleRemoveUnlinkedRole(id: string, type: 'director' | 'officer', name: string) {
-        if (!confirm(`Are you sure you want to remove the governance seat for ${name}?`)) return
-        const supabase = createClient()
-        try {
-            const table = type === 'director' ? 'board_members' : 'officers'
-            const { error } = await supabase.from(table).delete().eq('id', id)
-            if (error) throw error
-            fetchTeam()
-        } catch (e: any) {
-            console.error(e)
-            alert('Failed to remove seat: ' + e.message)
-        }
+        showConfirm(
+            'Confirm Seat Removal',
+            `Are you sure you want to remove the governance seat for ${name}?`,
+            async () => {
+                const supabase = createClient()
+                try {
+                    const table = type === 'director' ? 'board_members' : 'officers'
+                    const { error } = await supabase.from(table).delete().eq('id', id)
+                    if (error) throw error
+                    showAlert('Success', 'Governance seat removed successfully.', 'success')
+                    fetchTeam()
+                } catch (e: any) {
+                    console.error(e)
+                    showAlert('Failed to remove seat', e.message || 'Error occurred.', 'error')
+                }
+            }
+        )
     }
 
     async function handleApprove(profileId: string) {
@@ -313,15 +349,24 @@ export default function TeamManagement({ isAdmin }: { isAdmin: boolean }) {
     }
 
     async function handleSuspend(profileId: string) {
-        if (!confirm('Suspend this user? They will no longer be able to log in.')) return
-        try {
-            await fetch('/api/nexus/team', {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'suspend', profile_id: profileId })
-            })
-            fetchTeam()
-        } catch (e) { console.error(e) }
+        showConfirm(
+            'Confirm User Suspension',
+            'Are you sure you want to suspend this user? They will no longer be able to log in to the portal.',
+            async () => {
+                try {
+                    await fetch('/api/nexus/team', {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'suspend', profile_id: profileId })
+                    })
+                    showAlert('Success', 'User profile suspended successfully.', 'success')
+                    fetchTeam()
+                } catch (e: any) {
+                    console.error(e)
+                    showAlert('Suspension Failed', e.message || 'An error occurred.', 'error')
+                }
+            }
+        )
     }
 
     async function handleLink(profileId: string, roleId: string, roleType: string) {
@@ -902,6 +947,68 @@ export default function TeamManagement({ isAdmin }: { isAdmin: boolean }) {
                             Send Registration Invitation
                         </button>
                     </form>
+                </div>
+            </div>
+        )}
+        {/* CUSTOM ALERT MODAL */}
+        {alertConfig.open && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 animate-fadeIn">
+                <div className="bg-[#0A0A0A] border border-white/10 p-6 rounded-2xl w-full max-w-sm text-center space-y-4 shadow-2xl">
+                    <div className={`w-12 h-12 rounded-full mx-auto flex items-center justify-center border ${
+                        alertConfig.type === 'success' 
+                            ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
+                            : alertConfig.type === 'error'
+                            ? 'bg-red-500/10 border-red-500/20 text-red-400'
+                            : 'bg-blue-500/10 border-blue-500/20 text-blue-400'
+                    }`}>
+                        {alertConfig.type === 'success' ? (
+                            <CheckCircle size={24} />
+                        ) : (
+                            <AlertTriangle size={24} />
+                        )}
+                    </div>
+                    <div>
+                        <h4 className="text-base font-bold text-white font-rajdhani uppercase tracking-wider">{alertConfig.title}</h4>
+                        <p className="text-xs text-white/60 mt-2 leading-relaxed">{alertConfig.message}</p>
+                    </div>
+                    <button
+                        onClick={() => setAlertConfig(prev => ({ ...prev, open: false }))}
+                        className="w-full py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer"
+                    >
+                        Dismiss
+                    </button>
+                </div>
+            </div>
+        )}
+
+        {/* CUSTOM CONFIRM MODAL */}
+        {confirmConfig.open && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 animate-fadeIn">
+                <div className="bg-[#0A0A0A] border border-white/10 p-6 rounded-2xl w-full max-w-sm text-center space-y-4 shadow-2xl">
+                    <div className="w-12 h-12 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 mx-auto flex items-center justify-center">
+                        <AlertTriangle size={24} />
+                    </div>
+                    <div>
+                        <h4 className="text-base font-bold text-white font-rajdhani uppercase tracking-wider">{confirmConfig.title}</h4>
+                        <p className="text-xs text-white/60 mt-2 leading-relaxed">{confirmConfig.message}</p>
+                    </div>
+                    <div className="flex gap-3">
+                        <button
+                            onClick={() => setConfirmConfig(prev => ({ ...prev, open: false }))}
+                            className="flex-1 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={() => {
+                                setConfirmConfig(prev => ({ ...prev, open: false }))
+                                confirmConfig.onConfirm()
+                            }}
+                            className="flex-1 py-2.5 bg-[#F54029] hover:bg-[#F54029]/80 text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer shadow-[0_2px_8px_rgba(245,64,41,0.2)]"
+                        >
+                            Confirm
+                        </button>
+                    </div>
                 </div>
             </div>
         )}

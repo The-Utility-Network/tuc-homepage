@@ -12,3 +12,4 @@ ALTER TABLE profiles ADD COLUMN IF NOT EXISTS phone TEXT;
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS linkedin TEXT;
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS bio TEXT;
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS title TEXT;
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS updated_at timestamp with time zone default timezone('utc'::text, now());

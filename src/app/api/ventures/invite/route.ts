@@ -10,6 +10,25 @@ const supabaseAdmin = createAdminClient(
     process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
+function cleanLocalhostUrl(url: string): string {
+    return url
+        // Replace unencoded localhost/127.0.0.1 with port
+        .replace(/https?:\/\/localhost:\d+/gi, 'https://theutilitycompany.co')
+        .replace(/localhost:\d+/gi, 'theutilitycompany.co')
+        .replace(/https?:\/\/127\.0\.0\.1:\d+/gi, 'https://theutilitycompany.co')
+        .replace(/127\.0\.0\.1:\d+/gi, 'theutilitycompany.co')
+        
+        // Replace URL-encoded localhost/127.0.0.1 with port (%3A or %3a)
+        .replace(/https?%3A%2F%2Flocalhost%3A\d+/gi, 'https%3A%2F%2Ftheutilitycompany.co')
+        .replace(/https?%3a%2f%2flocalhost%3a\d+/gi, 'https%3a%2f%2ftheutilitycompany.co')
+        .replace(/localhost%3A\d+/gi, 'theutilitycompany.co')
+        .replace(/localhost%3a\d+/gi, 'theutilitycompany.co')
+        .replace(/https?%3A%2F%2F127\.0\.0\.1%3A\d+/gi, 'https%3A%2F%2Ftheutilitycompany.co')
+        .replace(/https?%3a%2f%2f127\.0\.0\.1%3a\d+/gi, 'https%3a%2f%2ftheutilitycompany.co')
+        .replace(/127\.0\.0\.1%3A\d+/gi, 'theutilitycompany.co')
+        .replace(/127\.0\.0\.1%3a\d+/gi, 'theutilitycompany.co');
+}
+
 export async function POST(request: Request) {
     const supabase = await createClient()
     const { data: { session } } = await supabase.auth.getSession()
@@ -155,6 +174,9 @@ export async function POST(request: Request) {
             actionLink = `${siteUrl}/nexus/register?email=${encodeURIComponent(email)}&sub=${encodeURIComponent(subsidiaryId)}`
         }
 
+        // Clean any local development hosts (localhost/127.0.0.1) from the generated activation link
+        actionLink = cleanLocalhostUrl(actionLink)
+ 
         // 6. Send Bespoke Branded AWS SES Notification
         const userHtmlMessage = `
         <div style="background-color: #050505; padding: 60px 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #ffffff; min-height: 100%;">

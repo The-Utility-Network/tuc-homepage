@@ -5,7 +5,8 @@ create table profiles (
   full_name text,
   role text default 'investor', -- 'investor' or 'admin'
   company_name text,
-  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now())
 );
 
 -- Enable Row Level Security (RLS)

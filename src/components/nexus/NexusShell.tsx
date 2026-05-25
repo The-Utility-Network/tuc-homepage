@@ -19,7 +19,8 @@ import {
     ChevronLeft,
     PanelLeftClose,
     PanelLeftOpen,
-    Landmark
+    Landmark,
+    Shield
 } from 'lucide-react'
 import NotificationBell from './NotificationBell'
 
@@ -111,6 +112,7 @@ export default function NexusShell({ children, role, name, company, userEmail }:
                         )}
                         <div className="space-y-1">
                             <NavItem href="/nexus/manage/investors" icon={Users} label="Investors" />
+                            <NavItem href="/nexus/manage/team" icon={Shield} label="Team" />
                             <NavItem href="/nexus/manage/documents" icon={FileText} label="Doc Center" />
                             <NavItem href="/nexus/governance" icon={Landmark} label="Governance" />
                         </div>

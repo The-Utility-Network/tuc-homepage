@@ -40,22 +40,51 @@ export async function POST(request: Request) {
             // For prototype speed, we'll proceed but log warning if strict auth needed.
         }
 
-        // 2. Insert into cap_table_invites
-        // We do this first so we have a record even if email fails (or we can rollback)
-        const { data: inviteRecord, error: dbError } = await supabase
+        // 2. Check if a pending invite already exists to avoid unique constraint violations
+        let inviteRecord;
+        const { data: existingInvite } = await supabase
             .from('cap_table_invites')
-            .insert({
-                subsidiary_id: subsidiaryId,
-                email,
-                shares,
-                role,
-                invited_by: session.user.id,
-                status: 'pending'
-            })
-            .select()
-            .single()
+            .select('*')
+            .eq('subsidiary_id', subsidiaryId)
+            .eq('email', email)
+            .eq('status', 'pending')
+            .maybeSingle()
 
-        if (dbError) throw dbError
+        if (existingInvite) {
+            inviteRecord = existingInvite
+            // Update the existing pending invite (e.g. if role or shares changed)
+            const { data: updatedInvite, error: updateErr } = await supabase
+                .from('cap_table_invites')
+                .update({
+                    shares,
+                    role,
+                    invited_by: session.user.id,
+                    updated_at: new Date()
+                })
+                .eq('id', existingInvite.id)
+                .select()
+                .single()
+            
+            if (!updateErr && updatedInvite) {
+                inviteRecord = updatedInvite
+            }
+        } else {
+            const { data: newInvite, error: dbError } = await supabase
+                .from('cap_table_invites')
+                .insert({
+                    subsidiary_id: subsidiaryId,
+                    email,
+                    shares,
+                    role,
+                    invited_by: session.user.id,
+                    status: 'pending'
+                })
+                .select()
+                .single()
+
+            if (dbError) throw dbError
+            inviteRecord = newInvite
+        }
 
         // 3. Map the seat/grant title to a standard platform role
         let platformRole = 'investor';
